@@ -95,7 +95,7 @@
         "no-shadow-restricted-names": 2,
         "no-undef": 2,
         "no-undef-init": 2,
-        "no-unused-vars": 2,
+        "no-unused-vars": 1,
         "no-use-before-define": 2,
         "no-var": 2,
         "indent": [2, 2, {
@@ -142,6 +142,7 @@
         "space-in-parens": 2,
         "space-unary-ops": 2,
         "spaced-comment": 2,
-        "wrap-regex": 0
+        "wrap-regex": 0,
+        "space-before-function-paren": 0
     }
 }

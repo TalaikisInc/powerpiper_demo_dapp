@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-//import { BrowserRouter, Route } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import * as actions from '../actions'
-//import Header from '../containers/Header';
-//import Status from './Status';
-//import Home from './Home';
-//import Admin from './Admin';
-//import BuyRedeem from './BuyRedeem';
-//import Checkbox from './Checkbox';
+import Header from '../containers/Header'
+import Status from './Status'
+import Home from './Home'
+import Admin from './Admin'
+import BuyRedeem from './BuyRedeem'
+import Checkbox from './Checkbox'
 
 class App extends Component {
   constructor(props) {
@@ -48,7 +47,8 @@ class App extends Component {
         .then(() => {
           this.setState({ deployed: true })
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err)
           this.setState({ deployed: false })
         })
     }
@@ -57,21 +57,27 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        {/*
-          <Status account={this.props.account} metamask={this.props.web3} initiated={this.state.initiated} deployed={this.state.deployed} {...this.props} />
+        <div>
+          <Status 
+            account={this.props.account}
+            metamask={this.props.web3}
+            initiated={this.state.initiated}
+            deployed={this.state.deployed}
+            {...this.props} />
           <Header />
-          <Route exact path="/" component={Checkbox} />
-            {typeof this.props.LNKSToken === 'function' &&
-             typeof this.props.LNKSExchange === 'function' &&
-             this.state.deployed &&
-             typeof this.props.account === 'string' &&
-              this.props.account !== 'empty' ?
-                <div>
-                  <Route exact path="/app" component={Home} />
-                  <Route exact path="/buy-redeem" component={BuyRedeem} />
-                  <Route exact path="/admin" component={Admin} />
-                </div> : null}
-                */}
+          <div>
+            <Route exact path='/' component={Checkbox} />
+            { typeof this.props.Token === 'function' && typeof this.props.Crowdsale === 'function' &&
+              this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
+              ? <div>
+                <Route exact path='/app' component={Home} />
+                <Route exact path='/buy-redeem' component={BuyRedeem} />
+                <Route exact path='/admin' component={Admin} />
+              </div>
+              : null
+            }
+          </div>
+        </div>
       </BrowserRouter>
     )
   }

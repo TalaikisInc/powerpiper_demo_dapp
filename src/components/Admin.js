@@ -1,26 +1,25 @@
-/*import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-import OrdersAdmin from './OrdersAdmin';
-import RedeemsAdmin from './RedeemsAdmin';
-import TokensAvailabilityAdmin from './TokensAvailabilityAdmin';
-import SilverPriceMarkupAdmin from './SilverPriceMarkupAdmin';
-import CertificatesAdmin from './CertificatesAdmin';
-
+import OrdersAdmin from './OrdersAdmin'
+import RedeemsAdmin from './RedeemsAdmin'
+import TokensAvailabilityAdmin from './TokensAvailabilityAdmin'
+import PriceMarkupAdmin from './PriceMarkupAdmin'
+import CertificatesAdmin from './CertificatesAdmin'
 
 class Admin extends Component {
   constructor(props) {
-    super(props);
-    this.state = { isOwner: null };
+    super(props)
+    this.state = { isOwner: null }
   }
 
   componentDidMount() {
     this.props.LNKSExchange.deployed().then((exchange) => {
       exchange.validate(this.props.account)
         .then((res) => {
-          this.setState({ isOwner: res });
-        });
-    });
+          this.setState({ isOwner: res })
+        })
+    })
   }
 
   render() {
@@ -46,7 +45,7 @@ class Admin extends Component {
 
               <div className="col-xs-12">
                 <h3 style={{ marginTop: 30 }}>Silver price markup</h3>
-                <SilverPriceMarkupAdmin />
+                <PriceMarkupAdmin />
               </div>
 
               <div className="col-xs-12">
@@ -58,18 +57,16 @@ class Admin extends Component {
             }
         </div>
       </div>
-    );
+    )
   }
 }
-
 
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    LNKSExchange: state.LNKSExchange,
-    account: state.account,
-  };
+    Crowdsale: state.Crowdsale,
+    account: state.account
+  }
 }
 
-export default connect(mapStateToProps)(Admin);
-*/
+export default connect(mapStateToProps)(Admin)

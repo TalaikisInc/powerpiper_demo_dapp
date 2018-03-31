@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Header = () => (
   <Link href='/app' to='/app'>
-    <h2>PLATFORM</h2>
+    <h2>Platform</h2>
   </Link>
 )
 

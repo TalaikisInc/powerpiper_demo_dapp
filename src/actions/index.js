@@ -1,18 +1,16 @@
 import contract from 'truffle-contract'
-//import TokenArtifact from '../contracts/token.json'
-//import CrowdsaleArtifact from '../contracts/crowdsale.json'
 
-const path = require('path')
-const TokenArtifact = path.resolve('../../../build/contracts/PowerPiperToken.json')
-const CrowdsaleArtifact = path.resolve('../../../build/contracts/PowerPiperCrowdsale.json')
+import TokenArtifact from '../contracts/PowerPiperToken.json'
+import CrowdsaleArtifact from '../contracts/PowerPiperCrowdsale.json'
 
 export function initWeb3() {
   const { web3 } = window
   const { Web3 } = window
 
   if (typeof web3 !== 'undefined' && typeof Web3 !== 'undefined') {
-    const provider = web3.currentProvider
-    // let provider2 = new Web3.providers.HttpProvider('http://127.0.0.1:8545');
+    // @TODO, differentiate between local and current
+    // const provider = web3.currentProvider
+    const provider = new Web3.providers.HttpProvider('http://127.0.0.1:8545')
 
     const web3Initiated = new Web3(provider)
 
@@ -41,7 +39,7 @@ export function initToken(payload) {
   const instance = contract(TokenArtifact)
 
   if (payload.provider) {
-    instance.setProvider(payload.provider);
+    instance.setProvider(payload.provider)
   }
 
   return {

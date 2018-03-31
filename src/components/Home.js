@@ -1,26 +1,25 @@
-// import React from 'react';
+ import React from 'react';
 import { connect } from 'react-redux'
-// import { Link } from 'react-router-dom'
-import * as actions from '../actions'
+import { Link } from 'react-router-dom'
 
-/*import Balance from './Balance';
-import Address from './Address';
-import CoinStats from './CoinStats';
-import RecentTransactions from './RecentTransactions';
-import Certificates from './Certificates';
-*/
+import * as actions from '../actions'
+import Balance from './Balance'
+import Address from './Address'
+import CoinStats from './CoinStats'
+import RecentTransactions from './RecentTransactions'
+import Certificates from './Certificates'
 
 const Home = () => (
-  {
-      /*<CoinStats />
-    <Link href="/buy-redeem" to="/buy-redeem" id="buy-redeem-link" className="ant-btn ant-btn-primary">
-        Buy and Redeem
+  <div>
+    <CoinStats />
+    <Link href='/buy-redeem' to='/buy-redeem' id='buy-redeem-link'>
+      Buy and Redeem
     </Link>
     <Address />
     <Balance />
     <Certificates />
-    <RecentTransactions /> */
-  }
+    <RecentTransactions />
+  </div>
 )
 
 function mapStateToProps(state) {

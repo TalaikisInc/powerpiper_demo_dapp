@@ -17,8 +17,8 @@ class RecentTransactions extends Component {
 
   fetchTransactions() {
     this.props.web3.web3.eth.getBlockNumber((latestBlock) => {
-      this.props.Crowdsale.deployed().then((crowdsale) => {
-        crowdsale.allEvents({ fromBlock: latestBlock - 100000, toBlock: 'latest' })
+      this.props.Exchange.deployed().then((exchange) => {
+        exchange.allEvents({ fromBlock: latestBlock - 100000, toBlock: 'latest' })
           .watch((error, event) => {
             if (error) {
               // eslint-disable-next-line
@@ -48,21 +48,21 @@ class RecentTransactions extends Component {
   render() {
     const transactions = this.state.transactions.map(transaction => (
       <tr key={transaction.hash}>
-        <td><font color="white">{transaction.hash}</font></td>
-        <td><font color="white">{transaction.amount} ETH</font></td>
-        <td><font color="white">{transaction.type}</font></td>
-        <td><font color="white">{transaction.time}</font></td>
+        <td>{transaction.hash}></td>
+        <td>{transaction.amount} ETH</td>
+        <td>{transaction.type}</td>
+        <td>{transaction.time}></td>
       </tr>
     ))
 
     return (
-      <div id="transactions" className="col-xs-12" style={{ marginBottom: 30, marginTop: 30 }}>
-        <h4 style={{ marginTop: 0, marginBottom: '30px' }}>Recent Network Transactions</h4>
+      <div>
+        <h4>Recent Network Transactions</h4>
 
         { transactions.length
-          ? <table style={{ width: '100%', fontWeight: 300 }}>
+          ? <table>
             <thead>
-              <tr style={{ fontWeight: 300 }}>
+              <tr>
                 <th>Tx Hash</th>
                 <th>Amount</th>
                 <th>Type</th>
@@ -74,8 +74,8 @@ class RecentTransactions extends Component {
               {transactions}
             </tbody>
           </table>
-          : <div style={{ textAlign: 'center' }}>
-            <h5 style={{ marginTop: '25px' }}>No recent transactions</h5>
+          : <div>
+            <h5>No recent transactions</h5>
           </div>
         }
       </div>
@@ -85,7 +85,7 @@ class RecentTransactions extends Component {
 
 function mapStateToProps(state) {
   return {
-    Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     web3: state.web3
   }
 }

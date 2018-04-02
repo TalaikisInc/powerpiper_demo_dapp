@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 const Address = props => (
-  <div id="address" className="text-center">
+  <div>
     <h4>Your Address</h4>
-    <h5><span className="datum">{props.account}</span></h5>
+    <h5><span>{props.account}</span></h5>
   </div>
 )
 

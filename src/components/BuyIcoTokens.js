@@ -4,6 +4,9 @@ import { message, Form, Input, Button } from 'antd'
 import axios from 'axios'
 const FormItem = Form.Item
 
+/*
+@TODO!
+*/
 class BuyDirect extends Component {
   constructor(props) {
     super(props)
@@ -46,8 +49,8 @@ class BuyDirect extends Component {
   }
 
   getSilverFinalPrice(silverGramPrice) {
-    this.props.Exchange.deployed().then((exchange) => {
-      exchange.getEnergyPriceMarkup()
+    this.props.Crowdsale.deployed().then((crowdsale) => {
+      crowdsale.getEnergyPriceMarkup()
         .then((res) => {
           const silverMarkupPerGram = res.toNumber() / 1000
           const finalSilverGramPrice = ((silverMarkupPerGram + 100) * silverGramPrice) / 100
@@ -62,8 +65,8 @@ class BuyDirect extends Component {
   }
 
   getFee() {
-    this.props.Exchange.deployed().then((exchange) => {
-      exchange.fee()
+    this.props.Crowdsale.deployed().then((crowdsale) => {
+      crowdsale.fee()
         .then((res) => {
           this.setState({
             fee: `${res.toNumber() / 1000}% or at least 0.001 PWP`
@@ -79,8 +82,8 @@ class BuyDirect extends Component {
     this.setState({ amountTokens })
 
     if (calculateFee) {
-      this.props.Exchange.deployed().then((exchange) => {
-        exchange.calculateFee.call(amountTokens * 1000)
+      this.props.Crowdsale.deployed().then((crowdsale) => {
+        crowdsale.calculateFee.call(amountTokens * 1000)
           .then((res) => {
             this.setState({
               fee: `${res.toNumber() / 1000} PWP`
@@ -107,8 +110,8 @@ class BuyDirect extends Component {
 
     this.hide = message.loading('Action in progress..', 0)
 
-    this.props.Exchange.deployed().then((exchange) => {
-      exchange.buyDirect({
+    this.props.Crowdsale.deployed().then((crowdsale) => {
+      crowdsale.buyDirect({
         from: this.props.account,
         value: this.props.web3.web3.toWei(this.state.amountEth, 'ether'),
         gas: 200000
@@ -119,34 +122,43 @@ class BuyDirect extends Component {
         this.hide();
         this.setState({ success: `Success! Transaction hash - ${receipt.tx}`, loading: false })
       }).catch((error) => {
+        // eslint-disable-next-line
         console.log(error)
 
         this.hide();
-        this.setState({
-          failure: 'Oops, something went wrong. Try again later.',
-          loading: false
-        })
+        this.setState({ failure: 'Oops, something went wrong. Try again later.', loading: false })
       })
     })
   }
 
   render() {
     return (
-      <div>
+      <div id="buydirect">
         <h4>Buy</h4>
 
         <p style={{ color: 'green' }}>{this.state.success ? this.state.success : null}</p>
         <p style={{ color: 'red' }}>{this.state.failure ? this.state.failure : null}</p>
 
         <h5>
-            1 ETH = {this.state.priceEth} USD
+          <font size="2">
+            <font color="white">
+            1 ETH =
+            </font><font color="#64b0ed"> {this.state.priceEth} USD</font>
+          </font>
         </h5>
         <h5>
-            Price = {this.state.priceGram} USD
+          <font size="2">
+            <font color="white">
+            Price =
+            </font><font color="#64b0ed"> {this.state.priceGram} USD</font>
+          </font>
         </h5>
         <h5>
-          {this.state.amountEth ? this.state.amountEth : 0}
-            ETH = {this.state.amountTokens} PWP
+          <font size="2">
+            <font color="white">
+              {this.state.amountEth ? this.state.amountEth : 0}
+            </font> ETH = <font color="#64b0ed"> {this.state.amountTokens} PWP</font>
+          </font>
         </h5>
 
         <Form onSubmit={this.handleSubmit}>
@@ -176,7 +188,7 @@ class BuyDirect extends Component {
 
 function mapStateToProps(state) {
   return {
-    Exchange: state.Exchange,
+    Crowdsale: state.Crowdsale,
     account: state.account,
     web3: state.web3
   }

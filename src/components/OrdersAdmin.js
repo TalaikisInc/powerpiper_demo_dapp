@@ -50,15 +50,15 @@ class OrdersAdmin extends PureComponent {
       }
     }
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.getOrdersLength({ from: this.props.account })
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.getOrdersLength({ from: this.props.account })
         .then((total) => {
           if (total.toNumber() === 0) {
             this.setState({ orders })
           }
 
           for (let i = 0; i < total.toNumber(); i += 1) {
-            crowdsale.getOrder(i, { from: this.props.account })
+            exchange.getOrder(i, { from: this.props.account })
               .then((res) => {
                 addOrder(res, i, total.toNumber())
               })
@@ -74,8 +74,8 @@ class OrdersAdmin extends PureComponent {
 
     this.hide = message.loading('Action in progress, do not close or reset this window..', 0)
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.approveOrder(idx, parseInt(this.state.inputs[idx], 10) * 1000, {
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.approveOrder(idx, parseInt(this.state.inputs[idx], 10) * 1000, {
         from: this.props.account,
         gas: 200000
       })
@@ -98,8 +98,8 @@ class OrdersAdmin extends PureComponent {
 
     this.hide = message.loading('Action in progress, do not close or reset this window..', 0)
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.declineOrder(idx, {
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.declineOrder(idx, {
         from: this.props.account,
         gas: 200000
       })
@@ -117,7 +117,7 @@ class OrdersAdmin extends PureComponent {
 
   render() {
     return (
-      <div className="redeems-admin">
+      <div>
         <div>
           <Table dataSource={this.state.orders}>
             <Column
@@ -175,7 +175,7 @@ class OrdersAdmin extends PureComponent {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     Token: state.Token,
     account: state.account
   }

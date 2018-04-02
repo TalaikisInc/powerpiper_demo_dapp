@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+/*
+@TODO export token name to external env
+*/
 class Balance extends Component {
   constructor(props) {
     super(props)

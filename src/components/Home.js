@@ -9,11 +9,14 @@ import CoinStats from './CoinStats'
 import RecentTransactions from './RecentTransactions'
 import Certificates from './Certificates'
 
+/*
+@TODO Links to ICO part
+*/
 const Home = () => (
   <div>
     <CoinStats />
     <Link href='/buy-redeem' to='/buy-redeem' id='buy-redeem-link'>
-      Buy and Redeem
+      Buy | Redeem
     </Link>
     <Address />
     <Balance />
@@ -26,6 +29,7 @@ function mapStateToProps(state) {
   return {
     web3: state.web3,
     Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     Token: state.Token,
     account: state.account
   }

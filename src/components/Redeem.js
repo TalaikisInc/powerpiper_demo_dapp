@@ -38,8 +38,8 @@ class Redeem extends Component {
 
     this.hide = message.loading('Action in progress..', 0)
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.redeem(
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.redeem(
         this.state.amount * 1000,
         `${this.state.name} | ${this.state.street} | ${this.state.city} | ${this.state.state} | ${this.state.zip} | ${this.state.country}`, {
           from: this.props.account,
@@ -63,11 +63,11 @@ class Redeem extends Component {
 
   render() {
     return (
-      <div id="redeem">
+      <div>
         <h4>Redeem Tokens</h4>
 
-        <p style={{ color: 'green' }}>{this.state.success ? this.state.success : null}</p>
-        <p style={{ color: 'red' }}>{this.state.failure ? this.state.failure : null}</p>
+        <p>{this.state.success ? this.state.success : null}</p>
+        <p>{this.state.failure ? this.state.failure : null}</p>
 
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
@@ -143,7 +143,7 @@ class Redeem extends Component {
 
 function mapStateToProps(state) {
   return {
-    Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     account: state.account,
     web3: state.web3
   }

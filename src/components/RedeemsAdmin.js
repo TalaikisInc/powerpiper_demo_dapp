@@ -43,8 +43,8 @@ class RedeemsAdmin extends Component {
       }
     }
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.getRedemptionsLength({ from: this.props.account })
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.getRedemptionsLength({ from: this.props.account })
         .then((total) => {
           if (total.toNumber() === 0) {
             this.setState({ redemptions })
@@ -65,8 +65,8 @@ class RedeemsAdmin extends Component {
 
     this.hide = message.loading('Action in progress, do not close or reset this window..', 0)
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.approveRedemption(idx, {
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.approveRedemption(idx, {
         from: this.props.account,
         gas: 250000
       })
@@ -89,8 +89,8 @@ class RedeemsAdmin extends Component {
 
     this.hide = message.loading('Action in progress, do not close or reset this window..', 0)
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.declineRedemption(idx, {
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.declineRedemption(idx, {
         from: this.props.account,
         gas: 250000
       })
@@ -110,7 +110,7 @@ class RedeemsAdmin extends Component {
 
   render() {
     return (
-      <div className="redeems-admin">
+      <div>
         <div>
           <Table dataSource={this.state.redemptions}>
             <Column
@@ -168,7 +168,7 @@ class RedeemsAdmin extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     Token: state.Token,
     account: state.account
   }

@@ -31,8 +31,8 @@ class CertificatesAdmin extends Component {
     this.setState({ loading: true });
     this.hide = message.loading('Action in progress, do not close or reset this window..', 0)
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-        crowdsale.addCertificate(
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.addCertificate(
         this.state.url,
         this.state.amount * 1000,
         {
@@ -91,11 +91,11 @@ class CertificatesAdmin extends Component {
       }
     }
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.getCertificatesLength({ from: this.props.account })
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.getCertificatesLength({ from: this.props.account })
         .then((total) => {
           for (let i = 0; i < total.toNumber(); i += 1) {
-            crowdsale.getCertificate(i, { from: this.props.account })
+            exchange.getCertificate(i, { from: this.props.account })
               .then((res) => {
                 addCertificate(res, i, total.toNumber())
               })
@@ -108,8 +108,8 @@ class CertificatesAdmin extends Component {
     this.setState({ loading: true });
     this.hide = message.loading('Action in progress, do not close or reset this window..', 0)
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-        crowdsale.deleteCertificate(
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.deleteCertificate(
         key,
         {
           from: this.props.account,
@@ -132,7 +132,7 @@ class CertificatesAdmin extends Component {
 
   render() {
     return (
-      <div className="redeems-admin" style={{ marginBottom: 30 }}>
+      <div>
         <div>
           <Form onSubmit={this.handleSubmit}>
             <Input
@@ -196,7 +196,7 @@ class CertificatesAdmin extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     Token: state.Token,
     account: state.account
   }

@@ -26,8 +26,8 @@ class CertificatesAdmin extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.setAvailableTokens(
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.setAvailableTokens(
         this.state.amount * 1000,
         {
           from: this.props.account,
@@ -43,7 +43,7 @@ class CertificatesAdmin extends Component {
 
   render() {
     return (
-      <div className="tokens-availability-admin">
+      <div>
         <div>
           <Form onSubmit={this.handleSubmit}>
             <Input
@@ -70,7 +70,7 @@ class CertificatesAdmin extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     Token: state.Token,
     account: state.account
   }

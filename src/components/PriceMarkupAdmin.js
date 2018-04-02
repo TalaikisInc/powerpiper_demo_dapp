@@ -14,7 +14,7 @@ class SilverPriceMarkupAdmin extends Component {
   }
 
   handleChange(event) {
-    const { target } = event;
+    const { target } = event
     const value = target.type === 'checkbox' ? target.checked : target.value
     const { name } = target
 
@@ -26,8 +26,8 @@ class SilverPriceMarkupAdmin extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-        crowdsale.setPriceMarkup(
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.setPriceMarkup(
         this.state.percentage * 1000,
         {
           from: this.props.account,
@@ -43,7 +43,7 @@ class SilverPriceMarkupAdmin extends Component {
 
   render() {
     return (
-      <div className="tokens-availability-admin">
+      <div>
         <div>
           <Form onSubmit={this.handleSubmit}>
             <Input
@@ -51,7 +51,7 @@ class SilverPriceMarkupAdmin extends Component {
               onChange={this.handleChange}
               value={this.state.percentage}
               name="percentage"
-              placeholder="Percentage over spot silver price"
+              placeholder="Percentage over spot energy price"
               style={{ marginTop: 10 }}
             />
             <Button
@@ -70,7 +70,7 @@ class SilverPriceMarkupAdmin extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     account: state.account
   }
 }

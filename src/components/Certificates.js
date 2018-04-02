@@ -45,8 +45,8 @@ class Certificates extends PureComponent {
       }
     }
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.getCertificatesLength({ from: this.props.account })
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.getCertificatesLength({ from: this.props.account })
         .then((totalRes) => {
           const total = totalRes.toNumber()
 
@@ -65,7 +65,7 @@ class Certificates extends PureComponent {
           }
 
           for (let i = total - 1; (i >= total - (this.showMoreClicks * SHOW_CERTIFICATES_AT_A_TIME)) && (i >= 0); i -= 1) {
-            crowdsale.getCertificate(i, { from: this.props.account })
+            exchange.getCertificate(i, { from: this.props.account })
               .then((res) => {
                 addCertificate(res, i)
               })
@@ -82,9 +82,9 @@ class Certificates extends PureComponent {
   render() {
     const certificates = this.state.certificates.map(certificate => (
       <tr key={certificate.url + certificate.timestamp}>
-        <td><font color="white"><a href={certificate.url} style={{ color: 'white' }} target="_blank">{certificate.url}</a></font></td>
-        <td><font color="white">{certificate.amount} grams</font></td>
-        <td><font color="white">{moment.unix(certificate.timestamp).fromNow()}</font></td>
+        <td><a href={certificate.url} style={{ color: 'white' }} target='_blank'>{certificate.url}</a></td>
+        <td>{certificate.amount} grams</td>
+        <td>{moment.unix(certificate.timestamp).fromNow()}</td>
       </tr>
     ));
 
@@ -128,7 +128,7 @@ class Certificates extends PureComponent {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     Token: state.Token,
     account: state.account
   }

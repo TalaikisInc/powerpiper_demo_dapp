@@ -2,14 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import * as actions from '../actions'
-import BuyDirect from './BuyDirect'
-import Redeem from './Redeem'
+import BuyIcoTokens from './BuyIcoTokens'
+//import Redeem from './Redeem'
 import RecentTransactions from './RecentTransactions'
 
-const BuyRedeem = () => (
+const BuyICO = () => (
   <div>
-    <Redeem />
-    <BuyDirect />
+    { /*<Redeem /> */ }
+    <BuyIcoTokens />
     <RecentTransactions />
   </div>
 )
@@ -17,10 +17,10 @@ const BuyRedeem = () => (
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Exchange: state.Exchange,
+    Crowdsale: state.Crowdsale,
     Token: state.Token,
     account: state.account
   }
 }
 
-export default connect(mapStateToProps, actions)(BuyRedeem)
+export default connect(mapStateToProps, actions)(BuyICO)

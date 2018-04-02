@@ -10,6 +10,10 @@ import Admin from './Admin'
 import BuyRedeem from './BuyRedeem'
 import Checkbox from './Checkbox'
 
+/*
+@TODO
+Crowdsale buy, KYC
+*/
 class App extends Component {
   constructor(props) {
     super(props)
@@ -30,10 +34,13 @@ class App extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.web3 !== nextProps.web3) {
       this.props.fetchAccount(this.props.web3)
-      this.setState({ initiated: true })
+      this.setState({
+        initiated: true
+      })
 
       if (nextProps.web3.web3Initiated) {
         this.props.initToken(nextProps.web3)
+        this.props.initExchange(nextProps.web3)
         this.props.initCrowdsale(nextProps.web3)
       }
     }
@@ -67,7 +74,7 @@ class App extends Component {
           <Header />
           <div>
             <Route exact path='/' component={Checkbox} />
-            { typeof this.props.Token === 'function' && typeof this.props.Crowdsale === 'function' &&
+            { typeof this.props.Token === 'function' && typeof this.props.Exchange === 'function' &&
               this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
               ? <div>
                 <Route exact path='/app' component={Home} />
@@ -87,6 +94,7 @@ function mapStateToProps(state) {
   return {
     web3: state.web3,
     Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     Token: state.Token,
     account: state.account
   }

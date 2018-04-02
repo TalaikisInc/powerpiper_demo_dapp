@@ -2,6 +2,7 @@ import contract from 'truffle-contract'
 
 import TokenArtifact from '../contracts/PowerPiperToken.json'
 import CrowdsaleArtifact from '../contracts/PowerPiperCrowdsale.json'
+import ExchangeArtifact from '../contracts/Exchange.json'
 
 export function initWeb3() {
   const { web3 } = window
@@ -57,6 +58,19 @@ export function initCrowdsale(payload) {
 
   return {
     type: 'INIT_CROWDSALE',
+    payload: instance
+  }
+}
+
+export function initExchange(payload) {
+  const instance = contract(ExchangeArtifact)
+
+  if (payload.provider) {
+    instance.setProvider(payload.provider)
+  }
+
+  return {
+    type: 'INIT_EXCHANGE',
     payload: instance
   }
 }

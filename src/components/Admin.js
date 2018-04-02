@@ -10,11 +10,13 @@ import CertificatesAdmin from './CertificatesAdmin'
 class Admin extends Component {
   constructor(props) {
     super(props)
-    this.state = { isOwner: null }
+    this.state = {
+      isOwner: null
+    }
   }
 
   componentDidMount() {
-    this.props.LNKSExchange.deployed().then((exchange) => {
+    this.props.Exchange.deployed().then((exchange) => {
       exchange.validate(this.props.account)
         .then((res) => {
           this.setState({ isOwner: res })
@@ -25,36 +27,36 @@ class Admin extends Component {
   render() {
     return (
       <div>
-        <div className="row">
-          {this.state.isOwner ?
-            <div>
-              <div className="col-xs-12">
-                <h3 style={{ marginTop: 30 }}>Orders</h3>
+        <div>
+          { this.state.isOwner
+            ? <div>
+              <div>
+                <h3>Orders</h3>
                 <OrdersAdmin />
               </div>
 
-              <div className="col-xs-12">
-                <h3 style={{ marginTop: 30 }}>Redeems</h3>
+              <div>
+                <h3>Redeems</h3>
                 <RedeemsAdmin />
               </div>
 
-              <div className="col-xs-12">
-                <h3 style={{ marginTop: 30 }}>Tokens availability</h3>
+              <div>
+                <h3>Tokens availability</h3>
                 <TokensAvailabilityAdmin />
               </div>
 
-              <div className="col-xs-12">
-                <h3 style={{ marginTop: 30 }}>Silver price markup</h3>
+              <div>
+                <h3>Energy price markup</h3>
                 <PriceMarkupAdmin />
               </div>
 
-              <div className="col-xs-12">
-                <h3 style={{ marginTop: 30 }}>Certificates</h3>
+              <div>
+                <h3>Certificates</h3>
                 <CertificatesAdmin />
               </div>
-            </div> :
-            <div className="col-xs-12"><h2>This area is admin only</h2></div>
-            }
+            </div>
+            : <div><h2>This area is admin only</h2></div>
+          }
         </div>
       </div>
     )
@@ -64,7 +66,7 @@ class Admin extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     account: state.account
   }
 }

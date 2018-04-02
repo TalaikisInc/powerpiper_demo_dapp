@@ -28,19 +28,19 @@ class CoinStats extends Component {
       })
     })
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.getReserves().then((reserves) => {
+    this.props.Exchange.deployed().then((exchange) => {
+      exchange.getReserves().then((reserves) => {
         this.setState({ grams: reserves.toNumber() / 1000 })
       })
 
-      crowdsale.getCertificatesLength({ from: this.props.account })
+      exchange.getCertificatesLength({ from: this.props.account })
         .then((length) => {
           this.setState({
             certificates: length.toNumber()
           })
         })
 
-      crowdsale.tokensSupplyAvailable().then((tokensAvailable) => {
+      exchange.tokensSupplyAvailable().then((tokensAvailable) => {
         this.setState({ tokensAvailable: tokensAvailable.toNumber() / 1000 })
       })
     })
@@ -66,7 +66,7 @@ class CoinStats extends Component {
 function mapStateToProps(state) {
   return {
     Token: state.Token,
-    Crowdsale: state.Crowdsale,
+    Exchange: state.Exchange,
     account: state.account
   }
 }

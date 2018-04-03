@@ -47,17 +47,15 @@ class CertificatesAdmin extends Component {
         <div>
           <Form onSubmit={this.handleSubmit}>
             <Input
-              type="number"
+              type='number'
               onChange={this.handleChange}
               value={this.state.amount}
-              name="amount"
-              placeholder="Tokens available for purhcase"
-              style={{ marginTop: 10 }}
+              name='amount'
+              placeholder='Tokens available for purhcase'
             />
             <Button
-              type="primary"
-              htmlType="submit"
-              style={{ marginTop: 10, marginBottom: 30 }}
+              type='primary'
+              htmlType='submit'
             >Set available tokens
             </Button>
           </Form>

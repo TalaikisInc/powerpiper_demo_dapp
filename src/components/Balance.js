@@ -22,7 +22,9 @@ class Balance extends Component {
   getBalance() {
     this.props.Token.deployed().then((token) => {
       token.balanceOf(this.props.account).then((balance) => {
-        this.setState({ balance: balance.toNumber() / 1000 })
+        this.setState({
+          balance: balance.toNumber() / 1000
+        })
       })
     })
 

@@ -113,44 +113,26 @@ class RedeemsAdmin extends Component {
       <div>
         <div>
           <Table dataSource={this.state.redemptions}>
-            <Column
-              title="Address"
-              dataIndex="address"
-              key="address"
-            />
-            <Column
-              title="Location"
-              dataIndex="location"
-              key="location"
-            />
-            <Column
-              title="Amount"
-              dataIndex="amount"
-              key="amount"
-            />
-            <Column
-              title="Time"
-              dataIndex="time"
-              key="time"
-            />
-            <Column
-              title="Action"
-              key="action"
+            <Column title='Address' dataIndex='address' key='address' />
+            <Column title='Location' dataIndex='location' key='location' />
+            <Column title='Amount' dataIndex='amount' key='amount' />
+            <Column title='Time' dataIndex='time' key='time' />
+            <Column title='Action' key='action'
               render={(text, record) => (
                 <span>
                   <Button
                     onClick={() => this.approve(record.key)}
-                    type="primary"
+                    type='primary'
                     loading={this.state.loading}
                   >
                     Approve
                   </Button>
 
-                  <Divider type="horizontal" />
+                  <Divider type='horizontal' />
 
                   <Button
                     onClick={() => this.decline(record.key)}
-                    type="primary"
+                    type='primary'
                     loading={this.state.loading}
                   >
                     Decline

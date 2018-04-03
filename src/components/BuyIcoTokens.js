@@ -4,17 +4,14 @@ import { message, Form, Input, Button } from 'antd'
 import axios from 'axios'
 const FormItem = Form.Item
 
-/*
-@TODO!
-*/
-class BuyDirect extends Component {
+class BuyIcoTokens extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       amountEth: 1,
       amountTokens: '...',
-      priceGram: '...',
+      priceKWh: '...',
       priceEth: '...',
       fee: '...',
       success: '',
@@ -25,38 +22,40 @@ class BuyDirect extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.calculateTokens = this.calculateTokens.bind(this)
-    this.getSilverFinalPrice = this.getSilverFinalPrice.bind(this)
+    this.getFinalPrice = this.getFinalPrice.bind(this)
   }
 
   componentDidMount() {
     this.getFee()
 
+    /*
+    @TODO get actual energy prices
+    */
+    const staticKWhPrice = 0.1
     axios.all([
-      axios.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD'),
-      axios.get('https://www.quandl.com/api/v3/datasets/LBMA/SILVER.json?api_key=y7Pa1CUGkHby28hYKivu')
+      axios.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD')
     ])
-      .then(axios.spread((eth, silver) => {
+      .then(axios.spread((eth) => {
         this.setState({
           priceEth: eth.data.USD
         }, () => {
-          this.getSilverFinalPrice(parseFloat(silver.data.dataset.data[0][1]) / 28.3495)
+          this.getFinalPrice(parseFloat(staticKWhPrice))
         })
       }))
       .catch((error) => {
-      // eslint-disable-next-line
-      console.log(error)
+        console.log(error)
       })
   }
 
-  getSilverFinalPrice(silverGramPrice) {
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.getEnergyPriceMarkup()
+  getFinalPrice(energyPrice) {
+    this.props.Token.deployed().then((token) => {
+      token.getEnergyPriceMarkup()
         .then((res) => {
-          const silverMarkupPerGram = res.toNumber() / 1000
-          const finalSilverGramPrice = ((silverMarkupPerGram + 100) * silverGramPrice) / 100
+          const markupPerKWh = res.toNumber() / 1000
+          const finalPrice = ((markupPerKWh + 100) * energyPrice) / 100
 
           this.setState({
-            priceGram: finalSilverGramPrice.toFixed(2)
+            priceKWh: finalPrice.toFixed(2)
           }, () => {
             this.calculateTokens()
           })
@@ -65,8 +64,8 @@ class BuyDirect extends Component {
   }
 
   getFee() {
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.fee()
+    this.props.Token.deployed().then((token) => {
+      token.getFee()
         .then((res) => {
           this.setState({
             fee: `${res.toNumber() / 1000}% or at least 0.001 PWP`
@@ -77,13 +76,13 @@ class BuyDirect extends Component {
 
   calculateTokens(calculateFee) {
     const etherInUsd = this.state.amountEth * this.state.priceEth
-    const amountTokens = (etherInUsd / this.state.priceGram).toFixed(2)
+    const amountTokens = (etherInUsd / this.state.priceKWh).toFixed(2)
 
     this.setState({ amountTokens })
 
     if (calculateFee) {
-      this.props.Crowdsale.deployed().then((crowdsale) => {
-        crowdsale.calculateFee.call(amountTokens * 1000)
+      this.props.Token.deployed().then((token) => {
+        token.calculateFee.call(amountTokens * 1000)
           .then((res) => {
             this.setState({
               fee: `${res.toNumber() / 1000} PWP`
@@ -94,7 +93,9 @@ class BuyDirect extends Component {
   }
 
   handleChange(event) {
-    this.setState({ amountEth: event.target.value }, () => {
+    this.setState({
+      amountEth: event.target.value
+    }, () => {
       this.calculateTokens(true)
     })
   }
@@ -111,70 +112,58 @@ class BuyDirect extends Component {
     this.hide = message.loading('Action in progress..', 0)
 
     this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.buyDirect({
+      crowdsale.buyTokens(this.props.account, {
         from: this.props.account,
-        value: this.props.web3.web3.toWei(this.state.amountEth, 'ether'),
-        gas: 200000
+        value: this.props.web3.web3.toWei(this.state.amountEth, 'ether')
       }).then((receipt) => {
-        // eslint-disable-next-line
         console.log('receipt', receipt)
-
-        this.hide();
-        this.setState({ success: `Success! Transaction hash - ${receipt.tx}`, loading: false })
+        this.hide()
+        this.setState({
+          success: `Success! Transaction hash - ${receipt.tx}`,
+          loading: false
+        })
       }).catch((error) => {
-        // eslint-disable-next-line
         console.log(error)
-
-        this.hide();
-        this.setState({ failure: 'Oops, something went wrong. Try again later.', loading: false })
+        this.hide()
+        this.setState({
+          failure: `Oops, something went wrong: ${error}`,
+          loading: false
+        })
       })
     })
   }
 
   render() {
     return (
-      <div id="buydirect">
-        <h4>Buy</h4>
+      <div>
+        <h4>Buy tokens</h4>
 
-        <p style={{ color: 'green' }}>{this.state.success ? this.state.success : null}</p>
-        <p style={{ color: 'red' }}>{this.state.failure ? this.state.failure : null}</p>
+        <p>{this.state.success ? this.state.success : null}</p>
+        <p>{this.state.failure ? this.state.failure : null}</p>
 
         <h5>
-          <font size="2">
-            <font color="white">
-            1 ETH =
-            </font><font color="#64b0ed"> {this.state.priceEth} USD</font>
-          </font>
+          1 ETH = {this.state.priceEth} USD
         </h5>
         <h5>
-          <font size="2">
-            <font color="white">
-            Price =
-            </font><font color="#64b0ed"> {this.state.priceGram} USD</font>
-          </font>
+          1 kWh Price = {this.state.priceKWh} USD
         </h5>
         <h5>
-          <font size="2">
-            <font color="white">
-              {this.state.amountEth ? this.state.amountEth : 0}
-            </font> ETH = <font color="#64b0ed"> {this.state.amountTokens} PWP</font>
-          </font>
+          { this.state.amountEth ? this.state.amountEth : 0} ETH = {this.state.amountTokens} PWP
         </h5>
 
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
             <Input
-              style={{ marginTop: 5 }}
-              type="number"
+              type='number'
               onChange={this.handleChange}
               value={this.state.amountEth}
-              placeholder="Amount to buy"
+              placeholder='Amount to buy'
             />
           </FormItem>
 
           <Button
-            type="primary"
-            htmlType="submit"
+            type='primary'
+            htmlType='submit'
             loading={this.state.loading}
           >
             Buy tokens
@@ -188,10 +177,11 @@ class BuyDirect extends Component {
 
 function mapStateToProps(state) {
   return {
+    Token: state.Token,
     Crowdsale: state.Crowdsale,
     account: state.account,
     web3: state.web3
   }
 }
 
-export default connect(mapStateToProps)(BuyDirect)
+export default connect(mapStateToProps)(BuyIcoTokens)

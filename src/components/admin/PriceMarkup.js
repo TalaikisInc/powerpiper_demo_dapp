@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form, Input, Button } from 'antd'
 
-class SilverPriceMarkupAdmin extends Component {
+class PriceMarkupAdmin extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
-      percentage: null
+      percentage: null,
+      messages: null
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -26,8 +27,8 @@ class SilverPriceMarkupAdmin extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    this.props.Exchange.deployed().then((exchange) => {
-      exchange.setPriceMarkup(
+    this.props.Token.deployed().then((token) => {
+      token.setPriceMarkup(
         this.state.percentage * 1000,
         {
           from: this.props.account,
@@ -35,8 +36,14 @@ class SilverPriceMarkupAdmin extends Component {
         },
       ).then((receipt) => {
         console.log('Success: ', receipt)
+        this.setState({
+          messages: `Price markup set and used ${receipt.receipt.cumulativeGasUsed} of gas.`
+        })
       }).catch((error) => {
         console.log(error.message)
+        this.setState({
+          messages: error.message
+        })
       })
     })
   }
@@ -44,24 +51,21 @@ class SilverPriceMarkupAdmin extends Component {
   render() {
     return (
       <div>
-        <div>
-          <Form onSubmit={this.handleSubmit}>
-            <Input
-              type="number"
-              onChange={this.handleChange}
-              value={this.state.percentage}
-              name="percentage"
-              placeholder="Percentage over spot energy price"
-              style={{ marginTop: 10 }}
-            />
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{ marginTop: 10, marginBottom: 30 }}
-            >Set percentage over spot silver price
-            </Button>
-          </Form>
-        </div>
+        <Form onSubmit={this.handleSubmit}>
+          <Input
+            type='number'
+            onChange={this.handleChange}
+            value={this.state.percentage}
+            name='percentage'
+            placeholder='Percentage over spot energy price'
+          />
+          <Button
+            type='primary'
+            htmlType='submit'
+          >Set percentage over spot energy price
+          </Button>
+        </Form>
+        { this.state.messages }
       </div>
     )
   }
@@ -70,9 +74,9 @@ class SilverPriceMarkupAdmin extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Exchange: state.Exchange,
+    Token: state.Token,
     account: state.account
   }
 }
 
-export default connect(mapStateToProps)(SilverPriceMarkupAdmin)
+export default connect(mapStateToProps)(PriceMarkupAdmin)

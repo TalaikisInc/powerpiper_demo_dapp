@@ -6,8 +6,9 @@ import * as actions from '../actions'
 import Header from '../containers/Header'
 import Status from './Status'
 import Home from './Home'
-import Admin from './Admin'
-import BuyRedeem from './BuyRedeem'
+import Admin from './admin/Admin'
+// import BuyRedeem from './BuyRedeem'
+import BuyIco from './BuyIco'
 import Checkbox from './Checkbox'
 
 /*
@@ -65,24 +66,21 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div>
-          <Status 
-            account={this.props.account}
-            metamask={this.props.web3}
-            initiated={this.state.initiated}
-            deployed={this.state.deployed}
-            {...this.props} />
+          <Status account={this.props.account} metamask={this.props.web3} initiated={this.state.initiated} deployed={this.state.deployed} {...this.props} />
           <Header />
           <div>
             <Route exact path='/' component={Checkbox} />
-            { typeof this.props.Token === 'function' && typeof this.props.Exchange === 'function' &&
+            { typeof this.props.Token === 'function' && typeof this.props.Crowdsale === 'function' &&
               this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
               ? <div>
                 <Route exact path='/app' component={Home} />
-                <Route exact path='/buy-redeem' component={BuyRedeem} />
+                { /*<Route exact path='/buy-redeem' component={BuyRedeem} />*/ }
+                <Route exact path='/buy-ico' component={BuyIco} />
                 <Route exact path='/admin' component={Admin} />
               </div>
               : null
             }
+            { /* Add exchage part */ }
           </div>
         </div>
       </BrowserRouter>

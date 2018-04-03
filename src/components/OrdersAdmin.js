@@ -120,32 +120,20 @@ class OrdersAdmin extends PureComponent {
       <div>
         <div>
           <Table dataSource={this.state.orders}>
+            <Column title='Address' dataIndex='address' key='address' />
+            <Column title='Amount' dataIndex='amount' key='amount' />
+            <Column title='Time' dataIndex='time' key='time' />
             <Column
-              title="Address"
-              dataIndex="address"
-              key="address"
-            />
-            <Column
-              title="Amount"
-              dataIndex="amount"
-              key="amount"
-            />
-            <Column
-              title="Time"
-              dataIndex="time"
-              key="time"
-            />
-            <Column
-              title="Action"
-              key="action"
+              title='Action'
+              key='action'
               render={(text, record) => (
                 <span>
                   <Form onSubmit={e => this.approve(e, record.key)}>
-                    <Input placeholder="1 LNKS" onChange={e => this.handleChange(e, record.key)} />
+                    <Input placeholder='1 PWP' onChange={e => this.handleChange(e, record.key)} />
 
                     <Button
-                      type="primary"
-                      htmlType="submit"
+                      type='primary'
+                      htmlType='submit'
                       style={{ marginTop: 15 }}
                       loading={this.state.loading}
                     >
@@ -153,11 +141,11 @@ class OrdersAdmin extends PureComponent {
                     </Button>
                   </Form>
 
-                  <Divider type="horizontal" />
+                  <Divider type='horizontal' />
 
                   <Button
-                    onClick={() => { this.decline(record.key); }}
-                    type="primary"
+                    onClick={() => { this.decline(record.key) }}
+                    type='primary'
                     loading={this.state.loading}
                   >
                     Decline

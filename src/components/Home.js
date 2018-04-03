@@ -6,22 +6,30 @@ import * as actions from '../actions'
 import Balance from './Balance'
 import Address from './Address'
 import CoinStats from './CoinStats'
-import RecentTransactions from './RecentTransactions'
-import Certificates from './Certificates'
+// import RecentTransactions from './RecentTransactions'
+// import Certificates from './Certificates'
 
 /*
-@TODO Links to ICO part
+@TODO KYC, exchange part
 */
 const Home = () => (
   <div>
     <CoinStats />
-    <Link href='/buy-redeem' to='/buy-redeem' id='buy-redeem-link'>
-      Buy | Redeem
+    { /*
+    Add aftr exchnage implementation
+      <Link href='/buy-redeem' to='/buy-redeem' id='buy-redeem-link'>
+        Buy | Redeem
+      </Link>
+    */ }
+    <Link href='/buy-ico' to='/buy-ico' id='buy-ico-link'>
+      Buy tokens
     </Link>
     <Address />
     <Balance />
+    { /*
     <Certificates />
     <RecentTransactions />
+    */ }
   </div>
 )
 

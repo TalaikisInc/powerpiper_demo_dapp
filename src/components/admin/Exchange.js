@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import OrdersAdmin from './OrdersAdmin'
-import RedeemsAdmin from './RedeemsAdmin'
-import TokensAvailabilityAdmin from './TokensAvailabilityAdmin'
-import PriceMarkupAdmin from './PriceMarkupAdmin'
-import CertificatesAdmin from './CertificatesAdmin'
+import RedeemsAdmin from './Redeems'
+import TokensAvailabilityAdmin from './TokensAvailability'
+import CertificatesAdmin from './Certificates'
+import PriceMarkupAdmin from './PriceMarkup'
 
-class Admin extends Component {
+class ExchangeAdmin extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -19,7 +19,9 @@ class Admin extends Component {
     this.props.Exchange.deployed().then((exchange) => {
       exchange.validate(this.props.account)
         .then((res) => {
-          this.setState({ isOwner: res })
+          this.setState({
+            isOwner: res
+          })
         })
     })
   }
@@ -54,6 +56,7 @@ class Admin extends Component {
                 <h3>Certificates</h3>
                 <CertificatesAdmin />
               </div>
+
             </div>
             : <div><h2>This area is admin only</h2></div>
           }
@@ -66,9 +69,11 @@ class Admin extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
+    Token: state.Token,
+    Crowdsale: state.Crowdsale,
     Exchange: state.Exchange,
     account: state.account
   }
 }
 
-export default connect(mapStateToProps)(Admin)
+export default connect(mapStateToProps)(ExchangeAdmin)

@@ -6,7 +6,9 @@ import _ from 'lodash'
 class RecentTransactions extends Component {
   constructor(props) {
     super(props)
-    this.state = { transactions: [] }
+    this.state = {
+      transactions: []
+    }
 
     this.fetchTransactions = this.fetchTransactions.bind(this)
   }

@@ -6,7 +6,7 @@ const { Column } = Table
 
 class CertificatesAdmin extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       certificates: [],
       url: '',
@@ -28,7 +28,9 @@ class CertificatesAdmin extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    this.setState({ loading: true });
+    this.setState({
+      loading: true
+    })
     this.hide = message.loading('Action in progress, do not close or reset this window..', 0)
 
     this.props.Exchange.deployed().then((exchange) => {
@@ -48,14 +50,14 @@ class CertificatesAdmin extends Component {
           url: '',
           amount: null,
           loading: false
-        });
+        })
 
-        this.hide();
+        this.hide()
       }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
-
-        this.setState({ loading: false })
+        console.log(error.message)
+        this.setState({
+          loading: false
+        })
         this.hide()
       })
     })
@@ -135,50 +137,22 @@ class CertificatesAdmin extends Component {
       <div>
         <div>
           <Form onSubmit={this.handleSubmit}>
-            <Input
-              type="text"
-              onChange={this.handleChange}
-              value={this.state.url}
-              name="url"
-              placeholder="Certificate URL"
-            />
-            <Input
-              type="number"
-              onChange={this.handleChange}
-              value={this.state.amount}
-              name="amount"
-              placeholder="Amount it represents"
-              style={{ marginTop: 10 }}
-            />
-
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{ marginTop: 10, marginBottom: 30 }}
-              loading={this.state.loading}
-            >Add certificate
+            <Input type='text' onChange={this.handleChange} value={this.state.url} name='url' placeholder='Certificate URL' />
+            <Input type='number' onChange={this.handleChange} value={this.state.amount} name='amount' placeholder='Amount it represents' />
+            <Button type='primary' htmlType='submit' loading={this.state.loading}>
+            Add certificate
             </Button>
           </Form>
 
           <Table dataSource={this.state.certificates}>
-            <Column
-              title="URL"
-              dataIndex="url"
-              key="url"
-            />
-            <Column
-              title="Amount"
-              dataIndex="amount"
-              key="amount"
-            />
-            <Column
-              title="Delete?"
-              key="action"
+            <Column title='URL' dataIndex='url' key='url' />
+            <Column title='Amount' dataIndex='amount' key='amount' />
+            <Column title='Delete?' key='action'
               render={(text, record) => (
                 <span>
                   <Button
                     onClick={() => this.deleteCertificate(record.key)}
-                    type="primary"
+                    type='primary'
                     loading={this.state.loading}
                   >
                     Delete

@@ -3,14 +3,18 @@ import { connect } from 'react-redux'
 
 import * as actions from '../actions'
 import BuyIcoTokens from './BuyIcoTokens'
-//import Redeem from './Redeem'
-import RecentTransactions from './RecentTransactions'
+// import Redeem from './Redeem'
+// import RecentTransactions from './RecentTransactions'
 
 const BuyICO = () => (
   <div>
-    { /*<Redeem /> */ }
+    { /*
+    <Redeem /> 
+    */ }
     <BuyIcoTokens />
+    { /*
     <RecentTransactions />
+    */ }
   </div>
 )
 

@@ -1,0 +1,6 @@
+module.exports = {
+  TOKEN_NAME: 'PWP',
+  DECIMALS: 18,
+  RATE: 5000,
+  MINIMUM_CONTRIBUTION: 0.01
+}

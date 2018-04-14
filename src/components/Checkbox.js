@@ -23,9 +23,9 @@ const Checkbox = () => (
                 <p>In order to use this application you need a Metamask
                   account and being connected to<br />
                   Rinkeby Test Network instead of Main net.<br />
+                  </p>
 
                   <h4>Please Follow the Next Steps in Order to Use Metamask:</h4>
-                </p>
 
                 <br />
 

@@ -9,10 +9,13 @@ export function initWeb3() {
   const { web3 } = window
   const { Web3 } = window
 
-  if (typeof web3 !== 'undefined' && typeof Web3 !== 'undefined') {
-    // @TODO, differentiate between local and current
-    // const provider = web3.currentProvider
-    const provider = new Web3.providers.HttpProvider('http://127.0.0.1:8545')
+  if (typeof Web3 !== 'undefined') {
+    let provider
+    if(typeof web3 !== 'undefined') {
+      provider = web3.currentProvider
+    } else {
+      provider = new Web3.providers.HttpProvider('http://127.0.0.1:8545')
+    }
 
     const web3Initiated = new Web3(provider)
 
@@ -104,7 +107,7 @@ export function fetchAccount(payload) {
             payload: null
           })
         }
-      });
+      })
     } else {
       dispatch({
         type: 'FETCH_ACCOUNT',

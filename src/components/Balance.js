@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import env from '../env'
+import Heading from 'grommet/components/Heading'
+import List from 'grommet/components/List'
+import ListItem  from 'grommet/components/ListItem'
 
-/*
-@TODO export token name to external env
-*/
 class Balance extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      balance: '...'
+      tokenBalance: null,
+      balance: null
     }
 
     this.getBalance = this.getBalance.bind(this)
@@ -20,13 +22,21 @@ class Balance extends Component {
   }
 
   getBalance() {
-    this.props.Token.deployed().then((token) => {
-      token.balanceOf(this.props.account).then((balance) => {
+    this.props.Crowdsale.deployed().then((crowdsale) => {
+      crowdsale.balanceOf(this.props.account).then((tokenBalance) => {
         this.setState({
-          balance: balance.toNumber() / 1000
+          tokenBalance: tokenBalance ? tokenBalance.toNumber() : 'loading'
         })
       })
     })
+
+    this.props.web3.web3.eth.getBalance(this.props.account, function(err, balance) {
+      if (!err) {
+        this.setState({
+          balance: this.props.web3.web3.fromWei(balance.toNumber())
+        })
+      }
+    }.bind(this))
 
     setTimeout(() => {
       this.getBalance()
@@ -36,8 +46,27 @@ class Balance extends Component {
   render() {
     return (
       <div>
-        <h4>Your Balance</h4>
-        <h5><span>{this.state.balance} PWP</span></h5>
+        { this.state.tokenBalance !== null ? <div>
+          <Heading>Your Tokens</Heading>
+          <List>
+            <ListItem>
+              { this.state.tokenBalance / 10 ** env.DECIMALS } { env.TOKEN_NAME }
+            </ListItem>
+          </List>
+          </div>
+          :
+          '' }
+        { this.state.balance !== null ? <div>
+          <Heading>Your ETH</Heading>
+          <List>
+            <ListItem>
+              { this.state.balance } ETH
+            </ListItem>
+          </List>
+          </div>
+          :
+          ''
+        }
       </div>
     )
   }
@@ -45,7 +74,8 @@ class Balance extends Component {
 
 function mapStateToProps(state) {
   return {
-    Token: state.Token,
+    web3: state.web3,
+    Crowdsale: state.Crowdsale,
     account: state.account
   }
 }

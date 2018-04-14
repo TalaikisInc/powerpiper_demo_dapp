@@ -1,10 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Heading from 'grommet/components/Heading'
+import List from 'grommet/components/List'
+import ListItem  from 'grommet/components/ListItem'
 
-const Address = props => (
+const Address = (props) => (
   <div>
-    <h4>Your Address</h4>
-    <h5><span>{props.account}</span></h5>
+    <Heading>Your Address</Heading>
+    <List>
+      <ListItem>{ props.account }</ListItem>
+    </List>
   </div>
 )
 

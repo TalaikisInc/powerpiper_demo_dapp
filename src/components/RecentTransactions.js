@@ -23,8 +23,7 @@ class RecentTransactions extends Component {
         exchange.allEvents({ fromBlock: latestBlock - 100000, toBlock: 'latest' })
           .watch((error, event) => {
             if (error) {
-              // eslint-disable-next-line
-              console.log(error);
+              console.log(error)
             } else if (
               (event.event === 'RedeemEvent' || event.event === 'BuyDirectEvent') &&
               _.findIndex(this.state.transactions, { hash: event.transactionHash }) === -1) {

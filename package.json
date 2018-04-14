@@ -15,8 +15,10 @@
   "dependencies": {
     "antd": "^3.3.3",
     "axios": "^0.18.0",
+    "cross-env": "^5.1.4",
     "file-loader": "^1.1.11",
     "grommet": "^1.10.1",
+    "grommet-css": "^1.6.0",
     "lodash": "^4.17.5",
     "moment": "^2.21.0",
     "react": "^16.3.0",
@@ -31,7 +33,7 @@
     "web3": "^1.0.0-beta.33"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env NODE_ENV=development react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

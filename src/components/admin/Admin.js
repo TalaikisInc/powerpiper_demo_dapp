@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import PriceMarkupAdmin from './PriceMarkup'
+// mroe universdal deployment solution:
 // import CrowdsaleCreationAdmin from './CrowdsaleCreation'
 
 /*
-More universal component for Crowdsales instead of migrations.
-Needs to only connect owner validaiton to token.
+@TODO should implemet owner validation
 */
 class Admin extends Component {
   constructor(props) {
@@ -17,39 +17,36 @@ class Admin extends Component {
   }
 
   componentDidMount() {
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      //crowdsale.validate(this.props.account)
-        //.then((res) => {
+    this.props.Token.deployed().then((token) => {
+      token.validate(this.props.account)
+        .then((res) => {
           this.setState({
-            // isOwner: res
-            isOwner: true
+            isOwner: res
           })
-        //})
+        })
     })
   }
 
   render() {
     return (
       <div>
-        <div>
-          { this.state.isOwner
-            ? <div>
-              <div>
-                <h3>Crowdsale setup</h3>
-                { /*
-                <CrowdsaleCreationAdmin />
-                */ }
-              </div>
-
-              <div>
-                <h3>Energy price markup</h3>
-                <PriceMarkupAdmin />
-              </div>
-
+        { this.state.isOwner
+          ? <div>
+            <div>
+              <h3>Crowdsale setup</h3>
+              { /*
+              <CrowdsaleCreationAdmin />
+              */ }
             </div>
-            : <div><h2>This area is admin only</h2></div>
-          }
-        </div>
+
+            <div>
+              <h3>Energy price markup</h3>
+              <PriceMarkupAdmin />
+            </div>
+
+          </div>
+          : <div><h2>This area is admin only</h2></div>
+        }
       </div>
     )
   }

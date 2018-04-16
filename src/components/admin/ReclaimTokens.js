@@ -7,6 +7,7 @@ import TextInput from 'grommet/components/TextInput'
 import Button from 'grommet/components/Button'
 import Label  from 'grommet/components/Label'
 import Form  from 'grommet/components/Form'
+import web3utils from 'web3-utils'
 
 class ReclaimTokens extends Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class ReclaimTokens extends Component {
     })
 
     this.props.Crowdsale.deployed().then(async (crowdsale) => {
-      if (this.state.to != null) {
+      if (web3utils.isAddress(this.state.from)) {
         crowdsale.reclaimToken(this.state.from, { from: this.props.account })
           .then((receipt) => {
             // console.log(receipt)
@@ -68,7 +69,7 @@ class ReclaimTokens extends Component {
 
   render() {
     return (
-      <Box>
+      <Box align='center'>
         <Heading>Reclaim Tokens</Heading>
         <Box align='center'>
           <Form onSubmit={this.handleSubmit}>

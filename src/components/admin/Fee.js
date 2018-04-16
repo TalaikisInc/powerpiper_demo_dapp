@@ -9,12 +9,12 @@ import Label  from 'grommet/components/Label'
 import Form  from 'grommet/components/Form'
 import env from '../../env'
 
-class PriceMarkupAdmin extends Component {
+class SetFee extends Component {
   constructor() {
     super()
     this.state = {
       percentage: '',
-      priceMarkup: ''
+      fee: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -35,14 +35,14 @@ class PriceMarkupAdmin extends Component {
     event.preventDefault()
 
     this.props.Token.deployed().then(async (token) => {
-      token.priceMarkup().call().then((res) => {
+      token.fee().call().then((res) => {
         this.setState({
-          priceMarkup: res.toNumber()
+          fee: res.toNumber()
         })
       })
 
       if(this.state.percentage > 0) {
-        token.setPriceMarkup(this.state.percentage * 10 ** env.DECIMALS, {
+        token.setNewFee(this.state.percentage * 10 ** env.DECIMALS, {
           from: this.props.account,
           gas: 300000
         })
@@ -72,8 +72,8 @@ class PriceMarkupAdmin extends Component {
   render() {
     return (
       <Box align='center'>
-        <Heading>Set new price markup</Heading>
-        <Label>Current markup is { this.state.priceMarkup / 10 ** env.DECIMALS }</Label>
+        <Heading>Set new fee</Heading>
+        <Label>Current fee is { this.state.priceMarkup / 10 ** env.DECIMALS }</Label>
         <Form onSubmit={this.handleSubmit}>
           <Box pad='small' align='center'>
             <Label labelFor="fee">New markup:</Label>
@@ -86,7 +86,7 @@ class PriceMarkupAdmin extends Component {
               onChange={this.handleChange}
               value={this.state.percentage}
               name='percentage'
-              placeholder='Percentage over spot price, e.g. 1'/>
+              placeholder='Percentage, e.g. 1'/>
           </Box>
           <Box pad='small' align='center'>
               <Button primary={true} type='submit' label='Set' />
@@ -111,4 +111,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(PriceMarkupAdmin)
+export default connect(mapStateToProps)(SetFee)

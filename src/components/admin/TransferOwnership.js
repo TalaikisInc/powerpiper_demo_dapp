@@ -42,7 +42,7 @@ class TransferOwnership extends Component {
 
     this.props.Crowdsale.deployed().then(async (crowdsale) => {
       if (this.state.to != null) {
-        crowdsale.transferOwnership(this.state.to, { from: this.props.account })
+        crowdsale.transferOwnership(this.state.to, { from: this.props.account, gas: 300000 })
           .then((receipt) => {
             // console.log(receipt)
             this.setState({
@@ -68,7 +68,7 @@ class TransferOwnership extends Component {
 
   render() {
     return (
-      <Box>
+      <Box align='center'>
         <Heading>Transfer Ownership</Heading>
         <Box align='center'>
           <Form onSubmit={this.handleSubmit}>

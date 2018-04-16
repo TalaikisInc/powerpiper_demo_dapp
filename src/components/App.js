@@ -12,9 +12,11 @@ import CoinStats from './CoinStats'
 import TransferTokens from './TransferTokens'
 import Exchange from './Exchange'
 import Admin from './admin/Admin'
-import PriceMarkupAdmin from './admin/PriceMarkup'
+import PriceMarkup from './admin/PriceMarkup'
+import Fee from './admin/Fee'
 import TransferOwnership from './admin/TransferOwnership'
 import ReclaimTokens from './admin/ReclaimTokens'
+import Approve from './admin/Approve'
 import App from 'grommet/components/App'
 import Box from 'grommet/components/Box'
 
@@ -78,18 +80,18 @@ class _App extends Component {
         <div>
           <BrowserRouter>
             <div>
-              <Box align='center' responsive={true} pad='medium'>
-                <Header />
-                <Status
-                  account={this.props.account}
-                  metamask={this.props.web3}
-                  initiated={this.state.initiated}
-                  deployed={this.state.deployed} {...this.props} />
-              </Box>
               <Box align='center' responsive={true} pad='large'>
                 { typeof this.props.Token === 'function' && typeof this.props.Crowdsale === 'function' &&
                   this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
                   ? <div>
+                      <Box align='center' responsive={true} pad='medium'>
+                        <Header />
+                        <Status
+                          account={this.props.account}
+                          metamask={this.props.web3}
+                          initiated={this.state.initiated}
+                          deployed={this.state.deployed} {...this.props} />
+                      </Box>
                       <Route exact path='/help' component={Help} />
                       <Route exact path='/account' component={Home} />
                       <Route exact path='/ico' component={BuyIcoTokens} />
@@ -97,9 +99,11 @@ class _App extends Component {
                       <Route exact path='/transfer' component={TransferTokens} />
                       <Route exact path='/exchange' component={Exchange} />
                       <Route exact path='/admin' component={Admin} />
-                      <Route exact path='/fees' component={PriceMarkupAdmin} />
+                      <Route exact path='/markup' component={PriceMarkup} />
+                      <Route exact path='/fee' component={Fee} />
                       <Route exact path='/transfer-ownership' component={TransferOwnership} />
                       <Route exact path='/reclaim-tokens' component={ReclaimTokens} />
+                      <Route exact path='/approve' component={Approve} />
                     </div>
                   : null
                 }

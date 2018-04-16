@@ -83,10 +83,10 @@ class SetFee extends Component {
               if='fee'
               step='1'
               type='number'
-              onChange={this.handleChange}
+              onDOMChange={this.handleChange}
               value={this.state.percentage}
               name='percentage'
-              placeholder='Percentage, e.g. 1'/>
+              placeHolder='Percentage, e.g. 1'/>
           </Box>
           <Box pad='small' align='center'>
               <Button primary={true} type='submit' label='Set' />

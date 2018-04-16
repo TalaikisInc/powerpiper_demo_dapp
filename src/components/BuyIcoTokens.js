@@ -11,6 +11,7 @@ import List from 'grommet/components/List'
 import ListItem  from 'grommet/components/ListItem'
 import Label  from 'grommet/components/Label'
 import Form  from 'grommet/components/Form'
+import Web3Utils from 'web3-utils'
 
 class BuyIcoTokens extends Component {
   constructor(props) {
@@ -63,7 +64,7 @@ class BuyIcoTokens extends Component {
     })
 
     this.props.Crowdsale.deployed().then((crowdsale) => {
-      if (this.state.amountEth > env.MINIMUM_CONTRIBUTION) {
+      if (this.state.amountEth > env.MINIMUM_CONTRIBUTION && Web3Utils.isAddress(this.props.account)) {
         this.props.web3.web3.eth.sendTransaction({
           from: this.props.account,
           to: crowdsale.address,

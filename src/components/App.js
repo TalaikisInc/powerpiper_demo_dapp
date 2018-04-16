@@ -1,20 +1,24 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-
+import { BrowserRouter, Route } from 'react-router-dom'
 import '../../node_modules/grommet-css'
 import * as actions from '../actions'
 import Header from '../containers/Header'
 import Status from './Status'
 import Home from './Home'
-import Admin from './admin/Admin'
+import Help from './Help'
 import BuyIcoTokens from './BuyIcoTokens'
-import Checkbox from './Checkbox'
 import CoinStats from './CoinStats'
+import TransferTokens from './TransferTokens'
 import Exchange from './Exchange'
-import Transfer from './TransferTokens'
+import Admin from './admin/Admin'
+import PriceMarkupAdmin from './admin/PriceMarkup'
+import TransferOwnership from './admin/TransferOwnership'
+import ReclaimTokens from './admin/ReclaimTokens'
+import App from 'grommet/components/App'
+import Box from 'grommet/components/Box'
 
-class App extends Component {
+class _App extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -70,27 +74,40 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <div className="container">
-          <Status account={this.props.account} metamask={this.props.web3} initiated={this.state.initiated} deployed={this.state.deployed} {...this.props} />
-          <Header />
-          <div>
-            <Route exact path='/' component={Checkbox} />
-            { typeof this.props.Token === 'function' && typeof this.props.Crowdsale === 'function' &&
-              this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
-              ? <div>
-                <Route exact path='/app' component={Home} />
-                <Route exact path='/ico' component={BuyIcoTokens} />
-                <Route exact path='/market-info' component={CoinStats} />
-                <Route exact path='/transfer' component={Transfer} />
-                <Route exact path='/exchange' component={Exchange} />
-                <Route exact path='/admin' component={Admin} />
-              </div>
-              : null
-            }
-          </div>
+      <App>
+        <div>
+          <BrowserRouter>
+            <div>
+              <Box align='center' responsive={true} pad='medium'>
+                <Header />
+                <Status
+                  account={this.props.account}
+                  metamask={this.props.web3}
+                  initiated={this.state.initiated}
+                  deployed={this.state.deployed} {...this.props} />
+              </Box>
+              <Box align='center' responsive={true} pad='large'>
+                { typeof this.props.Token === 'function' && typeof this.props.Crowdsale === 'function' &&
+                  this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
+                  ? <div>
+                      <Route exact path='/help' component={Help} />
+                      <Route exact path='/account' component={Home} />
+                      <Route exact path='/ico' component={BuyIcoTokens} />
+                      <Route exact path='/market-info' component={CoinStats} />
+                      <Route exact path='/transfer' component={TransferTokens} />
+                      <Route exact path='/exchange' component={Exchange} />
+                      <Route exact path='/admin' component={Admin} />
+                      <Route exact path='/fees' component={PriceMarkupAdmin} />
+                      <Route exact path='/transfer-ownership' component={TransferOwnership} />
+                      <Route exact path='/reclaim-tokens' component={ReclaimTokens} />
+                    </div>
+                  : null
+                }
+              </Box>
+            </div>
+          </BrowserRouter>
         </div>
-      </BrowserRouter>
+      </App>
     )
   }
 }
@@ -105,4 +122,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, actions)(App)
+export default connect(mapStateToProps, actions)(_App)

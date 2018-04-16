@@ -82,22 +82,22 @@
   ],
   "bytecode": "0x6060604052341561000f57600080fd5b61021f8061001e6000396000f3006060604052600436106100565763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166368662ea0811461005b578063d74a946d14610071578063fb7418dc146100b2575b600080fd5b61006f600160a060020a03600435166100e5565b005b341561007c57600080fd5b610090600160a060020a0360043516610186565b604051600160a060020a03909216825260208201526040908101905180910390f35b34156100bd57600080fd5b6100d1600160a060020a03600435166101ab565b604051901515815260200160405180910390f35b6000348190116100f457600080fd5b6100fd826101ab565b1561010757600080fd5b50600160a060020a0381811660008181526020819052604090819020805473ffffffffffffffffffffffffffffffffffffffff19163394851690811782554360019283015592917fe90198ac3b36c091e5843f4ca94a37981cd21c7e69068e9f88df6be6c1177e6e919051901515815260200160405180910390a35050565b60006020819052908152604090208054600190910154600160a060020a039091169082565b600160a060020a038082166000908152602081905260408120805491929091161580156101da57506001810154155b156101e857600091506101ed565b600191505b509190505600a165627a7a723058202504acf0d37fef10af4568d04ae0f2488b1d47f4864450992ededf76687065ef0029",
   "deployedBytecode": "0x6060604052600436106100565763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166368662ea0811461005b578063d74a946d14610071578063fb7418dc146100b2575b600080fd5b61006f600160a060020a03600435166100e5565b005b341561007c57600080fd5b610090600160a060020a0360043516610186565b604051600160a060020a03909216825260208201526040908101905180910390f35b34156100bd57600080fd5b6100d1600160a060020a03600435166101ab565b604051901515815260200160405180910390f35b6000348190116100f457600080fd5b6100fd826101ab565b1561010757600080fd5b50600160a060020a0381811660008181526020819052604090819020805473ffffffffffffffffffffffffffffffffffffffff19163394851690811782554360019283015592917fe90198ac3b36c091e5843f4ca94a37981cd21c7e69068e9f88df6be6c1177e6e919051901515815260200160405180910390a35050565b60006020819052908152604090208054600190910154600160a060020a039091169082565b600160a060020a038082166000908152602081905260408120805491929091161580156101da57506001810154155b156101e857600091506101ed565b600191505b509190505600a165627a7a723058202504acf0d37fef10af4568d04ae0f2488b1d47f4864450992ededf76687065ef0029",
-  "sourceMap": "30:891:14:-;;;;;;;;;;;;;;;;;",
-  "deployedSourceMap": "30:891:14:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;575:341;;-1:-1:-1;;;;;575:341:14;;;;;;;244:46;;;;;;;;;;-1:-1:-1;;;;;244:46:14;;;;;;;;-1:-1:-1;;;;;244:46:14;;;;;;;;;;;;;;;;;;;;299:268;;;;;;;;;;-1:-1:-1;;;;;299:268:14;;;;;;;;;;;;;;;;;;;;;;575:341;716:17;649:9;:13;;;641:22;;;;;;683:19;695:6;683:11;:19::i;:::-;682:20;674:29;;;;;;-1:-1:-1;;;;;;757:15:14;;;:7;:15;;;;;;;;;;;;:36;;-1:-1:-1;;757:36:14;736:10;757:36;;;;;;;;841:12;-1:-1:-1;804:34:14;;;:49;757:36;:15;869:39;;-1:-1:-1;869:39:14;;;;;;;;;;;;;;;575:341;;:::o;244:46::-;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;244:46:14;;;;;:::o;299:268::-;-1:-1:-1;;;;;404:15:14;;;357:4;404:15;;;;;;;;;;434:14;;357:4;;404:15;;434:14;:28;:61;;;;-1:-1:-1;466:24:14;;;;:29;434:61;430:106;;;519:5;512:12;;;;430:106;555:4;548:11;;299:268;;;;;:::o",
+  "sourceMap": "30:891:15:-;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "30:891:15:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;575:341;;-1:-1:-1;;;;;575:341:15;;;;;;;244:46;;;;;;;;;;-1:-1:-1;;;;;244:46:15;;;;;;;;-1:-1:-1;;;;;244:46:15;;;;;;;;;;;;;;;;;;;;299:268;;;;;;;;;;-1:-1:-1;;;;;299:268:15;;;;;;;;;;;;;;;;;;;;;;575:341;716:17;649:9;:13;;;641:22;;;;;;683:19;695:6;683:11;:19::i;:::-;682:20;674:29;;;;;;-1:-1:-1;;;;;;757:15:15;;;:7;:15;;;;;;;;;;;;:36;;-1:-1:-1;;757:36:15;736:10;757:36;;;;;;;;841:12;-1:-1:-1;804:34:15;;;:49;757:36;:15;869:39;;-1:-1:-1;869:39:15;;;;;;;;;;;;;;;575:341;;:::o;244:46::-;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;244:46:15;;;;;:::o;299:268::-;-1:-1:-1;;;;;404:15:15;;;357:4;404:15;;;;;;;;;;434:14;;357:4;;404:15;;434:14;:28;:61;;;;-1:-1:-1;466:24:15;;;;:29;434:61;430:106;;;519:5;512:12;;;;430:106;555:4;548:11;;299:268;;;;;:::o",
   "source": "pragma solidity ^0.4.21;\r\n\r\n\r\ncontract ProofOfLoss {\r\n    struct LossStruct {\r\n        address receiver;\r\n        uint initialBlockNumber;\r\n    }\r\n\r\n    event RecoverBalance(address indexed _owner, address indexed _receiver, bool _state);\r\n    mapping (address => LossStruct) public getLoss;\r\n\r\n    function existedLoss(address _owner) public view returns (bool) {   \r\n        LossStruct storage _loss = getLoss[_owner];\r\n        if (_loss.receiver == address(0) && _loss.initialBlockNumber == 0) {\r\n            return false;\r\n        }\r\n\r\n        return true;\r\n    }\r\n\r\n    function recoverBalance(address _owner) public payable {\r\n        require(msg.value > 0);\r\n        require(!existedLoss(_owner));\r\n\r\n        address _receiver = msg.sender;\r\n        getLoss[_owner].receiver = _receiver;\r\n        getLoss[_owner].initialBlockNumber = block.number;\r\n        emit RecoverBalance(_owner, _receiver, true);\r\n    }\r\n\r\n}\r\n",
   "sourcePath": "C:\\Users\\DXenu\\Desktop\\box\\demo_contract\\contracts\\utils\\ProofOfLoss.sol",
   "ast": {
     "absolutePath": "/C/Users/DXenu/Desktop/box/demo_contract/contracts/utils/ProofOfLoss.sol",
     "exportedSymbols": {
       "ProofOfLoss": [
-        3026
+        5074
       ]
     },
-    "id": 3027,
+    "id": 5075,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2931,
+        "id": 4979,
         "literals": [
           "solidity",
           "^",
@@ -105,7 +105,7 @@
           ".21"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:14"
+        "src": "0:24:15"
       },
       {
         "baseContracts": [],
@@ -113,24 +113,24 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 3026,
+        "id": 5074,
         "linearizedBaseContracts": [
-          3026
+          5074
         ],
         "name": "ProofOfLoss",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "ProofOfLoss.LossStruct",
-            "id": 2936,
+            "id": 4984,
             "members": [
               {
                 "constant": false,
-                "id": 2933,
+                "id": 4981,
                 "name": "receiver",
                 "nodeType": "VariableDeclaration",
-                "scope": 2936,
-                "src": "87:16:14",
+                "scope": 4984,
+                "src": "87:16:15",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -138,10 +138,10 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 2932,
+                  "id": 4980,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
-                  "src": "87:7:14",
+                  "src": "87:7:15",
                   "typeDescriptions": {
                     "typeIdentifier": "t_address",
                     "typeString": "address"
@@ -152,11 +152,11 @@
               },
               {
                 "constant": false,
-                "id": 2935,
+                "id": 4983,
                 "name": "initialBlockNumber",
                 "nodeType": "VariableDeclaration",
-                "scope": 2936,
-                "src": "114:23:14",
+                "scope": 4984,
+                "src": "114:23:15",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -164,10 +164,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 2934,
+                  "id": 4982,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
-                  "src": "114:4:14",
+                  "src": "114:4:15",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -179,28 +179,28 @@
             ],
             "name": "LossStruct",
             "nodeType": "StructDefinition",
-            "scope": 3026,
-            "src": "58:87:14",
+            "scope": 5074,
+            "src": "58:87:15",
             "visibility": "public"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 2944,
+            "id": 4992,
             "name": "RecoverBalance",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2943,
+              "id": 4991,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2938,
+                  "id": 4986,
                   "indexed": true,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2944,
-                  "src": "174:22:14",
+                  "scope": 4992,
+                  "src": "174:22:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -208,10 +208,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2937,
+                    "id": 4985,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "174:7:14",
+                    "src": "174:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -222,12 +222,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2940,
+                  "id": 4988,
                   "indexed": true,
                   "name": "_receiver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2944,
-                  "src": "198:25:14",
+                  "scope": 4992,
+                  "src": "198:25:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -235,10 +235,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2939,
+                    "id": 4987,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "198:7:14",
+                    "src": "198:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -249,12 +249,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2942,
+                  "id": 4990,
                   "indexed": false,
                   "name": "_state",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2944,
-                  "src": "225:11:14",
+                  "scope": 4992,
+                  "src": "225:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -262,10 +262,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2941,
+                    "id": 4989,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "225:4:14",
+                    "src": "225:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -275,50 +275,50 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "173:64:14"
+              "src": "173:64:15"
             },
-            "src": "153:85:14"
+            "src": "153:85:15"
           },
           {
             "constant": false,
-            "id": 2948,
+            "id": 4996,
             "name": "getLoss",
             "nodeType": "VariableDeclaration",
-            "scope": 3026,
-            "src": "244:46:14",
+            "scope": 5074,
+            "src": "244:46:15",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$2936_storage_$",
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$4984_storage_$",
               "typeString": "mapping(address => struct ProofOfLoss.LossStruct storage ref)"
             },
             "typeName": {
-              "id": 2947,
+              "id": 4995,
               "keyType": {
-                "id": 2945,
+                "id": 4993,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "253:7:14",
+                "src": "253:7:15",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "244:31:14",
+              "src": "244:31:15",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$2936_storage_$",
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$4984_storage_$",
                 "typeString": "mapping(address => struct ProofOfLoss.LossStruct storage ref)"
               },
               "valueType": {
                 "contractScope": null,
-                "id": 2946,
+                "id": 4994,
                 "name": "LossStruct",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 2936,
-                "src": "264:10:14",
+                "referencedDeclaration": 4984,
+                "src": "264:10:15",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_LossStruct_$2936_storage_ptr",
+                  "typeIdentifier": "t_struct$_LossStruct_$4984_storage_ptr",
                   "typeString": "struct ProofOfLoss.LossStruct storage pointer"
                 }
               }
@@ -328,37 +328,37 @@
           },
           {
             "body": {
-              "id": 2978,
+              "id": 5026,
               "nodeType": "Block",
-              "src": "363:204:14",
+              "src": "363:204:15",
               "statements": [
                 {
                   "assignments": [
-                    2956
+                    5004
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 2956,
+                      "id": 5004,
                       "name": "_loss",
                       "nodeType": "VariableDeclaration",
-                      "scope": 2979,
-                      "src": "377:24:14",
+                      "scope": 5027,
+                      "src": "377:24:15",
                       "stateVariable": false,
                       "storageLocation": "storage",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_LossStruct_$2936_storage_ptr",
+                        "typeIdentifier": "t_struct$_LossStruct_$4984_storage_ptr",
                         "typeString": "struct ProofOfLoss.LossStruct storage pointer"
                       },
                       "typeName": {
                         "contractScope": null,
-                        "id": 2955,
+                        "id": 5003,
                         "name": "LossStruct",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 2936,
-                        "src": "377:10:14",
+                        "referencedDeclaration": 4984,
+                        "src": "377:10:15",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_LossStruct_$2936_storage_ptr",
+                          "typeIdentifier": "t_struct$_LossStruct_$4984_storage_ptr",
                           "typeString": "struct ProofOfLoss.LossStruct storage pointer"
                         }
                       },
@@ -366,31 +366,31 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 2960,
+                  "id": 5008,
                   "initialValue": {
                     "argumentTypes": null,
                     "baseExpression": {
                       "argumentTypes": null,
-                      "id": 2957,
+                      "id": 5005,
                       "name": "getLoss",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2948,
-                      "src": "404:7:14",
+                      "referencedDeclaration": 4996,
+                      "src": "404:7:15",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$2936_storage_$",
+                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$4984_storage_$",
                         "typeString": "mapping(address => struct ProofOfLoss.LossStruct storage ref)"
                       }
                     },
-                    "id": 2959,
+                    "id": 5007,
                     "indexExpression": {
                       "argumentTypes": null,
-                      "id": 2958,
+                      "id": 5006,
                       "name": "_owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2950,
-                      "src": "412:6:14",
+                      "referencedDeclaration": 4998,
+                      "src": "412:6:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -401,14 +401,14 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "404:15:14",
+                    "src": "404:15:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_LossStruct_$2936_storage",
+                      "typeIdentifier": "t_struct$_LossStruct_$4984_storage",
                       "typeString": "struct ProofOfLoss.LossStruct storage ref"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "377:42:14"
+                  "src": "377:42:15"
                 },
                 {
                   "condition": {
@@ -417,7 +417,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 2971,
+                    "id": 5019,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -428,7 +428,7 @@
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       },
-                      "id": 2966,
+                      "id": 5014,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -437,26 +437,26 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 2961,
+                          "id": 5009,
                           "name": "_loss",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2956,
-                          "src": "434:5:14",
+                          "referencedDeclaration": 5004,
+                          "src": "434:5:15",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_LossStruct_$2936_storage_ptr",
+                            "typeIdentifier": "t_struct$_LossStruct_$4984_storage_ptr",
                             "typeString": "struct ProofOfLoss.LossStruct storage pointer"
                           }
                         },
-                        "id": 2962,
+                        "id": 5010,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "receiver",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 2933,
-                        "src": "434:14:14",
+                        "referencedDeclaration": 4981,
+                        "src": "434:14:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -470,14 +470,14 @@
                           {
                             "argumentTypes": null,
                             "hexValue": "30",
-                            "id": 2964,
+                            "id": 5012,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "kind": "number",
                             "lValueRequested": false,
                             "nodeType": "Literal",
-                            "src": "460:1:14",
+                            "src": "460:1:15",
                             "subdenomination": null,
                             "typeDescriptions": {
                               "typeIdentifier": "t_rational_0_by_1",
@@ -493,20 +493,20 @@
                               "typeString": "int_const 0"
                             }
                           ],
-                          "id": 2963,
+                          "id": 5011,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "452:7:14",
+                          "src": "452:7:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_address_$",
                             "typeString": "type(address)"
                           },
                           "typeName": "address"
                         },
-                        "id": 2965,
+                        "id": 5013,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -514,13 +514,13 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "452:10:14",
+                        "src": "452:10:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         }
                       },
-                      "src": "434:28:14",
+                      "src": "434:28:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
@@ -534,7 +534,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 2970,
+                      "id": 5018,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -543,26 +543,26 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 2967,
+                          "id": 5015,
                           "name": "_loss",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2956,
-                          "src": "466:5:14",
+                          "referencedDeclaration": 5004,
+                          "src": "466:5:15",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_LossStruct_$2936_storage_ptr",
+                            "typeIdentifier": "t_struct$_LossStruct_$4984_storage_ptr",
                             "typeString": "struct ProofOfLoss.LossStruct storage pointer"
                           }
                         },
-                        "id": 2968,
+                        "id": 5016,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "initialBlockNumber",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 2935,
-                        "src": "466:24:14",
+                        "referencedDeclaration": 4983,
+                        "src": "466:24:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -573,14 +573,14 @@
                       "rightExpression": {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 2969,
+                        "id": 5017,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "494:1:14",
+                        "src": "494:1:15",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_0_by_1",
@@ -588,39 +588,39 @@
                         },
                         "value": "0"
                       },
-                      "src": "466:29:14",
+                      "src": "466:29:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
                       }
                     },
-                    "src": "434:61:14",
+                    "src": "434:61:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
                   "falseBody": null,
-                  "id": 2975,
+                  "id": 5023,
                   "nodeType": "IfStatement",
-                  "src": "430:106:14",
+                  "src": "430:106:15",
                   "trueBody": {
-                    "id": 2974,
+                    "id": 5022,
                     "nodeType": "Block",
-                    "src": "497:39:14",
+                    "src": "497:39:15",
                     "statements": [
                       {
                         "expression": {
                           "argumentTypes": null,
                           "hexValue": "66616c7365",
-                          "id": 2972,
+                          "id": 5020,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "bool",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "519:5:14",
+                          "src": "519:5:15",
                           "subdenomination": null,
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
@@ -628,10 +628,10 @@
                           },
                           "value": "false"
                         },
-                        "functionReturnParameters": 2954,
-                        "id": 2973,
+                        "functionReturnParameters": 5002,
+                        "id": 5021,
                         "nodeType": "Return",
-                        "src": "512:12:14"
+                        "src": "512:12:15"
                       }
                     ]
                   }
@@ -640,14 +640,14 @@
                   "expression": {
                     "argumentTypes": null,
                     "hexValue": "74727565",
-                    "id": 2976,
+                    "id": 5024,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
                     "kind": "bool",
                     "lValueRequested": false,
                     "nodeType": "Literal",
-                    "src": "555:4:14",
+                    "src": "555:4:15",
                     "subdenomination": null,
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
@@ -655,15 +655,15 @@
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 2954,
-                  "id": 2977,
+                  "functionReturnParameters": 5002,
+                  "id": 5025,
                   "nodeType": "Return",
-                  "src": "548:11:14"
+                  "src": "548:11:15"
                 }
               ]
             },
             "documentation": null,
-            "id": 2979,
+            "id": 5027,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -671,16 +671,16 @@
             "name": "existedLoss",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2951,
+              "id": 4999,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2950,
+                  "id": 4998,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2979,
-                  "src": "320:14:14",
+                  "scope": 5027,
+                  "src": "320:14:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -688,10 +688,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2949,
+                    "id": 4997,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "320:7:14",
+                    "src": "320:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -701,20 +701,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "319:16:14"
+              "src": "319:16:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 2954,
+              "id": 5002,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2953,
+                  "id": 5001,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2979,
-                  "src": "357:4:14",
+                  "scope": 5027,
+                  "src": "357:4:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -722,10 +722,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2952,
+                    "id": 5000,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "357:4:14",
+                    "src": "357:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -735,19 +735,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "356:6:14"
+              "src": "356:6:15"
             },
-            "scope": 3026,
-            "src": "299:268:14",
+            "scope": 5074,
+            "src": "299:268:15",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 3024,
+              "id": 5072,
               "nodeType": "Block",
-              "src": "630:286:14",
+              "src": "630:286:15",
               "statements": [
                 {
                   "expression": {
@@ -759,7 +759,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 2988,
+                        "id": 5036,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -768,18 +768,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 2985,
+                            "id": 5033,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 5322,
-                            "src": "649:3:14",
+                            "referencedDeclaration": 7032,
+                            "src": "649:3:15",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 2986,
+                          "id": 5034,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -787,7 +787,7 @@
                           "memberName": "value",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": null,
-                          "src": "649:9:14",
+                          "src": "649:9:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -798,14 +798,14 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "30",
-                          "id": 2987,
+                          "id": 5035,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "661:1:14",
+                          "src": "661:1:15",
                           "subdenomination": null,
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_0_by_1",
@@ -813,7 +813,7 @@
                           },
                           "value": "0"
                         },
-                        "src": "649:13:14",
+                        "src": "649:13:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -827,18 +827,18 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 2984,
+                      "id": 5032,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 5325,
-                      "src": "641:7:14",
+                      "referencedDeclaration": 7035,
+                      "src": "641:7:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 2989,
+                    "id": 5037,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -846,15 +846,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "641:22:14",
+                    "src": "641:22:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2990,
+                  "id": 5038,
                   "nodeType": "ExpressionStatement",
-                  "src": "641:22:14"
+                  "src": "641:22:15"
                 },
                 {
                   "expression": {
@@ -862,7 +862,7 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 2995,
+                        "id": 5043,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -870,18 +870,18 @@
                         "nodeType": "UnaryOperation",
                         "operator": "!",
                         "prefix": true,
-                        "src": "682:20:14",
+                        "src": "682:20:15",
                         "subExpression": {
                           "argumentTypes": null,
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 2993,
+                              "id": 5041,
                               "name": "_owner",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 2981,
-                              "src": "695:6:14",
+                              "referencedDeclaration": 5029,
+                              "src": "695:6:15",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_address",
                                 "typeString": "address"
@@ -895,18 +895,18 @@
                                 "typeString": "address"
                               }
                             ],
-                            "id": 2992,
+                            "id": 5040,
                             "name": "existedLoss",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2979,
-                            "src": "683:11:14",
+                            "referencedDeclaration": 5027,
+                            "src": "683:11:15",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
                               "typeString": "function (address) view returns (bool)"
                             }
                           },
-                          "id": 2994,
+                          "id": 5042,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -914,7 +914,7 @@
                           "lValueRequested": false,
                           "names": [],
                           "nodeType": "FunctionCall",
-                          "src": "683:19:14",
+                          "src": "683:19:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
                             "typeString": "bool"
@@ -933,18 +933,18 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 2991,
+                      "id": 5039,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 5325,
-                      "src": "674:7:14",
+                      "referencedDeclaration": 7035,
+                      "src": "674:7:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 2996,
+                    "id": 5044,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -952,28 +952,28 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "674:29:14",
+                    "src": "674:29:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2997,
+                  "id": 5045,
                   "nodeType": "ExpressionStatement",
-                  "src": "674:29:14"
+                  "src": "674:29:15"
                 },
                 {
                   "assignments": [
-                    2999
+                    5047
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 2999,
+                      "id": 5047,
                       "name": "_receiver",
                       "nodeType": "VariableDeclaration",
-                      "scope": 3025,
-                      "src": "716:17:14",
+                      "scope": 5073,
+                      "src": "716:17:15",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -981,10 +981,10 @@
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 2998,
+                        "id": 5046,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
-                        "src": "716:7:14",
+                        "src": "716:7:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -994,23 +994,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 3002,
+                  "id": 5050,
                   "initialValue": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 3000,
+                      "id": 5048,
                       "name": "msg",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 5322,
-                      "src": "736:3:14",
+                      "referencedDeclaration": 7032,
+                      "src": "736:3:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_magic_message",
                         "typeString": "msg"
                       }
                     },
-                    "id": 3001,
+                    "id": 5049,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1018,19 +1018,19 @@
                     "memberName": "sender",
                     "nodeType": "MemberAccess",
                     "referencedDeclaration": null,
-                    "src": "736:10:14",
+                    "src": "736:10:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "716:30:14"
+                  "src": "716:30:15"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 3008,
+                    "id": 5056,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1041,26 +1041,26 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 3003,
+                          "id": 5051,
                           "name": "getLoss",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2948,
-                          "src": "757:7:14",
+                          "referencedDeclaration": 4996,
+                          "src": "757:7:15",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$2936_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$4984_storage_$",
                             "typeString": "mapping(address => struct ProofOfLoss.LossStruct storage ref)"
                           }
                         },
-                        "id": 3005,
+                        "id": 5053,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 3004,
+                          "id": 5052,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2981,
-                          "src": "765:6:14",
+                          "referencedDeclaration": 5029,
+                          "src": "765:6:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -1071,21 +1071,21 @@
                         "isPure": false,
                         "lValueRequested": false,
                         "nodeType": "IndexAccess",
-                        "src": "757:15:14",
+                        "src": "757:15:15",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_LossStruct_$2936_storage",
+                          "typeIdentifier": "t_struct$_LossStruct_$4984_storage",
                           "typeString": "struct ProofOfLoss.LossStruct storage ref"
                         }
                       },
-                      "id": 3006,
+                      "id": 5054,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "receiver",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2933,
-                      "src": "757:24:14",
+                      "referencedDeclaration": 4981,
+                      "src": "757:24:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -1095,31 +1095,31 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 3007,
+                      "id": 5055,
                       "name": "_receiver",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2999,
-                      "src": "784:9:14",
+                      "referencedDeclaration": 5047,
+                      "src": "784:9:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "757:36:14",
+                    "src": "757:36:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 3009,
+                  "id": 5057,
                   "nodeType": "ExpressionStatement",
-                  "src": "757:36:14"
+                  "src": "757:36:15"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 3016,
+                    "id": 5064,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1130,26 +1130,26 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 3010,
+                          "id": 5058,
                           "name": "getLoss",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2948,
-                          "src": "804:7:14",
+                          "referencedDeclaration": 4996,
+                          "src": "804:7:15",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$2936_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$4984_storage_$",
                             "typeString": "mapping(address => struct ProofOfLoss.LossStruct storage ref)"
                           }
                         },
-                        "id": 3012,
+                        "id": 5060,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 3011,
+                          "id": 5059,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2981,
-                          "src": "812:6:14",
+                          "referencedDeclaration": 5029,
+                          "src": "812:6:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -1160,21 +1160,21 @@
                         "isPure": false,
                         "lValueRequested": false,
                         "nodeType": "IndexAccess",
-                        "src": "804:15:14",
+                        "src": "804:15:15",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_LossStruct_$2936_storage",
+                          "typeIdentifier": "t_struct$_LossStruct_$4984_storage",
                           "typeString": "struct ProofOfLoss.LossStruct storage ref"
                         }
                       },
-                      "id": 3013,
+                      "id": 5061,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "initialBlockNumber",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2935,
-                      "src": "804:34:14",
+                      "referencedDeclaration": 4983,
+                      "src": "804:34:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1186,18 +1186,18 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 3014,
+                        "id": 5062,
                         "name": "block",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 5313,
-                        "src": "841:5:14",
+                        "referencedDeclaration": 7023,
+                        "src": "841:5:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_block",
                           "typeString": "block"
                         }
                       },
-                      "id": 3015,
+                      "id": 5063,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1205,21 +1205,21 @@
                       "memberName": "number",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": null,
-                      "src": "841:12:14",
+                      "src": "841:12:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "804:49:14",
+                    "src": "804:49:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 3017,
+                  "id": 5065,
                   "nodeType": "ExpressionStatement",
-                  "src": "804:49:14"
+                  "src": "804:49:15"
                 },
                 {
                   "eventCall": {
@@ -1227,12 +1227,12 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 3019,
+                        "id": 5067,
                         "name": "_owner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2981,
-                        "src": "884:6:14",
+                        "referencedDeclaration": 5029,
+                        "src": "884:6:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1240,12 +1240,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 3020,
+                        "id": 5068,
                         "name": "_receiver",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2999,
-                        "src": "892:9:14",
+                        "referencedDeclaration": 5047,
+                        "src": "892:9:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1254,14 +1254,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "74727565",
-                        "id": 3021,
+                        "id": 5069,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "bool",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "903:4:14",
+                        "src": "903:4:15",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -1285,18 +1285,18 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 3018,
+                      "id": 5066,
                       "name": "RecoverBalance",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2944,
-                      "src": "869:14:14",
+                      "referencedDeclaration": 4992,
+                      "src": "869:14:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$_t_bool_$returns$__$",
                         "typeString": "function (address,address,bool)"
                       }
                     },
-                    "id": 3022,
+                    "id": 5070,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1304,20 +1304,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "869:39:14",
+                    "src": "869:39:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 3023,
+                  "id": 5071,
                   "nodeType": "EmitStatement",
-                  "src": "864:44:14"
+                  "src": "864:44:15"
                 }
               ]
             },
             "documentation": null,
-            "id": 3025,
+            "id": 5073,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1325,16 +1325,16 @@
             "name": "recoverBalance",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2982,
+              "id": 5030,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2981,
+                  "id": 5029,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3025,
-                  "src": "599:14:14",
+                  "scope": 5073,
+                  "src": "599:14:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1342,10 +1342,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2980,
+                    "id": 5028,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "599:7:14",
+                    "src": "599:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1355,40 +1355,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "598:16:14"
+              "src": "598:16:15"
             },
             "payable": true,
             "returnParameters": {
-              "id": 2983,
+              "id": 5031,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "630:0:14"
+              "src": "630:0:15"
             },
-            "scope": 3026,
-            "src": "575:341:14",
+            "scope": 5074,
+            "src": "575:341:15",
             "stateMutability": "payable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 3027,
-        "src": "30:891:14"
+        "scope": 5075,
+        "src": "30:891:15"
       }
     ],
-    "src": "0:923:14"
+    "src": "0:923:15"
   },
   "legacyAST": {
     "absolutePath": "/C/Users/DXenu/Desktop/box/demo_contract/contracts/utils/ProofOfLoss.sol",
     "exportedSymbols": {
       "ProofOfLoss": [
-        3026
+        5074
       ]
     },
-    "id": 3027,
+    "id": 5075,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2931,
+        "id": 4979,
         "literals": [
           "solidity",
           "^",
@@ -1396,7 +1396,7 @@
           ".21"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:14"
+        "src": "0:24:15"
       },
       {
         "baseContracts": [],
@@ -1404,24 +1404,24 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 3026,
+        "id": 5074,
         "linearizedBaseContracts": [
-          3026
+          5074
         ],
         "name": "ProofOfLoss",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "ProofOfLoss.LossStruct",
-            "id": 2936,
+            "id": 4984,
             "members": [
               {
                 "constant": false,
-                "id": 2933,
+                "id": 4981,
                 "name": "receiver",
                 "nodeType": "VariableDeclaration",
-                "scope": 2936,
-                "src": "87:16:14",
+                "scope": 4984,
+                "src": "87:16:15",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -1429,10 +1429,10 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 2932,
+                  "id": 4980,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
-                  "src": "87:7:14",
+                  "src": "87:7:15",
                   "typeDescriptions": {
                     "typeIdentifier": "t_address",
                     "typeString": "address"
@@ -1443,11 +1443,11 @@
               },
               {
                 "constant": false,
-                "id": 2935,
+                "id": 4983,
                 "name": "initialBlockNumber",
                 "nodeType": "VariableDeclaration",
-                "scope": 2936,
-                "src": "114:23:14",
+                "scope": 4984,
+                "src": "114:23:15",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -1455,10 +1455,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 2934,
+                  "id": 4982,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
-                  "src": "114:4:14",
+                  "src": "114:4:15",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -1470,28 +1470,28 @@
             ],
             "name": "LossStruct",
             "nodeType": "StructDefinition",
-            "scope": 3026,
-            "src": "58:87:14",
+            "scope": 5074,
+            "src": "58:87:15",
             "visibility": "public"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 2944,
+            "id": 4992,
             "name": "RecoverBalance",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2943,
+              "id": 4991,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2938,
+                  "id": 4986,
                   "indexed": true,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2944,
-                  "src": "174:22:14",
+                  "scope": 4992,
+                  "src": "174:22:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1499,10 +1499,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2937,
+                    "id": 4985,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "174:7:14",
+                    "src": "174:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1513,12 +1513,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2940,
+                  "id": 4988,
                   "indexed": true,
                   "name": "_receiver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2944,
-                  "src": "198:25:14",
+                  "scope": 4992,
+                  "src": "198:25:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1526,10 +1526,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2939,
+                    "id": 4987,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "198:7:14",
+                    "src": "198:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1540,12 +1540,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2942,
+                  "id": 4990,
                   "indexed": false,
                   "name": "_state",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2944,
-                  "src": "225:11:14",
+                  "scope": 4992,
+                  "src": "225:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1553,10 +1553,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2941,
+                    "id": 4989,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "225:4:14",
+                    "src": "225:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1566,50 +1566,50 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "173:64:14"
+              "src": "173:64:15"
             },
-            "src": "153:85:14"
+            "src": "153:85:15"
           },
           {
             "constant": false,
-            "id": 2948,
+            "id": 4996,
             "name": "getLoss",
             "nodeType": "VariableDeclaration",
-            "scope": 3026,
-            "src": "244:46:14",
+            "scope": 5074,
+            "src": "244:46:15",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$2936_storage_$",
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$4984_storage_$",
               "typeString": "mapping(address => struct ProofOfLoss.LossStruct storage ref)"
             },
             "typeName": {
-              "id": 2947,
+              "id": 4995,
               "keyType": {
-                "id": 2945,
+                "id": 4993,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "253:7:14",
+                "src": "253:7:15",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "244:31:14",
+              "src": "244:31:15",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$2936_storage_$",
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$4984_storage_$",
                 "typeString": "mapping(address => struct ProofOfLoss.LossStruct storage ref)"
               },
               "valueType": {
                 "contractScope": null,
-                "id": 2946,
+                "id": 4994,
                 "name": "LossStruct",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 2936,
-                "src": "264:10:14",
+                "referencedDeclaration": 4984,
+                "src": "264:10:15",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_LossStruct_$2936_storage_ptr",
+                  "typeIdentifier": "t_struct$_LossStruct_$4984_storage_ptr",
                   "typeString": "struct ProofOfLoss.LossStruct storage pointer"
                 }
               }
@@ -1619,37 +1619,37 @@
           },
           {
             "body": {
-              "id": 2978,
+              "id": 5026,
               "nodeType": "Block",
-              "src": "363:204:14",
+              "src": "363:204:15",
               "statements": [
                 {
                   "assignments": [
-                    2956
+                    5004
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 2956,
+                      "id": 5004,
                       "name": "_loss",
                       "nodeType": "VariableDeclaration",
-                      "scope": 2979,
-                      "src": "377:24:14",
+                      "scope": 5027,
+                      "src": "377:24:15",
                       "stateVariable": false,
                       "storageLocation": "storage",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_LossStruct_$2936_storage_ptr",
+                        "typeIdentifier": "t_struct$_LossStruct_$4984_storage_ptr",
                         "typeString": "struct ProofOfLoss.LossStruct storage pointer"
                       },
                       "typeName": {
                         "contractScope": null,
-                        "id": 2955,
+                        "id": 5003,
                         "name": "LossStruct",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 2936,
-                        "src": "377:10:14",
+                        "referencedDeclaration": 4984,
+                        "src": "377:10:15",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_LossStruct_$2936_storage_ptr",
+                          "typeIdentifier": "t_struct$_LossStruct_$4984_storage_ptr",
                           "typeString": "struct ProofOfLoss.LossStruct storage pointer"
                         }
                       },
@@ -1657,31 +1657,31 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 2960,
+                  "id": 5008,
                   "initialValue": {
                     "argumentTypes": null,
                     "baseExpression": {
                       "argumentTypes": null,
-                      "id": 2957,
+                      "id": 5005,
                       "name": "getLoss",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2948,
-                      "src": "404:7:14",
+                      "referencedDeclaration": 4996,
+                      "src": "404:7:15",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$2936_storage_$",
+                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$4984_storage_$",
                         "typeString": "mapping(address => struct ProofOfLoss.LossStruct storage ref)"
                       }
                     },
-                    "id": 2959,
+                    "id": 5007,
                     "indexExpression": {
                       "argumentTypes": null,
-                      "id": 2958,
+                      "id": 5006,
                       "name": "_owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2950,
-                      "src": "412:6:14",
+                      "referencedDeclaration": 4998,
+                      "src": "412:6:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -1692,14 +1692,14 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "404:15:14",
+                    "src": "404:15:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_LossStruct_$2936_storage",
+                      "typeIdentifier": "t_struct$_LossStruct_$4984_storage",
                       "typeString": "struct ProofOfLoss.LossStruct storage ref"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "377:42:14"
+                  "src": "377:42:15"
                 },
                 {
                   "condition": {
@@ -1708,7 +1708,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 2971,
+                    "id": 5019,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1719,7 +1719,7 @@
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       },
-                      "id": 2966,
+                      "id": 5014,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1728,26 +1728,26 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 2961,
+                          "id": 5009,
                           "name": "_loss",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2956,
-                          "src": "434:5:14",
+                          "referencedDeclaration": 5004,
+                          "src": "434:5:15",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_LossStruct_$2936_storage_ptr",
+                            "typeIdentifier": "t_struct$_LossStruct_$4984_storage_ptr",
                             "typeString": "struct ProofOfLoss.LossStruct storage pointer"
                           }
                         },
-                        "id": 2962,
+                        "id": 5010,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "receiver",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 2933,
-                        "src": "434:14:14",
+                        "referencedDeclaration": 4981,
+                        "src": "434:14:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1761,14 +1761,14 @@
                           {
                             "argumentTypes": null,
                             "hexValue": "30",
-                            "id": 2964,
+                            "id": 5012,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "kind": "number",
                             "lValueRequested": false,
                             "nodeType": "Literal",
-                            "src": "460:1:14",
+                            "src": "460:1:15",
                             "subdenomination": null,
                             "typeDescriptions": {
                               "typeIdentifier": "t_rational_0_by_1",
@@ -1784,20 +1784,20 @@
                               "typeString": "int_const 0"
                             }
                           ],
-                          "id": 2963,
+                          "id": 5011,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "452:7:14",
+                          "src": "452:7:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_address_$",
                             "typeString": "type(address)"
                           },
                           "typeName": "address"
                         },
-                        "id": 2965,
+                        "id": 5013,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1805,13 +1805,13 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "452:10:14",
+                        "src": "452:10:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         }
                       },
-                      "src": "434:28:14",
+                      "src": "434:28:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
@@ -1825,7 +1825,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 2970,
+                      "id": 5018,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1834,26 +1834,26 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 2967,
+                          "id": 5015,
                           "name": "_loss",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2956,
-                          "src": "466:5:14",
+                          "referencedDeclaration": 5004,
+                          "src": "466:5:15",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_LossStruct_$2936_storage_ptr",
+                            "typeIdentifier": "t_struct$_LossStruct_$4984_storage_ptr",
                             "typeString": "struct ProofOfLoss.LossStruct storage pointer"
                           }
                         },
-                        "id": 2968,
+                        "id": 5016,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "initialBlockNumber",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 2935,
-                        "src": "466:24:14",
+                        "referencedDeclaration": 4983,
+                        "src": "466:24:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1864,14 +1864,14 @@
                       "rightExpression": {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 2969,
+                        "id": 5017,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "494:1:14",
+                        "src": "494:1:15",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_0_by_1",
@@ -1879,39 +1879,39 @@
                         },
                         "value": "0"
                       },
-                      "src": "466:29:14",
+                      "src": "466:29:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
                       }
                     },
-                    "src": "434:61:14",
+                    "src": "434:61:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
                   "falseBody": null,
-                  "id": 2975,
+                  "id": 5023,
                   "nodeType": "IfStatement",
-                  "src": "430:106:14",
+                  "src": "430:106:15",
                   "trueBody": {
-                    "id": 2974,
+                    "id": 5022,
                     "nodeType": "Block",
-                    "src": "497:39:14",
+                    "src": "497:39:15",
                     "statements": [
                       {
                         "expression": {
                           "argumentTypes": null,
                           "hexValue": "66616c7365",
-                          "id": 2972,
+                          "id": 5020,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "bool",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "519:5:14",
+                          "src": "519:5:15",
                           "subdenomination": null,
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
@@ -1919,10 +1919,10 @@
                           },
                           "value": "false"
                         },
-                        "functionReturnParameters": 2954,
-                        "id": 2973,
+                        "functionReturnParameters": 5002,
+                        "id": 5021,
                         "nodeType": "Return",
-                        "src": "512:12:14"
+                        "src": "512:12:15"
                       }
                     ]
                   }
@@ -1931,14 +1931,14 @@
                   "expression": {
                     "argumentTypes": null,
                     "hexValue": "74727565",
-                    "id": 2976,
+                    "id": 5024,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
                     "kind": "bool",
                     "lValueRequested": false,
                     "nodeType": "Literal",
-                    "src": "555:4:14",
+                    "src": "555:4:15",
                     "subdenomination": null,
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
@@ -1946,15 +1946,15 @@
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 2954,
-                  "id": 2977,
+                  "functionReturnParameters": 5002,
+                  "id": 5025,
                   "nodeType": "Return",
-                  "src": "548:11:14"
+                  "src": "548:11:15"
                 }
               ]
             },
             "documentation": null,
-            "id": 2979,
+            "id": 5027,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1962,16 +1962,16 @@
             "name": "existedLoss",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2951,
+              "id": 4999,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2950,
+                  "id": 4998,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2979,
-                  "src": "320:14:14",
+                  "scope": 5027,
+                  "src": "320:14:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1979,10 +1979,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2949,
+                    "id": 4997,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "320:7:14",
+                    "src": "320:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1992,20 +1992,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "319:16:14"
+              "src": "319:16:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 2954,
+              "id": 5002,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2953,
+                  "id": 5001,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2979,
-                  "src": "357:4:14",
+                  "scope": 5027,
+                  "src": "357:4:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2013,10 +2013,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2952,
+                    "id": 5000,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "357:4:14",
+                    "src": "357:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -2026,19 +2026,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "356:6:14"
+              "src": "356:6:15"
             },
-            "scope": 3026,
-            "src": "299:268:14",
+            "scope": 5074,
+            "src": "299:268:15",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 3024,
+              "id": 5072,
               "nodeType": "Block",
-              "src": "630:286:14",
+              "src": "630:286:15",
               "statements": [
                 {
                   "expression": {
@@ -2050,7 +2050,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 2988,
+                        "id": 5036,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2059,18 +2059,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 2985,
+                            "id": 5033,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 5322,
-                            "src": "649:3:14",
+                            "referencedDeclaration": 7032,
+                            "src": "649:3:15",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 2986,
+                          "id": 5034,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2078,7 +2078,7 @@
                           "memberName": "value",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": null,
-                          "src": "649:9:14",
+                          "src": "649:9:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -2089,14 +2089,14 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "30",
-                          "id": 2987,
+                          "id": 5035,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "661:1:14",
+                          "src": "661:1:15",
                           "subdenomination": null,
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_0_by_1",
@@ -2104,7 +2104,7 @@
                           },
                           "value": "0"
                         },
-                        "src": "649:13:14",
+                        "src": "649:13:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -2118,18 +2118,18 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 2984,
+                      "id": 5032,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 5325,
-                      "src": "641:7:14",
+                      "referencedDeclaration": 7035,
+                      "src": "641:7:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 2989,
+                    "id": 5037,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2137,15 +2137,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "641:22:14",
+                    "src": "641:22:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2990,
+                  "id": 5038,
                   "nodeType": "ExpressionStatement",
-                  "src": "641:22:14"
+                  "src": "641:22:15"
                 },
                 {
                   "expression": {
@@ -2153,7 +2153,7 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 2995,
+                        "id": 5043,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2161,18 +2161,18 @@
                         "nodeType": "UnaryOperation",
                         "operator": "!",
                         "prefix": true,
-                        "src": "682:20:14",
+                        "src": "682:20:15",
                         "subExpression": {
                           "argumentTypes": null,
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 2993,
+                              "id": 5041,
                               "name": "_owner",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 2981,
-                              "src": "695:6:14",
+                              "referencedDeclaration": 5029,
+                              "src": "695:6:15",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_address",
                                 "typeString": "address"
@@ -2186,18 +2186,18 @@
                                 "typeString": "address"
                               }
                             ],
-                            "id": 2992,
+                            "id": 5040,
                             "name": "existedLoss",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2979,
-                            "src": "683:11:14",
+                            "referencedDeclaration": 5027,
+                            "src": "683:11:15",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
                               "typeString": "function (address) view returns (bool)"
                             }
                           },
-                          "id": 2994,
+                          "id": 5042,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2205,7 +2205,7 @@
                           "lValueRequested": false,
                           "names": [],
                           "nodeType": "FunctionCall",
-                          "src": "683:19:14",
+                          "src": "683:19:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
                             "typeString": "bool"
@@ -2224,18 +2224,18 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 2991,
+                      "id": 5039,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 5325,
-                      "src": "674:7:14",
+                      "referencedDeclaration": 7035,
+                      "src": "674:7:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 2996,
+                    "id": 5044,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2243,28 +2243,28 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "674:29:14",
+                    "src": "674:29:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2997,
+                  "id": 5045,
                   "nodeType": "ExpressionStatement",
-                  "src": "674:29:14"
+                  "src": "674:29:15"
                 },
                 {
                   "assignments": [
-                    2999
+                    5047
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 2999,
+                      "id": 5047,
                       "name": "_receiver",
                       "nodeType": "VariableDeclaration",
-                      "scope": 3025,
-                      "src": "716:17:14",
+                      "scope": 5073,
+                      "src": "716:17:15",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -2272,10 +2272,10 @@
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 2998,
+                        "id": 5046,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
-                        "src": "716:7:14",
+                        "src": "716:7:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2285,23 +2285,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 3002,
+                  "id": 5050,
                   "initialValue": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 3000,
+                      "id": 5048,
                       "name": "msg",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 5322,
-                      "src": "736:3:14",
+                      "referencedDeclaration": 7032,
+                      "src": "736:3:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_magic_message",
                         "typeString": "msg"
                       }
                     },
-                    "id": 3001,
+                    "id": 5049,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2309,19 +2309,19 @@
                     "memberName": "sender",
                     "nodeType": "MemberAccess",
                     "referencedDeclaration": null,
-                    "src": "736:10:14",
+                    "src": "736:10:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "716:30:14"
+                  "src": "716:30:15"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 3008,
+                    "id": 5056,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2332,26 +2332,26 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 3003,
+                          "id": 5051,
                           "name": "getLoss",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2948,
-                          "src": "757:7:14",
+                          "referencedDeclaration": 4996,
+                          "src": "757:7:15",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$2936_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$4984_storage_$",
                             "typeString": "mapping(address => struct ProofOfLoss.LossStruct storage ref)"
                           }
                         },
-                        "id": 3005,
+                        "id": 5053,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 3004,
+                          "id": 5052,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2981,
-                          "src": "765:6:14",
+                          "referencedDeclaration": 5029,
+                          "src": "765:6:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -2362,21 +2362,21 @@
                         "isPure": false,
                         "lValueRequested": false,
                         "nodeType": "IndexAccess",
-                        "src": "757:15:14",
+                        "src": "757:15:15",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_LossStruct_$2936_storage",
+                          "typeIdentifier": "t_struct$_LossStruct_$4984_storage",
                           "typeString": "struct ProofOfLoss.LossStruct storage ref"
                         }
                       },
-                      "id": 3006,
+                      "id": 5054,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "receiver",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2933,
-                      "src": "757:24:14",
+                      "referencedDeclaration": 4981,
+                      "src": "757:24:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -2386,31 +2386,31 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 3007,
+                      "id": 5055,
                       "name": "_receiver",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2999,
-                      "src": "784:9:14",
+                      "referencedDeclaration": 5047,
+                      "src": "784:9:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "757:36:14",
+                    "src": "757:36:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 3009,
+                  "id": 5057,
                   "nodeType": "ExpressionStatement",
-                  "src": "757:36:14"
+                  "src": "757:36:15"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 3016,
+                    "id": 5064,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2421,26 +2421,26 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 3010,
+                          "id": 5058,
                           "name": "getLoss",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2948,
-                          "src": "804:7:14",
+                          "referencedDeclaration": 4996,
+                          "src": "804:7:15",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$2936_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_LossStruct_$4984_storage_$",
                             "typeString": "mapping(address => struct ProofOfLoss.LossStruct storage ref)"
                           }
                         },
-                        "id": 3012,
+                        "id": 5060,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 3011,
+                          "id": 5059,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2981,
-                          "src": "812:6:14",
+                          "referencedDeclaration": 5029,
+                          "src": "812:6:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -2451,21 +2451,21 @@
                         "isPure": false,
                         "lValueRequested": false,
                         "nodeType": "IndexAccess",
-                        "src": "804:15:14",
+                        "src": "804:15:15",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_LossStruct_$2936_storage",
+                          "typeIdentifier": "t_struct$_LossStruct_$4984_storage",
                           "typeString": "struct ProofOfLoss.LossStruct storage ref"
                         }
                       },
-                      "id": 3013,
+                      "id": 5061,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "initialBlockNumber",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2935,
-                      "src": "804:34:14",
+                      "referencedDeclaration": 4983,
+                      "src": "804:34:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -2477,18 +2477,18 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 3014,
+                        "id": 5062,
                         "name": "block",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 5313,
-                        "src": "841:5:14",
+                        "referencedDeclaration": 7023,
+                        "src": "841:5:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_block",
                           "typeString": "block"
                         }
                       },
-                      "id": 3015,
+                      "id": 5063,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2496,21 +2496,21 @@
                       "memberName": "number",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": null,
-                      "src": "841:12:14",
+                      "src": "841:12:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "804:49:14",
+                    "src": "804:49:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 3017,
+                  "id": 5065,
                   "nodeType": "ExpressionStatement",
-                  "src": "804:49:14"
+                  "src": "804:49:15"
                 },
                 {
                   "eventCall": {
@@ -2518,12 +2518,12 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 3019,
+                        "id": 5067,
                         "name": "_owner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2981,
-                        "src": "884:6:14",
+                        "referencedDeclaration": 5029,
+                        "src": "884:6:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2531,12 +2531,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 3020,
+                        "id": 5068,
                         "name": "_receiver",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2999,
-                        "src": "892:9:14",
+                        "referencedDeclaration": 5047,
+                        "src": "892:9:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2545,14 +2545,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "74727565",
-                        "id": 3021,
+                        "id": 5069,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "bool",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "903:4:14",
+                        "src": "903:4:15",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -2576,18 +2576,18 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 3018,
+                      "id": 5066,
                       "name": "RecoverBalance",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2944,
-                      "src": "869:14:14",
+                      "referencedDeclaration": 4992,
+                      "src": "869:14:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$_t_bool_$returns$__$",
                         "typeString": "function (address,address,bool)"
                       }
                     },
-                    "id": 3022,
+                    "id": 5070,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2595,20 +2595,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "869:39:14",
+                    "src": "869:39:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 3023,
+                  "id": 5071,
                   "nodeType": "EmitStatement",
-                  "src": "864:44:14"
+                  "src": "864:44:15"
                 }
               ]
             },
             "documentation": null,
-            "id": 3025,
+            "id": 5073,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2616,16 +2616,16 @@
             "name": "recoverBalance",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2982,
+              "id": 5030,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2981,
+                  "id": 5029,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3025,
-                  "src": "599:14:14",
+                  "scope": 5073,
+                  "src": "599:14:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2633,10 +2633,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2980,
+                    "id": 5028,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "599:7:14",
+                    "src": "599:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -2646,27 +2646,27 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "598:16:14"
+              "src": "598:16:15"
             },
             "payable": true,
             "returnParameters": {
-              "id": 2983,
+              "id": 5031,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "630:0:14"
+              "src": "630:0:15"
             },
-            "scope": 3026,
-            "src": "575:341:14",
+            "scope": 5074,
+            "src": "575:341:15",
             "stateMutability": "payable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 3027,
-        "src": "30:891:14"
+        "scope": 5075,
+        "src": "30:891:15"
       }
     ],
-    "src": "0:923:14"
+    "src": "0:923:15"
   },
   "compiler": {
     "name": "solc",
@@ -2674,5 +2674,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-04-14T07:31:48.196Z"
+  "updatedAt": "2018-04-15T12:42:41.832Z"
 }

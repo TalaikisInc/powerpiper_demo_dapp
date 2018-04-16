@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import axios from 'axios'
 import env from '../env'
 import Toast from 'grommet/components/Toast'
 import Heading from 'grommet/components/Heading'
@@ -9,6 +8,7 @@ import TextInput from 'grommet/components/TextInput'
 import Button from 'grommet/components/Button'
 import Label  from 'grommet/components/Label'
 import Form  from 'grommet/components/Form'
+import Web3Utils from 'web3-utils'
 
 class TransferTokens extends Component {
   constructor(props) {
@@ -43,26 +43,30 @@ class TransferTokens extends Component {
       failure: ''
     })
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.transfer(this.state.to, this.state.amountTokens, {
-        from: this.props.account,
-        gas: 300000,
-        data: '0x00'
-      }, (err, receipt) => {
-        if (!err) {
-          this.setState({
-            modalOpen: true,
-            success: `Success! Your tx: ${receipt}`
-          })
-        } else {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
+      if (this.state.amountTokens > 0 && Web3Utils.isAddress(this.state.to)) {
+        crowdsale.transfer(this.state.to, this.state.amountTokens * 10 ** env.DECIMALS, { from: this.props.account })
+          .then((receipt) => {
+            // console.log(receipt)
+            this.setState({
+              modalOpen: true,
+              success: `Success! Your tx: ${receipt.tx}`
+            })
+        })
+        .catch((err) => {
+          // console.log(err)
           this.setState({
             modalOpen: true,
             failure: `Error occured: ${err.message}`
           })
-        }
-      })
+        })
+      } else {
+        this.setState({
+          modalOpen: true,
+          failure: `Amount shoulnd't be empty`
+        })
+      }
     })
-
   }
 
   render() {

@@ -3,7 +3,11 @@ import { connect } from 'react-redux'
 import env from '../env'
 import Heading from 'grommet/components/Heading'
 import List from 'grommet/components/List'
+import Label from 'grommet/components/Label'
+import Box from 'grommet/components/Box'
 import ListItem  from 'grommet/components/ListItem'
+import RecentTransactions from './RecentTransactions'
+import moment from 'moment'
 
 class CoinStats extends Component {
   constructor(props) {
@@ -13,21 +17,60 @@ class CoinStats extends Component {
       supply: null,
       network: null,
       crowdsaleAddress: null,
+      owner: null,
       capReached: null,
       hasClosed: null,
       weiRaised: null,
-      cap: null
+      cap: null,
+      name: null,
+      symbol: null,
+      decimals: null,
+      rate: null,
+      bonusRate: null,
+      bonusEnds: null,
+      icoStart: null,
+      icoEnd: null
     }
 
-    this.getCoinStats = this.getCoinStats.bind(this)
+    this.getSymbol = this.getSymbol.bind(this)
+    this.getName = this.getName.bind(this)
+    this.getDecimals = this.getDecimals.bind(this)
+    this.getTotalSupply = this.getTotalSupply.bind(this)
+    this.getAddress = this.getAddress.bind(this)
+    this.getCapReached = this.getCapReached.bind(this)
+    this.getHasClosed = this.getHasClosed.bind(this)
+    this.getCap = this.getCap.bind(this)
+    this.getRaised = this.getRaised.bind(this)
+    this.getNetwork = this.getNetwork.bind(this)
+    this.getStartDate = this.getStartDate.bind(this)
+    this.getEndDate = this.getEndDate.bind(this)
+    this.getBonusEndDate = this.getBonusEndDate.bind(this)
+    this.getRate = this.getRate.bind(this)
+    this.getBonusRate = this.getBonusRate.bind(this)
+    this.getOwner = this.getOwner.bind(this)
   }
 
   componentDidMount() {
-    this.getCoinStats()
+    this.getSymbol()
+    this.getName()
+    this.getDecimals()
+    this.getTotalSupply()
+    this.getAddress()
+    this.getCapReached()
+    this.getHasClosed()
+    this.getCap()
+    this.getRaised()
+    this.getNetwork()
+    this.getStartDate()
+    this.getEndDate()
+    this.getBonusEndDate()
+    this.getRate()
+    this.getBonusRate()
+    this.getOwner()
   }
 
-  getCoinStats() {
-    this.props.Crowdsale.deployed().then((crowdsale) => {
+  getTotalSupply() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
       crowdsale.totalSupply().then((supply) => {
         this.setState({
           supply: supply.toNumber()
@@ -35,13 +78,39 @@ class CoinStats extends Component {
       })
     })
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
+    setTimeout(() => {
+      this.getTotalSupply()
+    }, 2000)
+  }
+
+  getOwner() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
+      crowdsale.owner().then((res) => {
+        this.setState({
+          owner: res
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getOwner()
+    }, 2000)
+  }
+
+  getAddress() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
       this.setState({
         crowdsaleAddress: crowdsale.address
       })
     })
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
+    setTimeout(() => {
+      this.getAddress()
+    }, 2000)
+  }
+
+  getCapReached() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
       crowdsale.capReached.call().then((res) => {
         this.setState({
           capReached: res.toString()
@@ -49,7 +118,13 @@ class CoinStats extends Component {
       })
     })
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
+    setTimeout(() => {
+      this.getCapReached()
+    }, 2000)
+  }
+
+  getHasClosed() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
       crowdsale.hasClosed.call().then((res) => {
         this.setState({
           hasClosed: res.toString()
@@ -57,7 +132,13 @@ class CoinStats extends Component {
       })
     })
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
+    setTimeout(() => {
+      this.getHasClosed()
+    }, 2000)
+  }
+
+  getCap() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
       crowdsale.cap.call().then((res) => {
         this.setState({
           cap: res.toString()
@@ -65,7 +146,13 @@ class CoinStats extends Component {
       })
     })
 
-    this.props.Crowdsale.deployed().then((crowdsale) => {
+    setTimeout(() => {
+      this.getCap()
+    }, 2000)
+  }
+
+  getRaised() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
       crowdsale.weiRaised.call().then((res) => {
         this.setState({
           weiRaised: res.toNumber()
@@ -73,7 +160,125 @@ class CoinStats extends Component {
       })
     })
 
-    this.props.web3.web3.version.getNetwork((net) => {
+    setTimeout(() => {
+      this.getRaised()
+    }, 2000)
+  }
+
+  getSymbol() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
+      crowdsale.symbol.call().then((res) => {
+        this.setState({
+          symbol: this.props.web3.web3.toAscii(res)
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getSymbol()
+    }, 2000)
+  }
+
+  getName() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
+      crowdsale.tokenName.call().then((res) => {
+        this.setState({
+          name: this.props.web3.web3.toAscii(res)
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getName()
+    }, 2000)
+  }
+
+  getDecimals() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
+      crowdsale.decimals.call().then((res) => {
+        this.setState({
+          decimals: res.toNumber()
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getDecimals()
+    }, 2000)
+  }
+
+  getEndDate() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
+      crowdsale.endDate.call().then(async (res) => {
+        this.setState({
+          icoEnd: moment.unix(res.toNumber()).format()
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getEndDate()
+    }, 2000)
+  }
+
+  getBonusEndDate() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
+      crowdsale.bonusEnds.call().then((res) => {
+        this.setState({
+          bonusEnds: moment.unix(res.toNumber()).format()
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getBonusEndDate()
+    }, 2000)
+  }
+
+  getStartDate() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
+      crowdsale.startDate.call().then((res) => {
+        this.setState({
+          icoStart: moment.unix(res.toNumber()).format()
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getStartDate()
+    }, 2000)
+  }
+
+  getRate() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
+      crowdsale.rate.call().then((res) => {
+        this.setState({
+          rate: res.toNumber()
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getRate()
+    }, 2000)
+  }
+
+  getBonusRate() {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
+      crowdsale.bonusRate.call().then((res) => {
+        this.setState({
+          bonusRate: res.toNumber()
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getBonusRate()
+    }, 2000)
+  }
+
+  getNetwork() {
+    this.props.web3.web3.version.getNetwork(async (net) => {
       let network
       switch (net) {
         case '1':
@@ -101,24 +306,41 @@ class CoinStats extends Component {
     })
 
     setTimeout(() => {
-      this.getCoinStats()
+      this.getNetwork()
     }, 2000)
   }
 
   render() {
     return (
-      <div>
+      <Box>
         <Heading>Market Info</Heading>
+        <Label></Label>
         <List>
+          <ListItem>Symbol: {this.state.symbol}</ListItem>
+          <ListItem>Token Name: {this.state.name ? this.state.name : ''}</ListItem>
+          <ListItem>Decimals: {this.state.decimals}</ListItem>
           <ListItem>Network: {this.state.network}</ListItem>
+        </List>
+        <Label>ICO</Label>
+        <List>
+          <ListItem>Start date: {this.state.icoStart}</ListItem>
+          <ListItem>End date: {this.state.icoEnd}</ListItem>
+          <ListItem>Bonus ends: {this.state.bonusEnds}</ListItem>
+          <ListItem>Rate: {this.state.rate}</ListItem>
+          <ListItem>Bonus rate: {this.state.bonusRate}</ListItem>
           <ListItem>Crowdsale Address: {this.state.crowdsaleAddress}</ListItem>
+          <ListItem>Owner: {this.state.owner}</ListItem>
           <ListItem>Tokens in Circulation: { this.state.supply / 10 ** env.DECIMALS} {env.TOKEN_NAME}</ListItem>
+          <ListItem>Cap: { this.props.web3.web3.fromWei(this.state.cap, 'ether') } ETH</ListItem>
+        </List>
+        <Label>ICO status</Label>
+        <List>
           <ListItem>Cap reached: { this.state.capReached }</ListItem>
           <ListItem>Has ended: { this.state.hasClosed }</ListItem>
-          <ListItem>Cap: { this.props.web3.web3.fromWei(this.state.cap, 'ether') } ETH</ListItem>
           <ListItem>ETH Raised: { this.props.web3.web3.fromWei(this.state.weiRaised, 'ether') } ETH</ListItem>
         </List>
-      </div>
+        <RecentTransactions />
+      </Box>
     )
   }
 }

@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
+import Heading from 'grommet/components/Heading'
+import Box from 'grommet/components/Box'
+import Label from 'grommet/components/Label'
+import Tabs from 'grommet/components/Tabs'
+import Tab from 'grommet/components/Tab'
 
-import PriceMarkupAdmin from './PriceMarkup'
-// mroe universdal deployment solution:
-// import CrowdsaleCreationAdmin from './CrowdsaleCreation'
-
-/*
-@TODO should implemet owner validation
-*/
 class Admin extends Component {
   constructor(props) {
     super(props)
@@ -17,8 +16,8 @@ class Admin extends Component {
   }
 
   componentDidMount() {
-    this.props.Token.deployed().then((token) => {
-      token.validate(this.props.account)
+    this.props.Crowdsale.deployed().then((crowdsale) => {
+      crowdsale.validate(this.props.account)
         .then((res) => {
           this.setState({
             isOwner: res
@@ -31,21 +30,30 @@ class Admin extends Component {
     return (
       <div>
         { this.state.isOwner
-          ? <div>
-            <div>
-              <h3>Crowdsale setup</h3>
+          ? <Box>
+              <Heading>Admin Area</Heading>
+              <Tabs responsive={true} justify='center'>
+                <Tab title='Ownership transfer'>
+                  <Redirect to='/transfer-ownership' />
+                </Tab>
+                <Tab title='Fees'>
+                  <Redirect to='/fees' />
+                </Tab>
+                <Tab title='Reclaim tokens'>
+                  <Redirect to='/reclaim-tokens' />
+                </Tab>
+              </Tabs>
+              <Label>This area is admin area</Label>
               { /*
               <CrowdsaleCreationAdmin />
+              <Approve />
+              <Finalization />
+              <Redeems />
+              <Certificates />
+              <TokenAvailability />
               */ }
-            </div>
-
-            <div>
-              <h3>Energy price markup</h3>
-              <PriceMarkupAdmin />
-            </div>
-
-          </div>
-          : <div><h2>This area is admin only</h2></div>
+          </Box>
+          : <Label>This area is admin only</Label>
         }
       </div>
     )
@@ -55,9 +63,9 @@ class Admin extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Token: state.Token,
+    // Token: state.Token,
     Crowdsale: state.Crowdsale,
-    Exchange: state.Exchange,
+    // Exchange: state.Exchange,
     account: state.account
   }
 }

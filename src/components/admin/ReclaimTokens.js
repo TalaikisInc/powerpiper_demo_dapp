@@ -8,12 +8,12 @@ import Button from 'grommet/components/Button'
 import Label  from 'grommet/components/Label'
 import Form  from 'grommet/components/Form'
 
-class TransferOwnership extends Component {
+class ReclaimTokens extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      to: '',
+      from: '',
       success: '',
       failure: '',
       modalOpen: false
@@ -42,7 +42,7 @@ class TransferOwnership extends Component {
 
     this.props.Crowdsale.deployed().then(async (crowdsale) => {
       if (this.state.to != null) {
-        crowdsale.transferOwnership(this.state.to, { from: this.props.account })
+        crowdsale.reclaimToken(this.state.from, { from: this.props.account })
           .then((receipt) => {
             // console.log(receipt)
             this.setState({
@@ -60,7 +60,7 @@ class TransferOwnership extends Component {
       } else {
         this.setState({
           modalOpen: true,
-          failure: `If you want to transfer ownership, you need to fill the form.`
+          failure: `If you want to reclaim tokens from user, you need to fill the form.`
         })
       }
     })
@@ -69,22 +69,22 @@ class TransferOwnership extends Component {
   render() {
     return (
       <Box>
-        <Heading>Transfer Ownership</Heading>
+        <Heading>Reclaim Tokens</Heading>
         <Box align='center'>
           <Form onSubmit={this.handleSubmit}>
             <Box pad='small' align='center'>
-              <Label labelFor="toInput">Who is the new owner:</Label>
+              <Label labelFor="fromInput">From whom:</Label>
             </Box>
             <Box pad='small' align='center'>
-              <TextInput id='toInput'
+              <TextInput id='fromInput'
                 type='text'
-                name='to'
+                name='from'
                 onDOMChange={this.handleChange}
-                value={this.state.to}
-                placeHolder='New owner address' />
+                value={this.state.from}
+                placeHolder='Address' />
             </Box>
             <Box pad='small' align='center'>
-              <Button primary={true} type='submit' label='Do it' />
+              <Button primary={true} type='submit' label='Reclaim' />
             </Box>
           </Form>
         </Box>
@@ -108,4 +108,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(TransferOwnership)
+export default connect(mapStateToProps)(ReclaimTokens)

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import axios from 'axios'
 import env from '../env'
 import Toast from 'grommet/components/Toast'
 import Heading from 'grommet/components/Heading'

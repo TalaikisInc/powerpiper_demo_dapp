@@ -4,6 +4,7 @@ import env from '../env'
 import Heading from 'grommet/components/Heading'
 import List from 'grommet/components/List'
 import ListItem  from 'grommet/components/ListItem'
+import Box  from 'grommet/components/Box'
 
 class Balance extends Component {
   constructor(props) {
@@ -15,28 +16,40 @@ class Balance extends Component {
     }
 
     this.getBalance = this.getBalance.bind(this)
+    this.getEthBalance = this.getEthBalance.bind(this)
   }
 
   componentDidMount() {
     this.getBalance()
+    this.getEthBalance()
+  }
+
+  getEthBalance() {
+    if(this.props.account != null) {
+      this.props.web3.web3.eth.getBalance(this.props.account, function(err, balance) {
+        if (!err) {
+          this.setState({
+            balance: this.props.web3.web3.fromWei(balance.toNumber())
+          })
+        }
+      }.bind(this))
+    }
+
+    setTimeout(() => {
+      this.getEthBalance()
+    }, 2000)
   }
 
   getBalance() {
     this.props.Crowdsale.deployed().then((crowdsale) => {
-      crowdsale.balanceOf(this.props.account).then((tokenBalance) => {
-        this.setState({
-          tokenBalance: tokenBalance ? tokenBalance.toNumber() : 'loading'
-        })
-      })
-    })
-
-    this.props.web3.web3.eth.getBalance(this.props.account, function(err, balance) {
-      if (!err) {
-        this.setState({
-          balance: this.props.web3.web3.fromWei(balance.toNumber())
+      if(this.props.account != null) {
+        crowdsale.balanceOf(this.props.account).then((tokenBalance) => {
+          this.setState({
+            tokenBalance: tokenBalance ? tokenBalance.toNumber() : 'loading'
+          })
         })
       }
-    }.bind(this))
+    })
 
     setTimeout(() => {
       this.getBalance()
@@ -45,7 +58,7 @@ class Balance extends Component {
 
   render() {
     return (
-      <div>
+      <Box>
         { this.state.tokenBalance !== null ? <div>
           <Heading>Your Tokens</Heading>
           <List>
@@ -67,12 +80,13 @@ class Balance extends Component {
           :
           ''
         }
-      </div>
+      </Box>
     )
   }
 }
 
 function mapStateToProps(state) {
+  console.log(state)
   return {
     web3: state.web3,
     Crowdsale: state.Crowdsale,

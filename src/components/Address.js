@@ -3,14 +3,15 @@ import { connect } from 'react-redux'
 import Heading from 'grommet/components/Heading'
 import List from 'grommet/components/List'
 import ListItem  from 'grommet/components/ListItem'
+import Box  from 'grommet/components/Box'
 
 const Address = (props) => (
-  <div>
+  <Box>
     <Heading>Your Address</Heading>
     <List>
       <ListItem>{ props.account }</ListItem>
     </List>
-  </div>
+  </Box>
 )
 
 function mapStateToProps(state) {

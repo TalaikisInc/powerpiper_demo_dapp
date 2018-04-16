@@ -1,34 +1,68 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
+import * as actions from '../actions'
+import Tabs  from 'grommet/components/Tabs'
+import Tab  from 'grommet/components/Tab'
 
-const Header = (props) => (
-  <ul className="nav nav-tabs">
-    <li className="nav-item">
-      <Link href='/app' to='/app' className="nav-link active">
-        Home
-      </Link>
-    </li>
-    <li className="nav-item">
-      <Link href='/market-info' to='/market-info' className="nav-link active">
-        Market Info
-      </Link>
-      </li>
-    <li className="nav-item">
-      <Link href='/ico' to='/ico' className="nav-link active">
-        Buy Tokens
-      </Link>
-      </li>
-    <li className="nav-item">
-      <Link href='/exchange' to='/exchange' className="nav-link active">
-        Exchange
-      </Link>
-    </li>
-    <li className="nav-item">
-      <Link href='/transfer' to='/transfer' className="nav-link active">
-        Send
-      </Link>
-    </li>
-  </ul>
-)
+class Header extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isOwner: null
+    }
+  }
 
-export default Header
+  componentDidMount() {
+    this.props.Crowdsale.deployed().then((crowdsale) => {
+      crowdsale.validate(this.props.account)
+        .then((res) => {
+          this.setState({
+            isOwner: res
+          })
+        })
+    })
+  }
+
+  render () {
+    return (
+      <Tabs responsive={true} justify='center'>
+        <Tab title='Home'>
+          <Redirect to='/help' />
+        </Tab>
+        <Tab title='Market Info'>
+          <Redirect to='/market-info' />
+        </Tab>
+        <Tab title='ICO'>
+          <Redirect to='/ico' />
+          </Tab>
+        <Tab title='Exchange'>
+        <Redirect to='/exchange' />
+        </Tab>
+        <Tab title='Send'>
+          <Redirect to='/transfer' />
+        </Tab>
+        <Tab title='My account'>
+          <Redirect to='/account' />
+        </Tab>
+        { this.state.isOwner &&
+        <Tab title='Admin'>
+          <Redirect to='/admin' />
+        </Tab>
+        }
+      </Tabs>
+    )
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    web3: state.web3,
+    Crowdsale: state.Crowdsale,
+    Token: state.Token,
+    Exchange: state.Exchange,
+    account: state.account
+  }
+}
+
+export default connect(mapStateToProps, actions)(Header)

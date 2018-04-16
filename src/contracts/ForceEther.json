@@ -32,14 +32,14 @@
     "absolutePath": "/C/Users/DXenu/Desktop/box/demo_contract/contracts/zeppelin/ForceEther.sol",
     "exportedSymbols": {
       "ForceEther": [
-        5706
+        5732
       ]
     },
-    "id": 5707,
+    "id": 5733,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 5691,
+        "id": 5717,
         "literals": [
           "solidity",
           "^",
@@ -55,22 +55,22 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 5706,
+        "id": 5732,
         "linearizedBaseContracts": [
-          5706
+          5732
         ],
         "name": "ForceEther",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 5694,
+              "id": 5720,
               "nodeType": "Block",
               "src": "306:3:24",
               "statements": []
             },
             "documentation": null,
-            "id": 5695,
+            "id": 5721,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -78,19 +78,19 @@
             "name": "ForceEther",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 5692,
+              "id": 5718,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "288:2:24"
             },
             "payable": true,
             "returnParameters": {
-              "id": 5693,
+              "id": 5719,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "306:0:24"
             },
-            "scope": 5706,
+            "scope": 5732,
             "src": "269:40:24",
             "stateMutability": "payable",
             "superFunction": null,
@@ -98,7 +98,7 @@
           },
           {
             "body": {
-              "id": 5704,
+              "id": 5730,
               "nodeType": "Block",
               "src": "368:43:24",
               "statements": [
@@ -108,11 +108,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 5701,
+                        "id": 5727,
                         "name": "_recipient",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 5697,
+                        "referencedDeclaration": 5723,
                         "src": "392:10:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -127,18 +127,18 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 5700,
+                      "id": 5726,
                       "name": "selfdestruct",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7038,
+                      "referencedDeclaration": 7078,
                       "src": "379:12:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_selfdestruct_nonpayable$_t_address_$returns$__$",
                         "typeString": "function (address)"
                       }
                     },
-                    "id": 5702,
+                    "id": 5728,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -152,14 +152,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 5703,
+                  "id": 5729,
                   "nodeType": "ExpressionStatement",
                   "src": "379:24:24"
                 }
               ]
             },
             "documentation": null,
-            "id": 5705,
+            "id": 5731,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -167,15 +167,15 @@
             "name": "destroyAndSend",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 5698,
+              "id": 5724,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 5697,
+                  "id": 5723,
                   "name": "_recipient",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5705,
+                  "scope": 5731,
                   "src": "341:18:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -184,7 +184,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 5696,
+                    "id": 5722,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "341:7:24",
@@ -201,19 +201,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 5699,
+              "id": 5725,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "368:0:24"
             },
-            "scope": 5706,
+            "scope": 5732,
             "src": "317:94:24",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 5707,
+        "scope": 5733,
         "src": "240:174:24"
       }
     ],
@@ -223,14 +223,14 @@
     "absolutePath": "/C/Users/DXenu/Desktop/box/demo_contract/contracts/zeppelin/ForceEther.sol",
     "exportedSymbols": {
       "ForceEther": [
-        5706
+        5732
       ]
     },
-    "id": 5707,
+    "id": 5733,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 5691,
+        "id": 5717,
         "literals": [
           "solidity",
           "^",
@@ -246,22 +246,22 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 5706,
+        "id": 5732,
         "linearizedBaseContracts": [
-          5706
+          5732
         ],
         "name": "ForceEther",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 5694,
+              "id": 5720,
               "nodeType": "Block",
               "src": "306:3:24",
               "statements": []
             },
             "documentation": null,
-            "id": 5695,
+            "id": 5721,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -269,19 +269,19 @@
             "name": "ForceEther",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 5692,
+              "id": 5718,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "288:2:24"
             },
             "payable": true,
             "returnParameters": {
-              "id": 5693,
+              "id": 5719,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "306:0:24"
             },
-            "scope": 5706,
+            "scope": 5732,
             "src": "269:40:24",
             "stateMutability": "payable",
             "superFunction": null,
@@ -289,7 +289,7 @@
           },
           {
             "body": {
-              "id": 5704,
+              "id": 5730,
               "nodeType": "Block",
               "src": "368:43:24",
               "statements": [
@@ -299,11 +299,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 5701,
+                        "id": 5727,
                         "name": "_recipient",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 5697,
+                        "referencedDeclaration": 5723,
                         "src": "392:10:24",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -318,18 +318,18 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 5700,
+                      "id": 5726,
                       "name": "selfdestruct",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7038,
+                      "referencedDeclaration": 7078,
                       "src": "379:12:24",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_selfdestruct_nonpayable$_t_address_$returns$__$",
                         "typeString": "function (address)"
                       }
                     },
-                    "id": 5702,
+                    "id": 5728,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -343,14 +343,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 5703,
+                  "id": 5729,
                   "nodeType": "ExpressionStatement",
                   "src": "379:24:24"
                 }
               ]
             },
             "documentation": null,
-            "id": 5705,
+            "id": 5731,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -358,15 +358,15 @@
             "name": "destroyAndSend",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 5698,
+              "id": 5724,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 5697,
+                  "id": 5723,
                   "name": "_recipient",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5705,
+                  "scope": 5731,
                   "src": "341:18:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -375,7 +375,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 5696,
+                    "id": 5722,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "341:7:24",
@@ -392,19 +392,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 5699,
+              "id": 5725,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "368:0:24"
             },
-            "scope": 5706,
+            "scope": 5732,
             "src": "317:94:24",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 5707,
+        "scope": 5733,
         "src": "240:174:24"
       }
     ],
@@ -416,5 +416,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-04-15T12:42:41.835Z"
+  "updatedAt": "2018-04-16T11:26:29.034Z"
 }

@@ -169,7 +169,7 @@ class CoinStats extends Component {
     this.props.Crowdsale.deployed().then(async (crowdsale) => {
       crowdsale.symbol.call().then((res) => {
         this.setState({
-          symbol: this.props.web3.web3.toAscii(res)
+          symbol: this.props.web3.web3.toUtf8(res)
         })
       })
     })
@@ -183,7 +183,7 @@ class CoinStats extends Component {
     this.props.Crowdsale.deployed().then(async (crowdsale) => {
       crowdsale.tokenName.call().then((res) => {
         this.setState({
-          name: this.props.web3.web3.toAscii(res)
+          name: this.props.web3.web3.toUtf8(res)
         })
       })
     })

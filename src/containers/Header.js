@@ -14,14 +14,14 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    this.props.Crowdsale.deployed().then((crowdsale) => {
+    /*this.props.Crowdsale.deployed().then((crowdsale) => {
       crowdsale.validate(this.props.account)
         .then((res) => {
           this.setState({
             isOwner: res
           })
         })
-    })
+    })*/
   }
 
   render () {

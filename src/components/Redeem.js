@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+/*import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { message, Form, Input, Button } from 'antd'
 const FormItem = Form.Item
@@ -150,3 +150,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Redeem)
+*/

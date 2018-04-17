@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+/*import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { message, Form, Input, Button } from 'antd'
 import axios from 'axios'
@@ -183,3 +183,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(BuyDirect)
+*/

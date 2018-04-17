@@ -1,9 +1,6 @@
-import React, { Component } from 'react'
+/*import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-/*
-@TODO temporal, shoudl be united with coin stats comp.
-*/
 class ExchangeCoinStats extends Component {
   constructor(props) {
     super(props)
@@ -75,3 +72,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(ExchangeCoinStats)
+*/

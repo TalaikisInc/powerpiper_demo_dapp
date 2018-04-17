@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+/*import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { message, Table, Form, Input, Button } from 'antd'
 import _ from 'lodash'
@@ -177,3 +177,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(CertificatesAdmin)
+*/

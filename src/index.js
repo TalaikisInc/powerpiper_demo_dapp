@@ -5,8 +5,6 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import reducers from './reducers'
 
-//import './css/index.scss';
-//import './index.css';
 import App from './components/App'
 import registerServiceWorker from './registerServiceWorker'
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore)

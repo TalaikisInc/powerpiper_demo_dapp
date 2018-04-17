@@ -101,7 +101,6 @@ class TransferOwnership extends Component {
 
 function mapStateToProps(state) {
   return {
-    // Token: state.Token,
     Crowdsale: state.Crowdsale,
     account: state.account,
     web3: state.web3

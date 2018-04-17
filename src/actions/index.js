@@ -1,9 +1,8 @@
 import contract from 'truffle-contract'
+import IPFS from 'ipfs-mini'
 
 import TokenArtifact from '../contracts/PowerPiperToken.json'
 import CrowdsaleArtifact from '../contracts/PowerPiperCrowdsale.json'
-import ExchangeArtifact from '../contracts/Exchange.json'
-import VaultArtifact from '../contracts/RefundVault.json'
 
 export function initWeb3() {
   const { web3 } = window
@@ -40,6 +39,19 @@ export function initWeb3() {
   }
 }
 
+export function initIPFS(payload) {
+  const ipfs = new IPFS({
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https'
+  })
+
+  return {
+    type: 'INIT_IPFS',
+    payload: ipfs
+  }
+}
+
 export function initToken(payload) {
   const instance = contract(TokenArtifact)
 
@@ -62,32 +74,6 @@ export function initCrowdsale(payload) {
 
   return {
     type: 'INIT_CROWDSALE',
-    payload: instance
-  }
-}
-
-export function initVault(payload) {
-  const instance = contract(VaultArtifact)
-
-  if (payload.provider) {
-    instance.setProvider(payload.provider)
-  }
-
-  return {
-    type: 'INIT_VAULT',
-    payload: instance
-  }
-}
-
-export function initExchange(payload) {
-  const instance = contract(ExchangeArtifact)
-
-  if (payload.provider) {
-    instance.setProvider(payload.provider)
-  }
-
-  return {
-    type: 'INIT_EXCHANGE',
     payload: instance
   }
 }

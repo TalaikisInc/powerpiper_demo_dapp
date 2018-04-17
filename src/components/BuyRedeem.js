@@ -1,4 +1,4 @@
-import React from 'react'
+/*import React from 'react'
 import { connect } from 'react-redux'
 
 import * as actions from '../actions'
@@ -24,3 +24,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, actions)(BuyRedeem)
+*/

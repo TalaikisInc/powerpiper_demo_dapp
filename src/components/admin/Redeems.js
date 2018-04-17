@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+/*import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { message, Table, Divider, Button } from 'antd'
@@ -157,3 +157,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(RedeemsAdmin)
+*/

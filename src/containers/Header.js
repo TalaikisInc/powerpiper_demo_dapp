@@ -5,6 +5,7 @@ import * as actions from '../actions'
 import Tabs  from 'grommet/components/Tabs'
 import Tab  from 'grommet/components/Tab'
 import Box  from 'grommet/components/Box'
+import Label  from 'grommet/components/Label'
 
 class Header extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class Header extends Component {
       <div>
         { this.state.isOwner
           ? <Box>
+            <Label align='center'>Crowdsale:</Label>
               <Tabs responsive={true} justify='center'>
                 <Tab title='Home'>
                   <Redirect to='/admin' />
@@ -36,22 +38,38 @@ class Header extends Component {
                 <Tab title='Ownership'>
                   <Redirect to='/transfer-ownership' />
                 </Tab>
-                <Tab title='Markup'>
-                  <Redirect to='/markup' />
-                </Tab>
-                <Tab title='Fee'>
-                  <Redirect to='/fee' />
-                </Tab>
                 <Tab title='Reclaim'>
                   <Redirect to='/reclaim-tokens' />
                 </Tab>
                 <Tab title='Approval'>
                   <Redirect to='/approve' />
                 </Tab>
+                <Tab title='Wh. add'>
+                  <Redirect to='/whitelist-add' />
+                </Tab>
+                <Tab title='Wh. remove'>
+                  <Redirect to='/whitelist-remove' />
+                </Tab>
+              </Tabs>
+              <Label align='center'>Token:</Label>
+              <Tabs responsive={true} justify='center'>
+                <Tab title='Markup'>
+                  <Redirect to='/markup' />
+                </Tab>
+                <Tab title='Fee'>
+                  <Redirect to='/fee' />
+                </Tab>
+                <Tab title='Mint'>
+                  <Redirect to='/mint' />
+                </Tab>
+                <Tab title='Finish mint'>
+                  <Redirect to='/finish-mint' />
+                </Tab>
+                <Tab title='Users'>
+                  <Redirect to='/users' />
+                </Tab>
               </Tabs>
               { /*
-              <CrowdsaleCreationAdmin />
-              <Finalization />
               <Redeems />
               <Certificates />
               <TokenAvailability />
@@ -61,6 +79,9 @@ class Header extends Component {
             <Tabs responsive={true} justify='center'>
               <Tab title='Home'>
                 <Redirect to='/help' />
+              </Tab>
+              <Tab title='Register'>
+                <Redirect to='/register' />
               </Tab>
               <Tab title='Market Info'>
                 <Redirect to='/market-info' />

@@ -13,12 +13,20 @@ class SetFee extends Component {
   constructor() {
     super()
     this.state = {
+      modalOpen: null,
+      success: '',
+      failure: '',
       percentage: '',
       fee: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.getFee = this.getFee.bind(this)
+  }
+
+  componentDidMount() {
+    this.getFee()
   }
 
   handleChange(event) {
@@ -31,16 +39,24 @@ class SetFee extends Component {
     })
   }
 
+  getFee() {
+    this.props.Token.deployed().then(async (token) => {
+      token.fee().then((res) => {
+        this.setState({
+          fee: res ? res.toNumber() : 'N/A'
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getFee()
+    }, 2000)
+  }
+
   handleSubmit(event) {
     event.preventDefault()
 
     this.props.Token.deployed().then(async (token) => {
-      token.fee().call().then((res) => {
-        this.setState({
-          fee: res.toNumber()
-        })
-      })
-
       if(this.state.percentage > 0) {
         token.setNewFee(this.state.percentage * 10 ** env.DECIMALS, {
           from: this.props.account,
@@ -73,14 +89,14 @@ class SetFee extends Component {
     return (
       <Box align='center'>
         <Heading>Set new fee</Heading>
-        <Label>Current fee is { this.state.priceMarkup / 10 ** env.DECIMALS }</Label>
+        <Label>Current fee is { this.state.fee / 10 ** env.DECIMALS }</Label>
         <Form onSubmit={this.handleSubmit}>
           <Box pad='small' align='center'>
-            <Label labelFor="fee">New markup:</Label>
+            <Label labelFor="fee">New fee:</Label>
           </Box>
           <Box pad='small' align='center'>
             <TextInput
-              if='fee'
+              id='fee'
               step='1'
               type='number'
               onDOMChange={this.handleChange}

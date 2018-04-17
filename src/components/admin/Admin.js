@@ -5,10 +5,6 @@ import Heading  from 'grommet/components/Heading'
 import Label  from 'grommet/components/Label'
 
 class Admin extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     return (
       <Box>
@@ -21,8 +17,6 @@ class Admin extends Component {
 
 function mapStateToProps(state) {
   return {
-    //Token: state.Token,
-    //Crowdsale: state.Crowdsale,
     account: state.account,
     web3: state.web3
   }

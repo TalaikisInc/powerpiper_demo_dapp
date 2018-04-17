@@ -13,12 +13,34 @@ class PriceMarkupAdmin extends Component {
   constructor() {
     super()
     this.state = {
+      modalOpen: null,
+      success: '',
+      failure: '',
       percentage: '',
       priceMarkup: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.getMarkup = this.getMarkup.bind(this)
+  }
+
+  componentDidMount() {
+    this.getMarkup()
+  }
+
+  getMarkup() {
+    this.props.Token.deployed().then(async (token) => {
+      token.priceMarkup().then((res) => {
+        this.setState({
+          percentage: res ? res.toNumber() : 'N/A'
+        })
+      })
+    })
+
+    setTimeout(() => {
+      this.getMarkup()
+    }, 2000)
   }
 
   handleChange(event) {
@@ -35,14 +57,8 @@ class PriceMarkupAdmin extends Component {
     event.preventDefault()
 
     this.props.Token.deployed().then(async (token) => {
-      token.priceMarkup().call().then((res) => {
-        this.setState({
-          priceMarkup: res.toNumber()
-        })
-      })
-
-      if(this.state.percentage > 0) {
-        token.setPriceMarkup(this.state.percentage * 10 ** env.DECIMALS, {
+      if(this.state.priceMarkup > 0) {
+        token.setPriceMarkup(this.state.priceMarkup * 10 ** env.DECIMALS, {
           from: this.props.account,
           gas: 300000
         })
@@ -73,19 +89,19 @@ class PriceMarkupAdmin extends Component {
     return (
       <Box align='center'>
         <Heading>Set new price markup</Heading>
-        <Label>Current markup is { this.state.priceMarkup / 10 ** env.DECIMALS }</Label>
+        <Label>Current markup is { this.state.percentage / (10 ** env.DECIMALS) }</Label>
         <Form onSubmit={this.handleSubmit}>
           <Box pad='small' align='center'>
             <Label labelFor="fee">New markup:</Label>
           </Box>
           <Box pad='small' align='center'>
             <TextInput
-              if='fee'
+              id='fee'
               step='1'
               type='number'
               onDOMChange={this.handleChange}
-              value={this.state.percentage}
-              name='percentage'
+              value={this.state.priceMarkup}
+              name='priceMarkup'
               placeHolder='Percentage over spot price, e.g. 1'/>
           </Box>
           <Box pad='small' align='center'>

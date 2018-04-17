@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+/*import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form, Input, Button } from 'antd'
 
@@ -75,3 +75,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(CertificatesAdmin)
+*/

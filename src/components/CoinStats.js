@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import env from '../env'
+import moment from 'moment'
+
 import Heading from 'grommet/components/Heading'
 import List from 'grommet/components/List'
 import Label from 'grommet/components/Label'
 import Box from 'grommet/components/Box'
 import ListItem  from 'grommet/components/ListItem'
-import RecentTransactions from './RecentTransactions'
-import moment from 'moment'
+
+import env from '../env'
+import RecentTransactions from './events/RecentTransactions'
 
 class CoinStats extends Component {
   constructor(props) {

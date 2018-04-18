@@ -25,7 +25,7 @@ import Mint from './admin/Mint'
 import Approve from './admin/Approve'
 import RemoveFromWhitelist from './admin/RemoveFromWhitelist'
 import AddToWhitelist from './admin/AddToWhitelist'
-import UserList from './admin/UserList'
+import GetUser from './admin/GetUser'
 import AddUser from './AddUser'
 
 class _App extends Component {
@@ -115,7 +115,7 @@ class _App extends Component {
                       <Route exact path='/mint' component={Mint} />
                       <Route exact path='/whitelist-remove' component={RemoveFromWhitelist} />
                       <Route exact path='/whitelist-add' component={AddToWhitelist} />
-                      <Route exact path='/users' component={UserList} />
+                      <Route exact path='/users' component={GetUser} />
                       <Route exact path='/register' component={AddUser} />
                     </div>
                   : null

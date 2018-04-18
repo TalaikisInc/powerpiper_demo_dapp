@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+
 import Heading from 'grommet/components/Heading'
 import Box from 'grommet/components/Box'
 import Label from 'grommet/components/Label'
 import Table from 'grommet/components/Table'
 import TableHeader from 'grommet/components/TableHeader'
 import TableRow from 'grommet/components/TableRow'
-import env from '../env'
+
+import env from '../../env'
 
 /*
 @TODO highlight own address

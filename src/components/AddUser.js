@@ -33,20 +33,21 @@ class AddUser extends Component {
       city: '',
       phone: '',
       docType: '',
-      docNo: ''
+      docNo: '',
+      idDocument: '',
+      addressDocument: ''
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleUploadFile = this.handleUploadFile.bind(this)
   }
 
   handleChange(event) {
-    console.log(event)
-    const name = event.target.name ? event.target.name : 'country'
     const value = event.target.value ? event.target.value : event.option.value
     
     this.setState({
-      [name]: value
+      [event.target.name]: value
     })
   }
 
@@ -65,7 +66,9 @@ class AddUser extends Component {
           country: this.state.country,
           phone: this.state.phone,
           docType: this.state.docType,
-          docNo: this.state.docNo
+          docNo: this.state.docNo,
+          addressDocument: this.state.addressDocument,
+          idDocument: this.state.idDocument
         }), env.ENCRYPTION_PASSWORD)
 
         this.props.ipfs.addJSON(_data, (err, _hash) => {
@@ -100,6 +103,27 @@ class AddUser extends Component {
       }
     })
 
+  }
+
+  handleUploadFile(event) {
+    event.preventDefault()
+
+    const data = event.target.files[0]
+    if (data.type.match('image/*')) {
+      const reader = new FileReader()
+      reader.onload = (() => {
+        return (e) => {
+          this.setState({
+            [event.target.name]: e.target.result
+          })
+        }
+    })(data)
+    } else {
+      this.setState({
+        modalOpen: true,
+        failure: `We can accept only image files.`
+      })
+    }
   }
 
   render() {
@@ -375,6 +399,7 @@ class AddUser extends Component {
             </Box>
             <Box pad='small' align='center'>
               <Select
+                name='country'
                 onChange={this.handleChange}
                 value={this.state.country}
                 options={countries}
@@ -396,6 +421,7 @@ class AddUser extends Component {
             </Box>
             <Box pad='small' align='center'>
               <Select
+                name='docType'
                 onChange={this.handleChange}
                 value={this.state.docType}
                 options={docTypes}
@@ -411,6 +437,14 @@ class AddUser extends Component {
                 onDOMChange={this.handleChange}
                 value={this.state.docNo}
                 placeHolder='Your Doc. Number' />
+            </Box>
+            <Box pad='small' align='center'>
+              <Label>Please attach your ID:</Label>
+              <input id='f-file' name='idDocument' type='file' onChange={this.handleUploadFile} />
+            </Box>
+            <Box pad='small' align='center'>
+              <Label>Please attach your address confirmation:</Label>
+              <input id='f-file' name='addressDocument' type='file' onChange={this.handleUploadFile} />
             </Box>
             <Box pad='small' align='center'>
               <Button primary={true} type='submit' label='Register' />

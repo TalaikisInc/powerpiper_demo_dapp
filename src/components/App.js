@@ -27,6 +27,7 @@ import RemoveFromWhitelist from './admin/RemoveFromWhitelist'
 import AddToWhitelist from './admin/AddToWhitelist'
 import GetUser from './admin/GetUser'
 import AddUser from './AddUser'
+import Exchange from './Exchange'
 
 class _App extends Component {
   constructor(props) {
@@ -117,6 +118,7 @@ class _App extends Component {
                       <Route exact path='/whitelist-add' component={AddToWhitelist} />
                       <Route exact path='/users' component={GetUser} />
                       <Route exact path='/register' component={AddUser} />
+                      <Route exact path='/exchange' component={Exchange} />
                     </div>
                   : null
                 }

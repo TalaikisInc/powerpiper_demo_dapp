@@ -1,7 +1,9 @@
 module.exports = {
   TOKEN_NAME: 'PWP',
-  DECIMALS: 18,
+  DECIMALS: 3,
   RATE: 5000,
-  ENCRYPTION_PASSWORD: 'test', // should be environment
-  MINIMUM_CONTRIBUTION: 0.01
+  BONUS_RATE: 6000,
+  ENCRYPTION_PASSWORD: process.env.ENCRYPTION_PASS,
+  HASH_PASSWORD: process.env.HASH_PASS,
+  MINIMUM_CONTRIBUTION: 0.1
 }

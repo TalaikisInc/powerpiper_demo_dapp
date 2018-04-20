@@ -102,6 +102,7 @@ class BuyIcoTokens extends Component {
           <ListItem>1 ETH = { this.state.priceEth } USD</ListItem>
           <ListItem>1 PWP = { (1 / env.RATE).toFixed(6) } ETH</ListItem>
           <ListItem>1 PWP = $US { (this.state.priceEth / env.RATE).toFixed(2) }</ListItem>
+          <ListItem>1 PWP = $US { (this.state.priceEth / env.BONUS_RATE).toFixed(2) } (bonus rate)</ListItem>
         </List>
         <Box align='center'>
           <Form onSubmit={this.handleSubmit}>

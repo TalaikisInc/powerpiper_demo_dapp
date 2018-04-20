@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import * as actions from '../actions'
+
 import Box from 'grommet/components/Box'
 import Paragraph from 'grommet/components/Paragraph'
 
@@ -18,4 +18,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, actions)(Footer)
+export default connect(mapStateToProps)(Footer)

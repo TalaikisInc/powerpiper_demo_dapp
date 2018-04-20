@@ -19,9 +19,6 @@ class AddUser extends Component {
     super(props)
 
     this.state = {
-      amountEth: '',
-      amountTokens: null,
-      priceEth: null,
       success: '',
       failure: '',
       email: '',
@@ -71,13 +68,20 @@ class AddUser extends Component {
           idDocument: this.state.idDocument
         }), env.ENCRYPTION_PASSWORD)
 
-        this.props.ipfs.addJSON(_data, (err, _hash) => {
+        console.log('data')
+        console.log(_data)
+        console.log(typeof _data)
+
+        /*this.props.ipfs.addJSON(_data, async (err, _hash) => {
           if (err) {
             this.setState({
               failure: `Error occured: ${err.message}`
             })
           } else {
-            token.newUser(_hash, {
+            const _encryptedHash = await encrypt(_hash, env.HASH_PASS)
+            console.log('encrypted hash')
+            console.log(_encryptedHash)
+            token.newUser(_encryptedHash, {
               from: this.props.account,
               gas: 300000
             })
@@ -94,11 +98,11 @@ class AddUser extends Component {
                 })
               })
           }
-        })
+        })*/
       } else {
         this.setState({
           modalOpen: true,
-          failure: `Please check the form, all fields are required`
+          failure: `Please check the form.`
         })
       }
     })
@@ -106,18 +110,18 @@ class AddUser extends Component {
   }
 
   handleUploadFile(event) {
-    event.preventDefault()
-
     const data = event.target.files[0]
+    const name = event.target.name
     if (data.type.match('image/*')) {
       const reader = new FileReader()
-      reader.onload = (() => {
-        return (e) => {
+      reader.onload = (function(theFile) {
+        return function(e) {
           this.setState({
-            [event.target.name]: e.target.result
+            [name]: e.target.result
           })
-        }
-    })(data)
+        }.bind(this)
+    }.bind(this))(data)
+    reader.readAsDataURL(data)
     } else {
       this.setState({
         modalOpen: true,
@@ -127,6 +131,8 @@ class AddUser extends Component {
   }
 
   render() {
+    console.log('enc password')
+    console.log(env.ENCRYPTION_PASSWORD)
     const docTypes = [
       { label: 'Passport', value: 'Passport' },
       { label: 'Personal ID', value: 'Personal ID' },

@@ -71,8 +71,9 @@ class GetUser extends Component {
     this.props.Token.deployed().then(async (token) => {
       if(this.state.userId >= 0) {
         token.getUserAtIndex(this.state.userId, { from: this.props.account })
-          .then((res) => {
-            this.props.ipfs.catJSON(res[2], async (err, data) => {
+          .then(async (res) => {
+            const _decryptedHash = await decrypt(res[2], env.HASH_PASS)
+            this.props.ipfs.catJSON(_decryptedHash, async (err, data) => {
               if(err) {
                 // console.log(err)
                 this.setState({

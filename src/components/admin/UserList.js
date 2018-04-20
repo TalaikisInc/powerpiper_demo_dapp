@@ -12,11 +12,13 @@ import Form  from 'grommet/components/Form'
 import Table  from 'grommet/components/Table'
 import TableHeader  from 'grommet/components/TableHeader'
 import TableRow  from 'grommet/components/TableRow'
-import Image  from 'grommet/components/Image'
 
 import { decrypt } from '../../utils/crypto'
 
-class GetUser extends Component {
+/*
+@ TODO!!!
+*/
+class UserList extends Component {
   constructor() {
     super()
     this.state = {
@@ -94,6 +96,47 @@ class GetUser extends Component {
                   user: res[1],
                   email: _obj.email,
                   firstName: _obj.firstName,
+                  lastName: _obj.lastName
+                })
+              }
+            })
+          })
+          .catch((error) => {
+            // console.log(error.message)
+            this.setState({
+              modalOpen: true,
+              failure: `Error occured: ${error.message}`
+            })
+          })
+      } else {
+        this.setState({
+          modalOpen: true,
+          failure: 'Please check the form.'
+        })
+      }
+    })
+  }
+
+  handleAddressSubmit(event) {
+    event.preventDefault()
+
+    this.props.Token.deployed().then(async (token) => {
+      if(web3utils.isAddress(this.state.user)) {
+        token.getUser(this.state.user, { from: this.props.account }).then((res) => {
+            this.props.ipfs.catJSON(res[1], async (err, data) => {
+              if(err) {
+                // console.log(err)
+                this.setState({
+                  modalOpen: true,
+                  failure: `Error occured: ${err.message}`
+                })
+              } else {
+                const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASSWORD))
+                this.setState({
+                  userId: res[0].toNumber(),
+                  user: this.state.user,
+                  email: _obj.email,
+                  firstName: _obj.firstName,
                   lastName: _obj.lastName,
                   address: _obj.address,
                   city: _obj.city,
@@ -123,118 +166,21 @@ class GetUser extends Component {
     })
   }
 
-  handleAddressSubmit(event) {
-    event.preventDefault()
-
-    this.props.Token.deployed().then(async (token) => {
-      if(web3utils.isAddress(this.state.user)) {
-        token.getUser(this.state.user, { from: this.props.account }).then(async (res) => {
-          const _decryptedHash = await decrypt(res[1], process.env.REACT_APP_HASH_PASS)
-          this.props.ipfs.catJSON(_decryptedHash, async (err, data) => {
-            if(err) {
-              // console.log(err)
-              this.setState({
-                modalOpen: true,
-                failure: `Error occured: ${err.message}`
-              })
-            } else {
-              const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASS))
-              console.log('obj')
-              console.log(_obj)
-              this.setState({
-                userId: res[0].toNumber(),
-                user: this.state.user,
-                email: _obj.email,
-                firstName: _obj.firstName,
-                lastName: _obj.lastName,
-                address: _obj.address,
-                city: _obj.city,
-                country: _obj.country,
-                phone: _obj.phone,
-                docType: _obj.docType,
-                docNo: _obj.docNo,
-                addressDocument: _obj.addressDocument,
-                idDocument: _obj.idDocument
-              })
-            }
-          })
-          })
-          .catch((error) => {
-            // console.log(error.message)
-            this.setState({
-              modalOpen: true,
-              failure: `Error occured: ${error.message}`
-            })
-          })
-      } else {
-        this.setState({
-          modalOpen: true,
-          failure: 'Please check the form.'
-        })
-      }
-    })
-  }
-
   render() {
-    console.log(this.state)
     return (
       <Box align='center'>
         <Heading>Get User</Heading>
         <Label>Found { this.state.userCount } user(s).</Label>
 
         <Table>
-          <TableHeader labels={['Data', 'Value']} sortIndex={0} />
+          <TableHeader labels={['ID', 'Address', 'Email', 'First name', 'Last name']} sortIndex={0} />
           <tbody>
             <TableRow>
-              <td>No.</td>
               <td>{ this.state.userId ? this.state.userId : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>ETH address</td>
               <td>{ this.state.user ? this.state.user : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>Email</td>
               <td>{ this.state.email ? this.state.email : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>First name</td>
               <td>{ this.state.firstName ? this.state.firstName : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>Last name</td>
               <td>{ this.state.lastName ? this.state.lastName : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>Address</td>
-              <td>{ this.state.address ? this.state.address : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>City</td>
-              <td>{ this.state.city ? this.state.city : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>Country</td>
-              <td>{ this.state.country ? this.state.country : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>Phone</td>
-              <td>{ this.state.phone ? this.state.phone : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>Document type</td>
-              <td>{ this.state.docType ? this.state.docType : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>Document no.</td>
-              <td>{ this.state.docNo ? this.state.docNo : '' }</td>
-            </TableRow>
-            <TableRow>
-              <td>ID document</td>
-              <td>{ this.state.idDocument ? <Image src={this.state.idDocument} /> : '' }</td>
-            </TableRow><TableRow>
-              <td>Address confirmation</td>
-              <td>{ this.state.addressDocument ? <Image src={this.state.addressDocument} /> : '' }</td>
             </TableRow>
           </tbody>
         </Table>
@@ -294,4 +240,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(GetUser)
+export default connect(mapStateToProps)(UserList)

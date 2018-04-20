@@ -446,6 +446,7 @@ class AddUser extends Component {
               <Button primary={true} type='submit' label='Register' />
             </Box>
           </Form>
+          <p><strong>NOTE</strong>. Don't use real data in demo app!</p>
         </Box>
           { this.state.modalOpen && <Toast
             status={this.state.success ? 'ok' : 'critical' }>

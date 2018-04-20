@@ -65,7 +65,7 @@ class Balance extends Component {
           <Heading>Your Tokens</Heading>
           <List>
             <ListItem>
-              { this.state.tokenBalance / 10 ** env.DECIMALS } { env.TOKEN_NAME }
+              { this.state.tokenBalance / (10 ** env.DECIMALS) } { env.TOKEN_NAME }
             </ListItem>
           </List>
           </div>

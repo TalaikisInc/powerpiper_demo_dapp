@@ -139,8 +139,6 @@ class GetUser extends Component {
               })
             } else {
               const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASS))
-              console.log('obj')
-              console.log(_obj)
               this.setState({
                 userId: res[0].toNumber(),
                 user: this.state.user,
@@ -176,7 +174,6 @@ class GetUser extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <Box align='center'>
         <Heading>Get User</Heading>

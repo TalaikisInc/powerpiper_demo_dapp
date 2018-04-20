@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import env from '../env'
+import Web3Utils from 'web3-utils'
+
 import Toast from 'grommet/components/Toast'
 import Heading from 'grommet/components/Heading'
 import Box from 'grommet/components/Box'
@@ -8,7 +9,8 @@ import TextInput from 'grommet/components/TextInput'
 import Button from 'grommet/components/Button'
 import Label  from 'grommet/components/Label'
 import Form  from 'grommet/components/Form'
-import Web3Utils from 'web3-utils'
+
+import env from '../env'
 
 class TransferTokens extends Component {
   constructor(props) {

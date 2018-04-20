@@ -14,7 +14,6 @@ import TableHeader  from 'grommet/components/TableHeader'
 import TableRow  from 'grommet/components/TableRow'
 
 import { decrypt } from '../../utils/crypto'
-import env from '../../env'
 
 class GetUser extends Component {
   constructor() {
@@ -72,7 +71,7 @@ class GetUser extends Component {
       if(this.state.userId >= 0) {
         token.getUserAtIndex(this.state.userId, { from: this.props.account })
           .then(async (res) => {
-            const _decryptedHash = await decrypt(res[2], env.HASH_PASS)
+            const _decryptedHash = await decrypt(res[2], process.env.REACT_APP_HASH_PASS)
             this.props.ipfs.catJSON(_decryptedHash, async (err, data) => {
               if(err) {
                 // console.log(err)
@@ -81,7 +80,7 @@ class GetUser extends Component {
                   failure: `Error occured: ${err.message}`
                 })
               } else {
-                const _obj = JSON.parse(await decrypt(data, env.ENCRYPTION_PASSWORD))
+                const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASSWORD))
                 this.setState({
                   user: res[1],
                   email: _obj.email,
@@ -121,7 +120,7 @@ class GetUser extends Component {
                   failure: `Error occured: ${err.message}`
                 })
               } else {
-                const _obj = JSON.parse(await decrypt(data, env.ENCRYPTION_PASSWORD))
+                const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASSWORD))
                 this.setState({
                   userId: res[0].toNumber(),
                   user: this.state.user,

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import web3utils from 'web3-utils'
+
 import Box  from 'grommet/components/Box'
 import Heading  from 'grommet/components/Heading'
 import Label  from 'grommet/components/Label'
@@ -7,8 +9,8 @@ import Form  from 'grommet/components/Form'
 import TextInput  from 'grommet/components/TextInput'
 import Toast  from 'grommet/components/Toast'
 import Button  from 'grommet/components/Button'
+
 import env from '../../env'
-import web3utils from 'web3-utils'
 
 class Approve extends Component {
   constructor(props) {

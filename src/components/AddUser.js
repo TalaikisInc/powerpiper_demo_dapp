@@ -12,7 +12,6 @@ import Form  from 'grommet/components/Form'
 import Select  from 'grommet/components/Select'
 
 import { encrypt } from '../utils/crypto'
-import env from '../env'
 
 class AddUser extends Component {
   constructor(props) {
@@ -66,21 +65,15 @@ class AddUser extends Component {
           docNo: this.state.docNo,
           addressDocument: this.state.addressDocument,
           idDocument: this.state.idDocument
-        }), env.ENCRYPTION_PASSWORD)
+        }), process.env.REACT_APP_ENCRYPTION_PASS)
 
-        console.log('data')
-        console.log(_data)
-        console.log(typeof _data)
-
-        /*this.props.ipfs.addJSON(_data, async (err, _hash) => {
+        this.props.ipfs.addJSON(_data, async (err, _hash) => {
           if (err) {
             this.setState({
               failure: `Error occured: ${err.message}`
             })
           } else {
-            const _encryptedHash = await encrypt(_hash, env.HASH_PASS)
-            console.log('encrypted hash')
-            console.log(_encryptedHash)
+            const _encryptedHash = await encrypt(_hash, process.env.REACT_APP_HASH_PASS)
             token.newUser(_encryptedHash, {
               from: this.props.account,
               gas: 300000
@@ -98,7 +91,7 @@ class AddUser extends Component {
                 })
               })
           }
-        })*/
+        })
       } else {
         this.setState({
           modalOpen: true,
@@ -106,7 +99,6 @@ class AddUser extends Component {
         })
       }
     })
-
   }
 
   handleUploadFile(event) {
@@ -131,8 +123,6 @@ class AddUser extends Component {
   }
 
   render() {
-    console.log('enc password')
-    console.log(env.ENCRYPTION_PASSWORD)
     const docTypes = [
       { label: 'Passport', value: 'Passport' },
       { label: 'Personal ID', value: 'Personal ID' },

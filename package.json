@@ -40,7 +40,7 @@
     "web3-utils": "^1.0.0-beta.34"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

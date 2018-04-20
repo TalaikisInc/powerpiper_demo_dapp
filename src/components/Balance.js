@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import env from '../env'
+
 import Heading from 'grommet/components/Heading'
 import List from 'grommet/components/List'
 import ListItem  from 'grommet/components/ListItem'
 import Box  from 'grommet/components/Box'
+
+import env from '../env'
 
 class Balance extends Component {
   constructor(props) {

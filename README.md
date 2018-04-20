@@ -11,3 +11,8 @@ In development, don't use.
 * Redux
 * Web3.js
 * ...
+
+## Infrastructure
+
+* IPFS
+* Ethereum blockchain

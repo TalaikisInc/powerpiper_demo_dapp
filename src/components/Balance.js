@@ -88,7 +88,6 @@ class Balance extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state)
   return {
     web3: state.web3,
     Crowdsale: state.Crowdsale,

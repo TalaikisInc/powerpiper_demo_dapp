@@ -18,13 +18,19 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    this.props.Crowdsale.deployed().then(async (crowdsale) => {
-      crowdsale.validate({ from: this.props.account }).then((res) => {
-        this.setState({
-          isOwner: res
+    if(this.props.Crowdsale) {
+      this.props.Crowdsale.deployed().then(async (crowdsale) => {
+        crowdsale.validate({ from: this.props.account }).then((res) => {
+          this.setState({
+            isOwner: res
+          })
         })
       })
-    })
+    } else {
+      this.setState({
+        isOwner: false
+      })
+    }
   }
 
   render () {
@@ -111,8 +117,6 @@ class Header extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
-    Crowdsale: state.Crowdsale,
-    Token: state.Token,
     account: state.account
   }
 }

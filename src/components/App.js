@@ -91,17 +91,18 @@ class _App extends Component {
           <BrowserRouter>
             <div>
               <Box align='center' responsive={true} pad='large'>
+                <Status
+                  account={this.props.account}
+                  metamask={this.props.web3}
+                  initiated={this.state.initiated}
+                  deployed={this.state.deployed} {...this.props} />
+                <Box align='center' responsive={true} pad='medium'>
+                        <Header />
+                      </Box>
+                <Route exact path='/help' component={Help} />
+
                 { this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
                   ? <div>
-                      <Box align='center' responsive={true} pad='medium'>
-                        <Header />
-                        <Status
-                          account={this.props.account}
-                          metamask={this.props.web3}
-                          initiated={this.state.initiated}
-                          deployed={this.state.deployed} {...this.props} />
-                      </Box>
-                      <Route exact path='/help' component={Help} />
                       <Route exact path='/account' component={Home} />
                       <Route exact path='/ico' component={BuyIcoTokens} />
                       <Route exact path='/market-info' component={CoinStats} />

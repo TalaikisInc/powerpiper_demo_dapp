@@ -7,6 +7,7 @@ import reducers from './reducers'
 
 import App from './components/App'
 import registerServiceWorker from './registerServiceWorker'
+// import { unregister } from './registerServiceWorker'
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore)
 const assert = require('assert')
 
@@ -21,3 +22,4 @@ ReactDOM.render(
 )
 
 registerServiceWorker()
+// unregister()

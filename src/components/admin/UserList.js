@@ -15,9 +15,6 @@ import TableRow  from 'grommet/components/TableRow'
 
 import { decrypt } from '../../utils/crypto'
 
-/*
-@ TODO!!!
-*/
 class UserList extends Component {
   constructor() {
     super()
@@ -26,29 +23,19 @@ class UserList extends Component {
       success: '',
       failure: '',
       userCount: '',
-      user: '',
-      userId: '',
-      email: '',
-      firstName: '',
-      lastName: '',
-      address: '',
-      city: '',
-      country: '',
-      phone: '',
-      docType: '',
-      docNo: '',
-      addressDocument: '',
-      idDocument: ''
+      users: []
     }
 
-    this.handleIDSubmit = this.handleIDSubmit.bind(this)
-    this.handleAddressSubmit = this.handleAddressSubmit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
+    this.getUsers = this.getUsers.bind(this)
+    this.getUsers2 = this.getUsers2.bind(this)
+    this.getUsersCount = this.getUsersCount.bind(this)
     this.getUsersCount = this.getUsersCount.bind(this)
   }
 
   componentDidMount() {
     this.getUsersCount()
+    this.getUsers()
+    this.getUsers2()
   }
   
   getUsersCount() {
@@ -65,167 +52,68 @@ class UserList extends Component {
     }, 2000)
   }
 
-  handleChange(event) {
-    const { target } = event
-    const value = target.type === 'checkbox' ? target.checked : target.value
-    const { name } = target
-
-    this.setState({
-      [name]: value
+  getUsers() {
+    this.props.Token.deployed().then(async (token) => {
+      const evenet = token.NewUser({},{fromBlock: 0, toBlock: 'latest'})
+      event.get((error, result) => {
+        if(!error) {
+          console.log('user register events')
+          console.log(result)
+        }
+      })
     })
   }
 
-  handleIDSubmit(event) {
-    event.preventDefault()
-
-    this.props.Token.deployed().then(async (token) => {
-      if(this.state.userId >= 0) {
-        token.getUserAtIndex(this.state.userId, { from: this.props.account })
-          .then(async (res) => {
+  getUsers2() {
+    if (this.state.userCount > 0) {
+      let userData = []
+      this.props.Token.deployed().then(async (token) => {
+        for (let i = 0; i < this.state.userCount; i++) {
+          token.getUserAtIndex(i, { from: this.props.account }).then(async (res) => {
             const _decryptedHash = await decrypt(res[2], process.env.REACT_APP_HASH_PASS)
             this.props.ipfs.catJSON(_decryptedHash, async (err, data) => {
-              if(err) {
-                // console.log(err)
-                this.setState({
-                  modalOpen: true,
-                  failure: `Error occured: ${err.message}`
+              if (!err) {
+                userData.push({
+                  email: data[0],
+                  firstName: data[1],
+                  lastName: data[2]
                 })
-              } else {
-                const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASS))
                 this.setState({
-                  user: res[1],
-                  email: _obj.email,
-                  firstName: _obj.firstName,
-                  lastName: _obj.lastName
+                  users: userData
                 })
               }
             })
           })
-          .catch((error) => {
-            // console.log(error.message)
-            this.setState({
-              modalOpen: true,
-              failure: `Error occured: ${error.message}`
-            })
-          })
-      } else {
-        this.setState({
-          modalOpen: true,
-          failure: 'Please check the form.'
-        })
-      }
-    })
-  }
-
-  handleAddressSubmit(event) {
-    event.preventDefault()
-
-    this.props.Token.deployed().then(async (token) => {
-      if(web3utils.isAddress(this.state.user)) {
-        token.getUser(this.state.user, { from: this.props.account }).then((res) => {
-            this.props.ipfs.catJSON(res[1], async (err, data) => {
-              if(err) {
-                // console.log(err)
-                this.setState({
-                  modalOpen: true,
-                  failure: `Error occured: ${err.message}`
-                })
-              } else {
-                const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASSWORD))
-                this.setState({
-                  userId: res[0].toNumber(),
-                  user: this.state.user,
-                  email: _obj.email,
-                  firstName: _obj.firstName,
-                  lastName: _obj.lastName,
-                  address: _obj.address,
-                  city: _obj.city,
-                  country: _obj.country,
-                  phone: _obj.phone,
-                  docType: _obj.docType,
-                  docNo: _obj.docNo,
-                  addressDocument: _obj.addressDocument,
-                  idDocument: _obj.idDocument
-                })
-              }
-            })
-          })
-          .catch((error) => {
-            // console.log(error.message)
-            this.setState({
-              modalOpen: true,
-              failure: `Error occured: ${error.message}`
-            })
-          })
-      } else {
-        this.setState({
-          modalOpen: true,
-          failure: 'Please check the form.'
-        })
-      }
-    })
+        }
+      })
+    }
   }
 
   render() {
+    let users = this.state.users
+    const usersRendered = []
+
+    for (var i = 0; i < users.length; i++) {
+      usersRendered.push(
+        <TableRow>
+          <td>{ users[i].email }</td>
+          <td>{ users[i].firstName }</td>
+          <td>{ users[i].lastName }</td>
+        </TableRow>
+      )
+    }
+
     return (
       <Box align='center'>
         <Heading>Get User</Heading>
         <Label>Found { this.state.userCount } user(s).</Label>
 
         <Table>
-          <TableHeader labels={['ID', 'Address', 'Email', 'First name', 'Last name']} sortIndex={0} />
+          <TableHeader labels={['Email', 'First name', 'Last name']} sortIndex={0} />
           <tbody>
-            <TableRow>
-              <td>{ this.state.userId ? this.state.userId : '' }</td>
-              <td>{ this.state.user ? this.state.user : '' }</td>
-              <td>{ this.state.email ? this.state.email : '' }</td>
-              <td>{ this.state.firstName ? this.state.firstName : '' }</td>
-              <td>{ this.state.lastName ? this.state.lastName : '' }</td>
-            </TableRow>
+            { usersRendered }
           </tbody>
         </Table>
-
-        <Form onSubmit={this.handleIDSubmit}>
-          <Box pad='small' align='center'>
-            <Label labelFor="userId">By ID:</Label>
-          </Box>
-          <Box pad='small' align='center'>
-            <TextInput
-              id='userId'
-              type='number'
-              step='1'
-              onDOMChange={this.handleChange}
-              value={this.state.userId}
-              name='userId'
-              placeHolder='User ID'/>
-          </Box>
-          <Box pad='small' align='center'>
-            <Button primary={true} type='submit' label='Get' />
-          </Box>
-        </Form>
-        <Form onSubmit={this.handleAddressSubmit}>
-          <Box pad='small' align='center'>
-            <Label labelFor="address">By Address:</Label>
-          </Box>
-          <Box pad='small' align='center'>
-            <TextInput
-              id='address'
-              type='text'
-              onDOMChange={this.handleChange}
-              value={this.state.user}
-              name='user'
-              placeHolder='User Address'/>
-          </Box>
-          <Box pad='small' align='center'>
-            <Button primary={true} type='submit' label='Get' />
-          </Box>
-        </Form>
-          { this.state.modalOpen && <Toast
-            status={this.state.success ? 'ok' : 'critical' }>
-              <p>{ this.state.success ? this.state.success : null }</p>
-              <p>{ this.state.failure ? this.state.failure : null }</p>
-            </Toast>
-          }
       </Box>
     )
   }

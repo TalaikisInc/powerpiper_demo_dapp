@@ -73,8 +73,11 @@ class Header extends Component {
                 <Tab title='Finish mint'>
                   <Redirect to='/finish-mint' />
                 </Tab>
-                <Tab title='Users'>
+                <Tab title='Get Users'>
                   <Redirect to='/users' />
+                </Tab>
+                <Tab title='Get User'>
+                  <Redirect to='/get-user' />
                 </Tab>
               </Tabs>
               { /*

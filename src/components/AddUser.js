@@ -31,12 +31,19 @@ class AddUser extends Component {
       docType: '',
       docNo: '',
       idDocument: '',
-      addressDocument: ''
+      addressDocument: '',
+      loading: false,
+      registered: false
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleUploadFile = this.handleUploadFile.bind(this)
+    this.getUser = this.getUser.bind(this)
+  }
+
+  componentDidMount() {
+    this.getUser()
   }
 
   handleChange(event) {
@@ -47,8 +54,33 @@ class AddUser extends Component {
     })
   }
 
+  getUser() {
+    if (web3utils.isAddress(this.props.account)) {
+      this.props.Token.deployed().then(async (token) => {
+        token.getUser(this.props.account, { from: this.props.account })
+          .then(async (res) => {
+            // console.log(error.message)
+            this.setState({
+              registered: true
+            })              
+          })
+          .catch((error) => {
+            // console.log(error.message)
+            this.setState({
+              modalOpen: true,
+              failure: `Error occured: ${error.message}`
+            })
+          })
+        })
+    }
+  }
+
   handleSubmit(event) {
     event.preventDefault()
+
+    this.setState({
+      loading: true
+    })
 
     this.props.Token.deployed().then(async (token) => {
       if (validator.isEmail(this.state.email) && this.state.firstName != null && this.state.lastName != null) {
@@ -98,6 +130,11 @@ class AddUser extends Component {
           failure: `Please check the form.`
         })
       }
+    })
+
+    this.setState({
+      loading: false,
+      registered: true
     })
   }
 
@@ -332,7 +369,9 @@ class AddUser extends Component {
 
     return (
       <Box align='center'>
-        <Heading>Register</Heading>
+        <Heading>Register</Heading>\
+        { this.state.registered ? <Label align="center">This account is already registered.</Label>
+        :
         <Box align='center'>
           <Form onSubmit={this.handleSubmit}>
             <Box pad='small' align='center'>
@@ -443,17 +482,20 @@ class AddUser extends Component {
               <input id='f-file' name='addressDocument' type='file' onChange={this.handleUploadFile} />
             </Box>
             <Box pad='small' align='center'>
-              <Button primary={true} type='submit' label='Register' />
+              { this.state.loading ? 'Working...' :
+                <Button primary={true} type='submit' label='Register' />
+              }
             </Box>
           </Form>
           <p><strong>NOTE</strong>. Don't use real data in demo app!</p>
         </Box>
-          { this.state.modalOpen && <Toast
-            status={this.state.success ? 'ok' : 'critical' }>
-              <p>{ this.state.success ? this.state.success : null }</p>
-              <p>{ this.state.failure ? this.state.failure : null }</p>
-            </Toast>
-          }
+        }
+        { this.state.modalOpen && <Toast
+          status={this.state.success ? 'ok' : 'critical' }>
+            <p>{ this.state.success ? this.state.success : null }</p>
+            <p>{ this.state.failure ? this.state.failure : null }</p>
+          </Toast>
+        }
       </Box>
     )
   }

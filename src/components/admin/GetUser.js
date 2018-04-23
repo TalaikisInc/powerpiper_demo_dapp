@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import web3utils from 'web3-utils'
+import gzip from 'gzip-js'
 
 import Toast from 'grommet/components/Toast'
 import Heading from 'grommet/components/Heading'
@@ -81,7 +82,7 @@ class GetUser extends Component {
         token.getUserAtIndex(this.state.userId, { from: this.props.account })
           .then(async (res) => {
             const _decryptedHash = await decrypt(res[2], process.env.REACT_APP_HASH_PASS)
-            this.props.ipfs.catJSON(_decryptedHash, async (err, data) => {
+            this.props.ipfs.catJSON(gzip.unzip(_decryptedHash), async (err, data) => {
               if(err) {
                 // console.log(err)
                 this.setState({

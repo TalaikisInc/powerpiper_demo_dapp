@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import validator from 'validator'
+import gzip from 'gzip-js'
 
 import Toast from 'grommet/components/Toast'
 import Heading from 'grommet/components/Heading'
@@ -85,7 +86,7 @@ class AddUser extends Component {
     this.props.Token.deployed().then(async (token) => {
       if (validator.isEmail(this.state.email) && this.state.firstName != null && this.state.lastName != null) {
 
-        const _data = await encrypt(JSON.stringify({
+        const _data = await encrypt(gzip.zip(JSON.stringify({
           email: this.state.email,
           firstName: this.state.firstName,
           lastName: this.state.lastName,
@@ -97,7 +98,7 @@ class AddUser extends Component {
           docNo: this.state.docNo,
           addressDocument: this.state.addressDocument,
           idDocument: this.state.idDocument
-        }), process.env.REACT_APP_ENCRYPTION_PASS)
+        })), process.env.REACT_APP_ENCRYPTION_PASS)
 
         this.props.ipfs.addJSON(_data, async (err, _hash) => {
           if (err) {

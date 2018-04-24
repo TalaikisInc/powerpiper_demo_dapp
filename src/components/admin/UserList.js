@@ -1,15 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import web3utils from 'web3-utils'
 import gzip from 'gzip-js'
 
-import Toast from 'grommet/components/Toast'
 import Heading from 'grommet/components/Heading'
 import Box from 'grommet/components/Box'
-import TextInput from 'grommet/components/TextInput'
-import Button from 'grommet/components/Button'
 import Label  from 'grommet/components/Label'
-import Form  from 'grommet/components/Form'
 import Table  from 'grommet/components/Table'
 import TableHeader  from 'grommet/components/TableHeader'
 import TableRow  from 'grommet/components/TableRow'
@@ -28,7 +23,6 @@ class UserList extends Component {
     }
 
     this.getUsers = this.getUsers.bind(this)
-    this.getUsers2 = this.getUsers2.bind(this)
     this.getUsersCount = this.getUsersCount.bind(this)
     this.getUsersCount = this.getUsersCount.bind(this)
   }
@@ -36,7 +30,6 @@ class UserList extends Component {
   componentDidMount() {
     this.getUsersCount()
     this.getUsers()
-    this.getUsers2()
   }
   
   getUsersCount() {
@@ -54,18 +47,6 @@ class UserList extends Component {
   }
 
   getUsers() {
-    this.props.Token.deployed().then(async (token) => {
-      const evenet = token.NewUser({},{fromBlock: 0, toBlock: 'latest'})
-      event.get((error, result) => {
-        if(!error) {
-          console.log('user register events')
-          console.log(result)
-        }
-      })
-    })
-  }
-
-  getUsers2() {
     if (this.state.userCount > 0) {
       let userData = []
       this.props.Token.deployed().then(async (token) => {

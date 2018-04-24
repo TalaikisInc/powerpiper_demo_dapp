@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import validator from 'validator'
 import gzip from 'gzip-js'
+import web3utils from 'web3-utils'
 
 import Toast from 'grommet/components/Toast'
 import Heading from 'grommet/components/Heading'

@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom'
+import { Redirect } from 'react-router'
 
 import '../../node_modules/grommet-css'
 import App from 'grommet/components/App'
 import Box from 'grommet/components/Box'
+import Label  from 'grommet/components/Label'
+import Tabs  from 'grommet/components/Tabs'
+import Tab  from 'grommet/components/Tab'
 
 import * as actions from '../actions'
-import Header from '../containers/Header'
-import Footer from '../containers/Footer'
+import Footer from './Footer'
 import Status from './Status'
 import Home from './Home'
 import Help from './Help'
@@ -41,6 +44,7 @@ class _App extends Component {
 
   componentDidMount() {
     this.props.initWeb3()
+    this.validateAdmin()
 
     setInterval(() => {
       this.props.fetchAccount(this.props.web3)
@@ -68,7 +72,6 @@ class _App extends Component {
       })
     }
 
-    /* @TODO add other tokens! */
     if (this.props.Crowdsale !== nextProps.Crowdsale) {
       nextProps.Crowdsale.deployed()
         .then(() => {
@@ -77,12 +80,34 @@ class _App extends Component {
           })
         })
         .catch((err) => {
-          console.log(err)
+          console.log('App err', err)
           this.setState({
             deployed: false
           })
         })
     }
+  }
+
+  validateAdmin() {
+    if(this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty') {
+      this.props.Crowdsale.deployed().then(async (crowdsale) => {
+        console.log('acc')
+        console.log(this.props.account)
+        crowdsale.validate({ from: this.props.account }).then((res) => {
+          this.setState({
+            isOwner: res
+          })
+        })
+      })
+    } else {
+      this.setState({
+        isOwner: false
+      })
+    }
+
+    setTimeout(() => {
+      this.validateAdmin()
+    }, 2000)
   }
 
   render() {
@@ -98,9 +123,84 @@ class _App extends Component {
                   initiated={this.state.initiated}
                   deployed={this.state.deployed} {...this.props} />
                 <Box align='center' responsive={true} pad='medium'>
-                        <Header />
-                      </Box>
-                <Route exact path='/help' component={Help} />
+                  { this.state.isOwner
+                    ? <Box>
+                      <Label align='center'>Crowdsale:</Label>
+                        <Tabs responsive={true} justify='center'>
+                          <Tab title='Home'>
+                            <Redirect to='/admin' />
+                          </Tab>
+                          <Tab title='Ownership'>
+                            <Redirect to='/transfer-ownership' />
+                          </Tab>
+                          <Tab title='Reclaim'>
+                            <Redirect to='/reclaim-tokens' />
+                          </Tab>
+                          <Tab title='Approval'>
+                            <Redirect to='/approve' />
+                          </Tab>
+                          <Tab title='Wh. add'>
+                            <Redirect to='/whitelist-add' />
+                          </Tab>
+                          <Tab title='Wh. remove'>
+                            <Redirect to='/whitelist-remove' />
+                          </Tab>
+                        </Tabs>
+                        <Label align='center'>Token:</Label>
+                        <Tabs responsive={true} justify='center'>
+                          <Tab title='Markup'>
+                            <Redirect to='/markup' />
+                          </Tab>
+                          <Tab title='Fee'>
+                            <Redirect to='/fee' />
+                          </Tab>
+                          <Tab title='Mint'>
+                            <Redirect to='/mint' />
+                          </Tab>
+                          <Tab title='Finish mint'>
+                            <Redirect to='/finish-mint' />
+                          </Tab>
+                          <Tab title='Get Users'>
+                            <Redirect to='/users' />
+                          </Tab>
+                          <Tab title='Get User'>
+                            <Redirect to='/get-user' />
+                          </Tab>
+                        </Tabs>
+                        { /*
+                        <Redeems />
+                        <Certificates />
+                        <TokenAvailability />
+                        */ }
+                    </Box>
+                    : <Box>
+                      <Tabs responsive={true} justify='center'>
+                        <Tab title='Home'>
+                          <Redirect to='/help' />
+                        </Tab>
+                        <Tab title='Market Info'>
+                          <Redirect to='/market-info' />
+                        </Tab>
+                        <Tab title='Register'>
+                          <Redirect to='/register' />
+                        </Tab>
+                        <Tab title='Buy tokens'>
+                          <Redirect to='/ico' />
+                          </Tab>
+                        <Tab title='Exchange'>
+                        <Redirect to='/exchange' />
+                        </Tab>
+                        <Tab title='Send'>
+                          <Redirect to='/transfer' />
+                        </Tab>
+                        <Tab title='My account'>
+                          <Redirect to='/account' />
+                        </Tab>
+                      </Tabs>
+                    </Box>
+                  }
+                </Box>
+                <Route exact path='/' component={Help} />
 
                 { this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
                   ? <div>
@@ -138,6 +238,8 @@ class _App extends Component {
 function mapStateToProps(state) {
   return {
     web3: state.web3,
+    Crowdsale: state.Crowdsale,
+    Token: state.Token,
     account: state.account
   }
 }

@@ -11,6 +11,7 @@ import TableHeader  from 'grommet/components/TableHeader'
 import Image  from 'grommet/components/Image'
 import Anchor  from 'grommet/components/Anchor'
 import EditIcon from 'grommet/components/icons/base/Edit'
+import DelIcon from 'grommet/components/icons/base/Trash'
 
 import { decrypt } from '../../utils/crypto'
 
@@ -31,11 +32,10 @@ class UserData extends Component {
       docNo: '',
       addressDocument: '',
       idDocument: '',
-      redirect: false
+      redirect: ''
     }
 
     this.getUserData = this.getUserData.bind(this)
-    this.redirect = this.redirect.bind(this)
   }
 
   componentDidMount() {
@@ -94,18 +94,15 @@ class UserData extends Component {
     }, 5000)
   }
 
-  redirect() {
-    this.setState({
-      redirect: true
-    })
-  }
-
   render() {
     return (
       <Box>
         { this.state.email !== '' ? <div>
-          <Heading>Your Data<Anchor onClick={this.redirect} icon={<EditIcon />} /></Heading>
-          { this.state.redirect ? <Redirect from='/account' to='/edit-profile' /> : '' }
+          <Heading>Your Data
+            <Anchor onClick={() => { this.setState({redirect: '/edit-profile'})}} icon={<EditIcon />} />
+            <Anchor onClick={() => { this.setState({redirect: '/delete-profile'})}} icon={<DelIcon />} />
+          </Heading>
+          { this.state.redirect !== '' ? <Redirect to={this.state.redirect} /> : '' }
           <Table>
             <TableHeader labels={['Data', 'Value']} sortIndex={0} />
             <tbody>

@@ -47,6 +47,7 @@ class UpdateUser extends Component {
   }
 
   componentDidMount() {
+    this.getUserExists()
     this.getUser()
   }
 
@@ -83,7 +84,7 @@ class UpdateUser extends Component {
       })
 
     setTimeout(() => {
-      this.getUser()
+      this.getUserExists()
     }, 2000)
   }
 

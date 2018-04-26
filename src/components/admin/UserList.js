@@ -49,7 +49,7 @@ class UserList extends Component {
     if (this.state.userCount > 0) {
       let userData = []
       this.props.Token.deployed().then(async (token) => {
-        for (let i = 1; i < this.state.userCount; i++) {
+        for (let i = 0; i < this.state.userCount; i++) {
           token.getUserAtIndex(i, { from: this.props.account }).then(async (res) => {
             const _decryptedHash = await decrypt(res[2], process.env.REACT_APP_HASH_PASS)
             this.props.ipfs.catJSON(_decryptedHash, async (err, data) => {

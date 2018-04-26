@@ -33,10 +33,11 @@ import GetUser from './admin/GetUser'
 import UserList from './admin/UserList'
 import AddUser from './users/AddUser'
 import UpdateUser from './users/UpdateUser'
+import DeleteUser from './users/DeleteUser'
 import Exchange from './Exchange'
 import NoMatch from './NoMatch'
-
-ReactGA.initialize('UA-XXXXXXXX')
+import env from '../env'
+ReactGA.initialize(env.GA)
 
 class _App extends Component {
   constructor(props) {
@@ -219,6 +220,7 @@ class _App extends Component {
                       <Route exact path='/transfer' component={TransferTokens} />
                       <Route exact path='/register' component={AddUser} />
                       <Route exact path='/edit-profile' component={UpdateUser} />
+                      <Route exact path='/delete-profile' component={DeleteUser} />
                       <Route exact path='/exchange' component={Exchange} />
 
                       <Route exact path='/admin' component={Admin} />

@@ -87,7 +87,7 @@ class GetUser extends Component {
                 // console.log(err)
                 this.setState({
                   modalOpen: true,
-                  failure: `Error occured: ${err.message}`
+                  failure: `Error occurred: ${err.message}`
                 })
               } else {
                 const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASS))
@@ -112,7 +112,7 @@ class GetUser extends Component {
             // console.log(error.message)
             this.setState({
               modalOpen: true,
-              failure: `Error occured: ${error.message}`
+              failure: `Error occurred: ${error.message}`
             })
           })
       } else {
@@ -136,7 +136,7 @@ class GetUser extends Component {
               // console.log(err)
               this.setState({
                 modalOpen: true,
-                failure: `Error occured: ${err.message}`
+                failure: `Error occurred: ${err.message}`
               })
             } else {
               const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASS))
@@ -162,7 +162,7 @@ class GetUser extends Component {
             // console.log(error.message)
             this.setState({
               modalOpen: true,
-              failure: `Error occured: ${error.message}`
+              failure: `Error occurred: ${error.message}`
             })
           })
       } else {

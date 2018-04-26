@@ -58,7 +58,7 @@ class FinishMint extends Component {
             // console.log(error.message)
             this.setState({
                 modalOpen: true,
-                failure: `Error occured: ${error.message}`
+                failure: `Error occurred: ${error.message}`
             })
           })
       } else {

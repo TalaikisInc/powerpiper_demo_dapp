@@ -54,7 +54,7 @@ class TransferOwnership extends Component {
           // console.log(err)
           this.setState({
             modalOpen: true,
-            failure: `Error occured: ${err.message}`
+            failure: `Error occurred: ${err.message}`
           })
         })
       } else {

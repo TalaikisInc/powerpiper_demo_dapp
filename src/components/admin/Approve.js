@@ -66,7 +66,7 @@ class Approve extends Component {
             // console.log(error)
             this.setState({
               modalOpen: true,
-              failure: `Error occured: ${error.message}`
+              failure: `Error occurred: ${error.message}`
             })
           })
       } else {

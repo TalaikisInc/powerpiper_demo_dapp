@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Redirect } from 'react-router'
 
 import '../../node_modules/grommet-css'
@@ -9,6 +9,7 @@ import Box from 'grommet/components/Box'
 import Label  from 'grommet/components/Label'
 import Tabs  from 'grommet/components/Tabs'
 import Tab  from 'grommet/components/Tab'
+import ReactGA from 'react-ga'
 
 import * as actions from '../actions'
 import Footer from './Footer'
@@ -32,10 +33,14 @@ import GetUser from './admin/GetUser'
 import UserList from './admin/UserList'
 import AddUser from './AddUser'
 import Exchange from './Exchange'
+import NoMatch from './NoMatch'
+
+ReactGA.initialize('UA-XXXXXXXX')
 
 class _App extends Component {
   constructor(props) {
     super(props)
+
     this.state = {
       initiated: false,
       deployed: true
@@ -80,7 +85,7 @@ class _App extends Component {
           })
         })
         .catch((err) => {
-          console.log('App err', err)
+          // console.log('App err', err)
           this.setState({
             deployed: false
           })
@@ -91,8 +96,6 @@ class _App extends Component {
   validateAdmin() {
     if(this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty') {
       this.props.Crowdsale.deployed().then(async (crowdsale) => {
-        console.log('acc')
-        console.log(this.props.account)
         crowdsale.validate({ from: this.props.account }).then((res) => {
           this.setState({
             isOwner: res
@@ -110,11 +113,15 @@ class _App extends Component {
     }, 2000)
   }
 
+  pageviewTracking() {
+    ReactGA.pageview(window.location.hash)
+  }
+
   render() {
     return (
       <App>
         <div>
-          <BrowserRouter>
+          <BrowserRouter onUpdate={this.pageviewTracking}>
             <div>
               <Box align='center' responsive={true} pad='large'>
                 <Status
@@ -200,14 +207,19 @@ class _App extends Component {
                     </Box>
                   }
                 </Box>
-                <Route exact path='/' component={Help} />
+                <Route exact path='/help' component={Help} />
 
                 { this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
                   ? <div>
+                      <Switch>
                       <Route exact path='/account' component={Home} />
                       <Route exact path='/ico' component={BuyIcoTokens} />
                       <Route exact path='/market-info' component={CoinStats} />
                       <Route exact path='/transfer' component={TransferTokens} />
+                      <Route exact path='/register' component={AddUser} />
+                      <Route exact path='/exchange' component={Exchange} />
+                      <Route exact path="*" component={NoMatch} />
+
                       <Route exact path='/admin' component={Admin} />
                       <Route exact path='/markup' component={PriceMarkup} />
                       <Route exact path='/fee' component={Fee} />
@@ -220,8 +232,7 @@ class _App extends Component {
                       <Route exact path='/whitelist-add' component={AddToWhitelist} />
                       <Route exact path='/get-user' component={GetUser} />
                       <Route exact path='/users' component={UserList} />
-                      <Route exact path='/register' component={AddUser} />
-                      <Route exact path='/exchange' component={Exchange} />
+                      </Switch>
                     </div>
                   : null
                 }

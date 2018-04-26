@@ -35,7 +35,8 @@ class AddUser extends Component {
       idDocument: '',
       addressDocument: '',
       loading: false,
-      registered: false
+      registered: true,
+      status: ''
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -57,24 +58,28 @@ class AddUser extends Component {
   }
 
   getUser() {
-    if (web3utils.isAddress(this.props.account)) {
+    //if (web3utils.isAddress(this.props.account)) {
       this.props.Token.deployed().then(async (token) => {
-        token.getUser(this.props.account, { from: this.props.account })
-          .then(async (res) => {
-            // console.log(error.message)
+        token.existsUser(this.props.account, { from: this.props.account })
+          .then((res) => {
             this.setState({
-              registered: true
-            })              
+              registered: true,
+              status: 'This account is already registered.'
+            })
           })
           .catch((error) => {
-            // console.log(error.message)
+            // if Something goes wrong, disable the form
             this.setState({
-              modalOpen: true,
-              failure: `Error occured: ${error.message}`
+              registered: true,
+              status: 'Some error occurred.'
             })
           })
         })
-    }
+    //}
+
+    setTimeout(() => {
+      this.getUser()
+    }, 2000)
   }
 
   handleSubmit(event) {
@@ -104,7 +109,7 @@ class AddUser extends Component {
         this.props.ipfs.addJSON(_data, async (err, _hash) => {
           if (err) {
             this.setState({
-              failure: `Error occured: ${err.message}`
+              failure: `Error occurred: ${err.message}`
             })
           } else {
             const _encryptedHash = await encrypt(_hash, process.env.REACT_APP_HASH_PASS)
@@ -115,28 +120,30 @@ class AddUser extends Component {
               .then((receipt) => {
                 this.setState({
                   modalOpen: true,
-                  success: `Success! Your tx: ${receipt.tx}`
+                  success: `Success! Your tx: ${receipt.tx}`,
+                  registered: true
                 })
               })
               .catch((err) => {
                 this.setState({
                   modalOpen: true,
-                  failure: `Error occured: ${err.message}`
+                  failure: `Error occurred: ${err.message}`
                 })
               })
           }
         })
       } else {
-        this.setState({
-          modalOpen: true,
-          failure: `Please check the form.`
-        })
+        if (!this.state.registered) {
+          this.setState({
+            modalOpen: true,
+            failure: `Please check the form.`
+          })
+        }
       }
     })
 
     this.setState({
-      loading: false,
-      registered: true
+      loading: false
     })
   }
 
@@ -371,8 +378,8 @@ class AddUser extends Component {
 
     return (
       <Box align='center'>
-        <Heading>Register</Heading>\
-        { this.state.registered ? <Label align="center">This account is already registered.</Label>
+        <Heading>Register</Heading>
+        { this.state.registered ? <Label align="center">{this.state.status}</Label>
         :
         <Box align='center'>
           <Form onSubmit={this.handleSubmit}>

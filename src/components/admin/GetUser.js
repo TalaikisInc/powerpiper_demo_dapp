@@ -36,7 +36,9 @@ class GetUser extends Component {
       docType: '',
       docNo: '',
       addressDocument: '',
-      idDocument: ''
+      idDocument: '',
+      loading: false,
+      loading2: false
     }
 
     this.handleIDSubmit = this.handleIDSubmit.bind(this)
@@ -77,6 +79,10 @@ class GetUser extends Component {
     event.preventDefault()
 
     this.props.Token.deployed().then(async (token) => {
+      this.setState({
+        loading: true
+      })
+
       if(this.state.userId >= 0) {
         token.getUserAtIndex(this.state.userId, { from: this.props.account })
           .then(async (res) => {
@@ -86,10 +92,11 @@ class GetUser extends Component {
                 // console.log(err)
                 this.setState({
                   modalOpen: true,
-                  failure: `Error occurred: ${err.message}`
+                  failure: `Error occurred: ${err.message}`,
+                  loading: false
                 })
               } else {
-                const _obj = JSON.parse(await decrypt(await decrypt(data, this.props.account), process.env.REACT_APP_ENCRYPTION_PASS))
+                const _obj = JSON.parse(await decrypt(await decrypt(data, res[1]), process.env.REACT_APP_ENCRYPTION_PASS))
                 this.setState({
                   user: res[1],
                   email: _obj.email,
@@ -102,7 +109,8 @@ class GetUser extends Component {
                   docType: _obj.docType,
                   docNo: _obj.docNo,
                   addressDocument: _obj.addressDocument,
-                  idDocument: _obj.idDocument
+                  idDocument: _obj.idDocument,
+                  loading: false
                 })
               }
             })
@@ -111,7 +119,8 @@ class GetUser extends Component {
             // console.log(error.message)
             this.setState({
               modalOpen: true,
-              failure: `Error occurred: ${error.message}`
+              failure: `Error occurred: ${error.message}`,
+              loading: false
             })
           })
       } else {
@@ -127,6 +136,10 @@ class GetUser extends Component {
     event.preventDefault()
 
     this.props.Token.deployed().then(async (token) => {
+      this.setState({
+        loading2: true
+      })
+
       if(web3utils.isAddress(this.state.user)) {
         token.getUser(this.state.user, { from: this.props.account }).then(async (res) => {
           const _decryptedHash = await decrypt(res[1], process.env.REACT_APP_HASH_PASS)
@@ -135,10 +148,11 @@ class GetUser extends Component {
               // console.log(err)
               this.setState({
                 modalOpen: true,
-                failure: `Error occurred: ${err.message}`
+                failure: `Error occurred: ${err.message}`,
+                loading2: false
               })
             } else {
-              const _obj = JSON.parse(await decrypt(await decrypt(data, this.props.account), process.env.REACT_APP_ENCRYPTION_PASS))
+              const _obj = JSON.parse(await decrypt(await decrypt(data, this.state.user), process.env.REACT_APP_ENCRYPTION_PASS))
               this.setState({
                 userId: res[0].toNumber(),
                 user: this.state.user,
@@ -152,7 +166,8 @@ class GetUser extends Component {
                 docType: _obj.docType,
                 docNo: _obj.docNo,
                 addressDocument: _obj.addressDocument,
-                idDocument: _obj.idDocument
+                idDocument: _obj.idDocument,
+                loading2: false
               })
             }
           })
@@ -161,7 +176,8 @@ class GetUser extends Component {
             // console.log(error.message)
             this.setState({
               modalOpen: true,
-              failure: `Error occurred: ${error.message}`
+              failure: `Error occurred: ${error.message}`,
+              loading2: false
             })
           })
       } else {
@@ -251,7 +267,10 @@ class GetUser extends Component {
               placeHolder='User ID'/>
           </Box>
           <Box pad='small' align='center'>
+            { this.state.loading ? <Label>Loading...</Label>
+            :
             <Button primary={true} type='submit' label='Get' />
+            }
           </Box>
         </Form>
         <Form onSubmit={this.handleAddressSubmit}>
@@ -268,7 +287,10 @@ class GetUser extends Component {
               placeHolder='User Address'/>
           </Box>
           <Box pad='small' align='center'>
+          { this.state.loading2 ? <Label>Loading...</Label>
+            :
             <Button primary={true} type='submit' label='Get' />
+          }
           </Box>
         </Form>
           { this.state.modalOpen && <Toast

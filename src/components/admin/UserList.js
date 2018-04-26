@@ -53,7 +53,7 @@ class UserList extends Component {
           token.getUserAtIndex(i, { from: this.props.account }).then(async (res) => {
             const _decryptedHash = await decrypt(res[2], process.env.REACT_APP_HASH_PASS)
             this.props.ipfs.catJSON(_decryptedHash, async (err, data) => {
-              const _obj = JSON.parse(await decrypt(await decrypt(data, this.props.account), process.env.REACT_APP_ENCRYPTION_PASS))
+              const _obj = JSON.parse(await decrypt(await decrypt(data, res[1]), process.env.REACT_APP_ENCRYPTION_PASS))
               if (!err) {
                 userData.push(_obj)
                 this.setState({

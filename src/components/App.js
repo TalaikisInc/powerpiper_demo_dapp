@@ -167,7 +167,7 @@ class _App extends Component {
                           <Tab title='Finish mint'>
                             <Redirect to='/finish-mint' />
                           </Tab>
-                          <Tab title='Get Users'>
+                          <Tab title='Users'>
                             <Redirect to='/users' />
                           </Tab>
                           <Tab title='Get User'>
@@ -218,7 +218,6 @@ class _App extends Component {
                       <Route exact path='/transfer' component={TransferTokens} />
                       <Route exact path='/register' component={AddUser} />
                       <Route exact path='/exchange' component={Exchange} />
-                      <Route exact path="*" component={NoMatch} />
 
                       <Route exact path='/admin' component={Admin} />
                       <Route exact path='/markup' component={PriceMarkup} />
@@ -232,6 +231,8 @@ class _App extends Component {
                       <Route exact path='/whitelist-add' component={AddToWhitelist} />
                       <Route exact path='/get-user' component={GetUser} />
                       <Route exact path='/users' component={UserList} />
+
+                      <Route exact path="*" component={NoMatch} />
                       </Switch>
                     </div>
                   : null

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import gzip from 'gzip-js'
 
 import Heading from 'grommet/components/Heading'
 import Box from 'grommet/components/Box'
@@ -50,34 +49,37 @@ class UserList extends Component {
     if (this.state.userCount > 0) {
       let userData = []
       this.props.Token.deployed().then(async (token) => {
-        for (let i = 0; i < this.state.userCount; i++) {
+        for (let i = 1; i < this.state.userCount; i++) {
           token.getUserAtIndex(i, { from: this.props.account }).then(async (res) => {
             const _decryptedHash = await decrypt(res[2], process.env.REACT_APP_HASH_PASS)
-            this.props.ipfs.catJSON(gzip.unzip(_decryptedHash), async (err, data) => {
+            this.props.ipfs.catJSON(_decryptedHash, async (err, data) => {
+              const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASS))
               if (!err) {
-                userData.push({
-                  email: data[0],
-                  firstName: data[1],
-                  lastName: data[2]
-                })
+                userData.push(_obj)
                 this.setState({
                   users: userData
                 })
+              } else {
+                console.log('getUsers', err)
               }
             })
           })
         }
       })
     }
+
+    setTimeout(() => {
+      this.getUsers()
+  }, 2000)
   }
 
   render() {
     let users = this.state.users
     const usersRendered = []
 
-    for (var i = 0; i < users.length; i++) {
+    for (let i = 0; i < users.length; i++) {
       usersRendered.push(
-        <TableRow>
+        <TableRow  key={i}>
           <td>{ users[i].email }</td>
           <td>{ users[i].firstName }</td>
           <td>{ users[i].lastName }</td>
@@ -87,7 +89,7 @@ class UserList extends Component {
 
     return (
       <Box align='center'>
-        <Heading>Get User</Heading>
+        <Heading>Users</Heading>
         <Label>Found { this.state.userCount } user(s).</Label>
 
         <Table>

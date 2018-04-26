@@ -3,11 +3,10 @@ import { connect } from 'react-redux'
 
 import Box from 'grommet/components/Box'
 import Paragraph from 'grommet/components/Paragraph'
-import Label from 'grommet/components/Label'
 
 const Footer = () => (
   <Box align='center'>
-    <Label align="center">NOTE. Your Metamask should point to Rinkeby Network in order to load the app</Label>
+    <p><strong>NOTE</strong>. Your Metamask should point to Rinkeby Network in order to load the app</p>
     <Paragraph>&copy; 2018, <a href="https://powerpiper.com">PowerPiper</a></Paragraph>
   </Box>
 )

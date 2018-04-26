@@ -35,7 +35,7 @@ class RecentTransactions extends Component {
         crowdsale.allEvents({ fromBlock: 0, toBlock: 'latest' })
           .watch((error, event) => {
             if (error) {
-              console.log(error)
+              console.log('Recent tx', error)
             } else if (
               (event.event === 'Transfer') && //  || event.event === 'BuyDirectEvent'
               _.findIndex(this.state.transactions, { hash: event.transactionHash }) === -1) {

@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import validator from 'validator'
-import gzip from 'gzip-js'
-import web3utils from 'web3-utils'
 
 import Toast from 'grommet/components/Toast'
 import Heading from 'grommet/components/Heading'
@@ -58,24 +56,28 @@ class AddUser extends Component {
   }
 
   getUser() {
-    //if (web3utils.isAddress(this.props.account)) {
-      this.props.Token.deployed().then(async (token) => {
-        token.existsUser(this.props.account, { from: this.props.account })
-          .then((res) => {
+    this.props.Token.deployed().then(async (token) => {
+      token.existsUser(this.props.account, { from: this.props.account })
+        .then((res) => {
+          if (res) {
             this.setState({
               registered: true,
               status: 'This account is already registered.'
             })
-          })
-          .catch((error) => {
-            // if Something goes wrong, disable the form
+          } else {
             this.setState({
-              registered: true,
-              status: 'Some error occurred.'
+              registered: false
             })
+          }
+        })
+        .catch((error) => {
+          // if Something goes wrong, disable the form
+          this.setState({
+            registered: true,
+            status: 'Some error occurred.'
           })
         })
-    //}
+      })
 
     setTimeout(() => {
       this.getUser()
@@ -92,7 +94,7 @@ class AddUser extends Component {
     this.props.Token.deployed().then(async (token) => {
       if (validator.isEmail(this.state.email) && this.state.firstName != null && this.state.lastName != null) {
 
-        const _data = await encrypt(gzip.zip(JSON.stringify({
+        const _data = await encrypt(JSON.stringify({
           email: this.state.email,
           firstName: this.state.firstName,
           lastName: this.state.lastName,
@@ -104,12 +106,13 @@ class AddUser extends Component {
           docNo: this.state.docNo,
           addressDocument: this.state.addressDocument,
           idDocument: this.state.idDocument
-        })), process.env.REACT_APP_ENCRYPTION_PASS)
+        }), process.env.REACT_APP_ENCRYPTION_PASS)
 
         this.props.ipfs.addJSON(_data, async (err, _hash) => {
           if (err) {
             this.setState({
-              failure: `Error occurred: ${err.message}`
+              failure: `Error occurred: ${err.message}`,
+              loading: false
             })
           } else {
             const _encryptedHash = await encrypt(_hash, process.env.REACT_APP_HASH_PASS)
@@ -121,13 +124,15 @@ class AddUser extends Component {
                 this.setState({
                   modalOpen: true,
                   success: `Success! Your tx: ${receipt.tx}`,
-                  registered: true
+                  registered: true,
+                  loading: false
                 })
               })
               .catch((err) => {
                 this.setState({
                   modalOpen: true,
-                  failure: `Error occurred: ${err.message}`
+                  failure: `Error occurred: ${err.message}`,
+                  loading: false
                 })
               })
           }
@@ -136,14 +141,11 @@ class AddUser extends Component {
         if (!this.state.registered) {
           this.setState({
             modalOpen: true,
-            failure: `Please check the form.`
+            failure: `Please check the form.`,
+            loading: false
           })
         }
       }
-    })
-
-    this.setState({
-      loading: false
     })
   }
 
@@ -384,7 +386,7 @@ class AddUser extends Component {
         <Box align='center'>
           <Form onSubmit={this.handleSubmit}>
             <Box pad='small' align='center'>
-              <Label labelFor="email">Email:</Label>
+              <Label labelFor="email">Email<sup>*</sup>:</Label>
             </Box>
             <Box pad='small' align='center'>
               <TextInput id='email'
@@ -395,7 +397,7 @@ class AddUser extends Component {
                 placeHolder='Email' />
             </Box>
             <Box pad='small' align='center'>
-              <Label labelFor="firstName">First name:</Label>
+              <Label labelFor="firstName">First name<sup>*</sup>:</Label>
             </Box>
             <Box pad='small' align='center'>
               <TextInput id='firstName'
@@ -406,7 +408,7 @@ class AddUser extends Component {
                 placeHolder='First name' />
             </Box>
             <Box pad='small' align='center'>
-              <Label labelFor="lastName">Last name:</Label>
+              <Label labelFor="lastName">Last name<sup>*</sup>:</Label>
             </Box>
             <Box pad='small' align='center'>
               <TextInput id='lastName'
@@ -496,6 +498,7 @@ class AddUser extends Component {
               }
             </Box>
           </Form>
+          <p><strong>*</strong> Required fields</p>
           <p><strong>NOTE</strong>. Don't use real data in demo app!</p>
         </Box>
         }

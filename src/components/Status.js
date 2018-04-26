@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 const Status = (props) => {
-  console.log(props)
   return (
     <div>
       { !props.web3 || props.account == null

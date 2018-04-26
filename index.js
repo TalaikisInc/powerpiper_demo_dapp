@@ -13,7 +13,7 @@ app.get('/*', function (req, res) {
 const PORT = process.env.PORT ? process.env.PORT : 3010
 app.listen(PORT, '0.0.0.0', (err) => {
   if (err) {
-    console.log(err)
+    console.log('Server', err)
   }
   console.info(`==> listening on http://localhost:${PORT}.`)
 })

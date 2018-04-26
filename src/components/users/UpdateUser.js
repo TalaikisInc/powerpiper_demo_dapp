@@ -35,6 +35,7 @@ class UpdateUser extends Component {
       addressDocument: '',
       loading: false,
       registered: true,
+      loaded: false,
       status: ''
     }
 
@@ -87,7 +88,7 @@ class UpdateUser extends Component {
   }
 
   getUser() {
-    if (this.state.registered) {
+    if (this.state.registered && !this.state.loaded) {
       this.props.Token.deployed().then(async (token) => {
         token.getUser(this.props.account, { from: this.props.account }).then(async (res) => {
           const _decryptedHash = await decrypt(res[1], process.env.REACT_APP_HASH_PASS)
@@ -112,7 +113,8 @@ class UpdateUser extends Component {
                 docType: _obj.docType,
                 docNo: _obj.docNo,
                 addressDocument: _obj.addressDocument,
-                idDocument: _obj.idDocument
+                idDocument: _obj.idDocument,
+                loaded: true
               })
             }
           })
@@ -334,7 +336,7 @@ class UpdateUser extends Component {
             </Box>
             <Box pad='small' align='center'>
               { this.state.loading ? 'Working...' :
-                <Button primary={true} type='submit' label='Register' />
+                <Button primary={true} type='submit' label='Update' />
               }
             </Box>
           </Form>

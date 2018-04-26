@@ -31,7 +31,8 @@ import RemoveFromWhitelist from './admin/RemoveFromWhitelist'
 import AddToWhitelist from './admin/AddToWhitelist'
 import GetUser from './admin/GetUser'
 import UserList from './admin/UserList'
-import AddUser from './AddUser'
+import AddUser from './users/AddUser'
+import UpdateUser from './users/UpdateUser'
 import Exchange from './Exchange'
 import NoMatch from './NoMatch'
 
@@ -217,6 +218,7 @@ class _App extends Component {
                       <Route exact path='/market-info' component={CoinStats} />
                       <Route exact path='/transfer' component={TransferTokens} />
                       <Route exact path='/register' component={AddUser} />
+                      <Route exact path='/edit-profile' component={UpdateUser} />
                       <Route exact path='/exchange' component={Exchange} />
 
                       <Route exact path='/admin' component={Admin} />

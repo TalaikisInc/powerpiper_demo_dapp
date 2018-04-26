@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
 import web3utils from 'web3-utils'
 
 import Heading from 'grommet/components/Heading'
@@ -8,10 +9,12 @@ import Table  from 'grommet/components/Table'
 import TableRow  from 'grommet/components/TableRow'
 import TableHeader  from 'grommet/components/TableHeader'
 import Image  from 'grommet/components/Image'
+import Anchor  from 'grommet/components/Anchor'
+import EditIcon from 'grommet/components/icons/base/Edit'
 
-import { decrypt } from '../utils/crypto'
+import { decrypt } from '../../utils/crypto'
 
-class User extends Component {
+class UserData extends Component {
   constructor(props) {
     super(props)
 
@@ -27,10 +30,12 @@ class User extends Component {
       docType: '',
       docNo: '',
       addressDocument: '',
-      idDocument: ''
+      idDocument: '',
+      redirect: false
     }
 
     this.getUserData = this.getUserData.bind(this)
+    this.redirect = this.redirect.bind(this)
   }
 
   componentDidMount() {
@@ -89,12 +94,18 @@ class User extends Component {
     }, 5000)
   }
 
+  redirect() {
+    this.setState({
+      redirect: true
+    })
+  }
+
   render() {
     return (
       <Box>
         { this.state.email !== '' ? <div>
-          <Heading>Your Data</Heading>
-
+          <Heading>Your Data<Anchor onClick={this.redirect} icon={<EditIcon />} /></Heading>
+          { this.state.redirect ? <Redirect from='/account' to='/edit-profile' /> : '' }
           <Table>
             <TableHeader labels={['Data', 'Value']} sortIndex={0} />
             <tbody>
@@ -160,4 +171,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(User)
+export default connect(mapStateToProps)(UserData)

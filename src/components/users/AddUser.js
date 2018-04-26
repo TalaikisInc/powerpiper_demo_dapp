@@ -72,10 +72,9 @@ class AddUser extends Component {
           }
         })
         .catch((error) => {
-          // if Something goes wrong, disable the form
+          console.log('Add user', error)
           this.setState({
-            registered: true,
-            status: 'Some error occurred.'
+            registered: true
           })
         })
       })
@@ -95,7 +94,7 @@ class AddUser extends Component {
     this.props.Token.deployed().then(async (token) => {
       if (validator.isEmail(this.state.email) && this.state.firstName != null && this.state.lastName != null) {
 
-        const _data = await encrypt(JSON.stringify({
+        const _data = await encrypt(await encrypt(JSON.stringify({
           email: this.state.email,
           firstName: this.state.firstName,
           lastName: this.state.lastName,
@@ -107,7 +106,7 @@ class AddUser extends Component {
           docNo: this.state.docNo,
           addressDocument: this.state.addressDocument,
           idDocument: this.state.idDocument
-        }), process.env.REACT_APP_ENCRYPTION_PASS)
+        }), process.env.REACT_APP_ENCRYPTION_PASS), this.props.account)
 
         this.props.ipfs.addJSON(_data, async (err, _hash) => {
           if (err) {

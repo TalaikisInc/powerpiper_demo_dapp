@@ -89,7 +89,7 @@ class GetUser extends Component {
                   failure: `Error occurred: ${err.message}`
                 })
               } else {
-                const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASS))
+                const _obj = JSON.parse(await decrypt(await decrypt(data, this.props.account), process.env.REACT_APP_ENCRYPTION_PASS))
                 this.setState({
                   user: res[1],
                   email: _obj.email,
@@ -138,7 +138,7 @@ class GetUser extends Component {
                 failure: `Error occurred: ${err.message}`
               })
             } else {
-              const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASS))
+              const _obj = JSON.parse(await decrypt(await decrypt(data, this.props.account), process.env.REACT_APP_ENCRYPTION_PASS))
               this.setState({
                 userId: res[0].toNumber(),
                 user: this.state.user,

@@ -101,7 +101,7 @@ class UpdateUser extends Component {
                 failure: `Error occurred: ${err.message}`
               })
             } else {
-              const _obj = JSON.parse(await decrypt(data, process.env.REACT_APP_ENCRYPTION_PASS))
+              const _obj = JSON.parse(await decrypt(await decrypt(data, this.props.account), process.env.REACT_APP_ENCRYPTION_PASS))
                this.setState({
                 user: res[1],
                 email: _obj.email,
@@ -145,7 +145,7 @@ class UpdateUser extends Component {
     this.props.Token.deployed().then(async (token) => {
       if (validator.isEmail(this.state.email) && this.state.firstName != null && this.state.lastName != null) {
 
-        const _data = await encrypt(JSON.stringify({
+        const _data = await encrypt(await encrypt(JSON.stringify({
           email: this.state.email,
           firstName: this.state.firstName,
           lastName: this.state.lastName,
@@ -157,7 +157,7 @@ class UpdateUser extends Component {
           docNo: this.state.docNo,
           addressDocument: this.state.addressDocument,
           idDocument: this.state.idDocument
-        }), process.env.REACT_APP_ENCRYPTION_PASS)
+        }), process.env.REACT_APP_ENCRYPTION_PASS), this.props.account)
 
         this.props.ipfs.addJSON(_data, async (err, _hash) => {
           if (err) {

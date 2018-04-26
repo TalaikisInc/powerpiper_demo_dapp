@@ -3,10 +3,11 @@ import { connect } from 'react-redux'
 
 import Heading from 'grommet/components/Heading'
 import Box from 'grommet/components/Box'
-import Label  from 'grommet/components/Label'
-import Table  from 'grommet/components/Table'
-import TableHeader  from 'grommet/components/TableHeader'
-import TableRow  from 'grommet/components/TableRow'
+import Label from 'grommet/components/Label'
+import List from 'grommet/components/List'
+import ListItem  from 'grommet/components/ListItem'
+import Image from 'grommet/components/Image'
+import Button from 'grommet/components/Button'
 
 import { decrypt } from '../../utils/crypto'
 
@@ -79,11 +80,58 @@ class UserList extends Component {
 
     for (let i = 0; i < users.length; i++) {
       usersRendered.push(
-        <TableRow  key={i}>
-          <td>{ users[i].email }</td>
-          <td>{ users[i].firstName }</td>
-          <td>{ users[i].lastName }</td>
-        </TableRow>
+        <div>
+          <List>
+            <ListItem>
+              <Box pad='medium' align='top'>
+                Email:
+              </Box>
+              <Box pad='medium' align='top'>
+                <p>{ users[i].email }</p>
+              </Box>
+            </ListItem>
+            <ListItem>
+              <Box pad='medium' align='top'>
+              Name:
+              </Box>
+              <Box pad='medium' align='top'>
+                <p>{ users[i].firstName } { users[i].lastName }</p>
+                <p>{ users[i].docType } { users[i].docNo }</p>
+                { users[i].idDocument ?
+                 <p><Image src={users[i].idDocument} /></p>
+                  : ''
+                }
+              </Box>
+            </ListItem>
+            <ListItem>
+              <Box pad='medium' align='top'>
+                Address:
+              </Box>
+              <Box pad='medium' align='top'>
+                <p>{ users[i].address } { users[i].city } { users[i].country }</p>
+                { users[i].addressDocument ?
+                  <p><Image src={users[i].addressDocument} /></p>
+                  : ''
+                }
+              </Box>
+            </ListItem>
+            <ListItem>
+              <Box pad='medium' align='top'>
+                Phone:
+              </Box>
+              <Box pad='medium' align='top'>
+                <p>{ users[i].phone }</p>
+              </Box>
+            </ListItem>
+          </List>
+          <Box pad='medium' align='top'>
+            <Button primary={true} type='submit' label='Add to whitelist' />
+          </Box>
+          <Box pad='medium' align='top'>
+            <Button primary={true} type='submit' label='Remove from whitelist' />
+          </Box>
+          <hr />
+        </div>
       )
     }
 
@@ -92,12 +140,7 @@ class UserList extends Component {
         <Heading>Users</Heading>
         <Label>Found { this.state.userCount } user(s).</Label>
 
-        <Table>
-          <TableHeader labels={['Email', 'First name', 'Last name']} sortIndex={0} />
-          <tbody>
-            { usersRendered }
-          </tbody>
-        </Table>
+        { usersRendered }
       </Box>
     )
   }

@@ -9,8 +9,6 @@ import Label  from 'grommet/components/Label'
 import Form  from 'grommet/components/Form'
 import CheckBox  from 'grommet/components/CheckBox'
 
-import { encrypt, decrypt } from '../../utils/crypto'
-
 class DeleteUser extends Component {
   constructor(props) {
     super(props)

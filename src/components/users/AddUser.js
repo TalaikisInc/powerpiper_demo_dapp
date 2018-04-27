@@ -129,11 +129,19 @@ class AddUser extends Component {
                 })
               })
               .catch((err) => {
-                this.setState({
-                  modalOpen: true,
-                  failure: `Error occurred: ${err.message}`,
-                  loading: false
-                })
+                if (err.message.indexOf('User denied') != -1) {
+                  this.setState({
+                    modalOpen: true,
+                    failure: 'Tx rejected',
+                    loading: false
+                  })
+                } else {
+                  this.setState({
+                    modalOpen: true,
+                    failure: `Error occurred: ${err.message}`,
+                    loading: false
+                  })
+                }
               })
           }
         })

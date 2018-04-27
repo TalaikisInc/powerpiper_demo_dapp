@@ -83,13 +83,13 @@ class DeleteUser extends Component {
           }
         })
         .catch((error) => {
-            // if Something goes wrong, disable the form
-            this.setState({
-              registered: false,
-              Failure: 'Some error occurred, so disabled the form.',
-              loading: false
-            })
+          // if Something goes wrong, disable the form
+          this.setState({
+            registered: false,
+            Failure: 'Some error occurred, so disabled the form.',
+            loading: false
           })
+        })
 
       })
     }

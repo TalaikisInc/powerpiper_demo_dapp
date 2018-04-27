@@ -1,4 +1,4 @@
-# PowerPiper Dapp Demo
+# PowerPiper dApp Demo
 
 ## Status
 

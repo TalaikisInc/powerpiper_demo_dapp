@@ -5,7 +5,7 @@ import Label  from 'grommet/components/Label'
 
 const Help = () => (
   <Box>
-    <Heading>Welcome to PowerPiper DApp [Demo]!</Heading>
+    <Heading>Welcome to PowerPiper dApp [Demo]!</Heading>
 
     <Label>Instructions:</Label>
 

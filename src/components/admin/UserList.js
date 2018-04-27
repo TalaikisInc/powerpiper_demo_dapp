@@ -25,7 +25,8 @@ class UserList extends Component {
       userCount: '',
       users: [],
       toWhitelist: '',
-      rmWhitelist: ''
+      rmWhitelist: '',
+      status: false
     }
 
     this.getUsers = this.getUsers.bind(this)
@@ -33,13 +34,14 @@ class UserList extends Component {
     this.getUsersCount = this.getUsersCount.bind(this)
     this.addWhitelist = this.addWhitelist.bind(this)
     this.rmWhitelist = this.rmWhitelist.bind(this)
+    this.getWhitelistStatus = this.getWhitelistStatus.bind(this)
   }
 
   componentDidMount() {
     this.getUsersCount()
     this.getUsers()
   }
-  
+
   getUsersCount() {
     this.props.Token.deployed().then(async (token) => {
       token.getUserCount().then((res) => {
@@ -54,6 +56,25 @@ class UserList extends Component {
     }, 2000)
   }
 
+  getWhitelistStatus(recipient) {
+    if (web3utils.isAddress(recipient)) {
+      this.props.Crowdsale.deployed().then((token) => {
+        token.getWhitelistStatus(recipient, { from: this.props.account }).then((res) => {
+          this.setState({
+            status: res
+          })
+        })
+      })
+      .catch((error) => {
+        console.log('Whitelist query', error)
+      })
+    }
+
+    setTimeout(() => {
+        this.getWhitelistStatus()
+    }, 2000)
+  }
+
   getUsers() {
     if (this.state.userCount > 0) {
       let userData = []
@@ -64,7 +85,9 @@ class UserList extends Component {
             this.props.ipfs.catJSON(_decryptedHash, async (err, data) => {
               const _obj = JSON.parse(await decrypt(await decrypt(data, res[1]), process.env.REACT_APP_ENCRYPTION_PASS))
               if (!err) {
+                this.getWhitelistStatus(res[1])
                 _obj.user = res[1]
+                _obj.status = this.state.status
                 userData.push(_obj)
                 this.setState({
                   users: userData
@@ -200,10 +223,21 @@ class UserList extends Component {
                 <p>{ users[i].phone }</p>
               </Box>
             </ListItem>
+            <ListItem>
+              <Box pad='medium' align='start'>
+                Whitelisted:
+              </Box>
+              <Box pad='medium' align='start'>
+                <p>{ users[i].status !== null ? users[i].status.toString() : 'N/A' }</p>
+              </Box>
+            </ListItem>
           </List>
           <Box pad='medium' align='start'>
-            <Anchor primary={true} icon={<AddIcon />} label='Add to whitelist' onClick={() => { this.setState({toWhitelist: users[i].user});this.addWhitelist()}} />
-            <Anchor primary={true} icon={<SubtractIcon />} label='Remove from whitelist' onClick={() => { this.setState({rmWhitelist: users[i].user});this.rmWhitelist()}}/>
+            { users[i].status ?
+              <Anchor primary={true} icon={<SubtractIcon />} label='Remove from whitelist' onClick={() => { this.setState({rmWhitelist: users[i].user});this.rmWhitelist()}}/>
+              :
+              <Anchor primary={true} icon={<AddIcon />} label='Add to whitelist' onClick={() => { this.setState({toWhitelist: users[i].user});this.addWhitelist()}} />
+            }
           </Box>
           <hr />
         </div>

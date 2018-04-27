@@ -16,11 +16,14 @@ class AddToWhitelist extends Component {
       modalOpen: null,
       success: '',
       failure: '',
-      toWhitelist: ''
+      toWhitelist: '',
+      status: false,
+      loading: false
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.getWhitelistStatus = this.getWhitelistStatus.bind(this)
   }
 
   handleChange(event) {
@@ -29,8 +32,31 @@ class AddToWhitelist extends Component {
     const { name } = target
 
     this.setState({
-      [name]: value
+      [name]: value,
+      loading: true
     })
+
+    this.getWhitelistStatus()
+  }
+
+  getWhitelistStatus() {
+    if (web3utils.isAddress(this.state.toWhitelist)) {
+      this.props.Crowdsale.deployed().then((token) => {
+        token.getWhitelistStatus(this.state.toWhitelist, { from: this.props.account }).then((res) => {
+          this.setState({
+            status: res,
+            loading: false
+          })
+        })
+      })
+      .catch((error) => {
+        console.log('Whitelist query', error)
+      })
+    }
+
+    setTimeout(() => {
+        this.getWhitelistStatus()
+    }, 2000)
   }
 
   handleSubmit(event) {
@@ -69,7 +95,7 @@ class AddToWhitelist extends Component {
     return (
       <Box align='center'>
         <Heading>Add to Whitelist</Heading>
-        <Form onSubmit={this.handleSubmit}>
+        { !this.state.status ? <Form onSubmit={this.handleSubmit}>
           <Box pad='small' align='center'>
             <Label labelFor="whitelist">Whom to add:</Label>
           </Box>
@@ -83,15 +109,20 @@ class AddToWhitelist extends Component {
               placeHolder='Address'/>
           </Box>
           <Box pad='small' align='center'>
-              <Button primary={true} type='submit' label='Save' />
+            {
+              this.state.loading ? 'Loading...'
+              : <Button primary={true} type='submit' label='Save' />
+            }
           </Box>
         </Form>
-          { this.state.modalOpen && <Toast
-            status={this.state.success ? 'ok' : 'critical' }>
-              <p>{ this.state.success ? this.state.success : null }</p>
-              <p>{ this.state.failure ? this.state.failure : null }</p>
-            </Toast>
-          }
+        : <Label>This user is already whitelisted</Label>
+        }
+        { this.state.modalOpen && <Toast
+          status={this.state.success ? 'ok' : 'critical' }>
+            <p>{ this.state.success ? this.state.success : null }</p>
+            <p>{ this.state.failure ? this.state.failure : null }</p>
+          </Toast>
+        }
       </Box>
     )
   }

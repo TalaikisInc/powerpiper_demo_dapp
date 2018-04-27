@@ -6,7 +6,6 @@ import Paragraph from 'grommet/components/Paragraph'
 
 const Footer = () => (
   <Box align='center'>
-    <p><strong>NOTE</strong>. Your Metamask should point to Rinkeby Network in order to load the app</p>
     <Paragraph>&copy; 2018, <a href="https://powerpiper.com">PowerPiper</a></Paragraph>
   </Box>
 )

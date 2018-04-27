@@ -56,12 +56,14 @@ class _App extends Component {
 
     setInterval(() => {
       this.props.fetchAccount(this.props.web3)
+      this.props.fetchGasPrice(this.props.web3)
     }, 2000)
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.web3 !== nextProps.web3) {
       this.props.fetchAccount(this.props.web3)
+      this.props.fetchGasPrice(this.props.web3)
       this.props.initIPFS(this.props.web3)
 
       this.setState({

@@ -1,16 +1,19 @@
 import { combineReducers } from 'redux'
-import InitWeb3Reducer from './init_web3'
-import InitTokenReducer from './init_token'
-import InitCrowdsaleReducer from './init_crowdsale'
-import FetchAccountReducer from './fetch_account'
-import IPFSReducer from './init_ipfs'
 
-const rootReducer = combineReducers({
-  web3: InitWeb3Reducer,
-  Token: InitTokenReducer,
-  Crowdsale: InitCrowdsaleReducer,
-  ipfs: IPFSReducer,
-  account: FetchAccountReducer
+import Web3 from './web3'
+import Token from './token'
+import Crowdsale from './crowdsale'
+import Account from './account'
+import IPFS from './ipfs'
+import Gas from './gas'
+
+const root = combineReducers({
+  web3: Web3,
+  Token: Token,
+  Crowdsale: Crowdsale,
+  ipfs: IPFS,
+  account: Account,
+  gasPrice: Gas
 })
 
-export default rootReducer
+export default root

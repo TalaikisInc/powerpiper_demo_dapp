@@ -180,7 +180,7 @@ class UpdateUser extends Component {
                 })
               })
               .catch((err) => {
-                if (err.message.indexOf('User denied') != -1) {
+                if (err.message.indexOf('User denied') !== -1) {
                   this.setState({
                     modalOpen: true,
                     failure: 'You rejected tx.',

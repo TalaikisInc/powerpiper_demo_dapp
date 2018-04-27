@@ -116,9 +116,11 @@ class AddUser extends Component {
             })
           } else {
             const _encryptedHash = await encrypt(_hash, process.env.REACT_APP_HASH_PASS)
+            const _gas = await token.newUser.estimateGas(_encryptedHash)
             token.newUser(_encryptedHash, {
               from: this.props.account,
-              gas: 300000
+              gas: _gas,
+              gasPrice: this.props.gasPrice
             })
               .then((receipt) => {
                 this.setState({
@@ -129,7 +131,7 @@ class AddUser extends Component {
                 })
               })
               .catch((err) => {
-                if (err.message.indexOf('User denied') != -1) {
+                if (err.message.indexOf('User denied') !== -1) {
                   this.setState({
                     modalOpen: true,
                     failure: 'Tx rejected',
@@ -319,7 +321,8 @@ function mapStateToProps(state) {
     Token: state.Token,
     account: state.account,
     web3: state.web3,
-    ipfs: state.ipfs
+    ipfs: state.ipfs,
+    gasPrice: state.gasPrice
   }
 }
 

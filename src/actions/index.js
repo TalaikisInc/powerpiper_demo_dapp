@@ -102,3 +102,28 @@ export function fetchAccount(payload) {
     }
   }
 }
+
+export function fetchGasPrice(payload) {
+  return (dispatch) => {
+    if (payload.web3) {
+      payload.web3.eth.getGasPrice((err, gasPrice) => {
+        if (err === null) {
+          dispatch({
+            type: 'FETCH_GAS',
+            payload: (gasPrice !== null ? gasPrice : 4)
+          })
+        } else {
+          dispatch({
+            type: 'FETCH_GAS',
+            payload: null
+          })
+        }
+      })
+    } else {
+      dispatch({
+        type: 'FETCH_GAS',
+        payload: null
+      })
+    }
+  }
+}

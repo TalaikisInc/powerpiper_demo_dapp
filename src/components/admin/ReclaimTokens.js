@@ -36,14 +36,9 @@ class ReclaimTokens extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    this.setState({
-      success: '',
-      failure: ''
-    })
-
-    this.props.Crowdsale.deployed().then(async (crowdsale) => {
-      if (web3utils.isAddress(this.state.from)) {
-        crowdsale.reclaimToken(this.state.from, { from: this.props.account })
+    if (web3utils.isAddress(this.state.from)) {
+      this.props.Crowdsale.deployed().then(async (crowdsale) => {
+        crowdsale.reclaimToken(this.state.from, { from: this.props.account, gas: 300000 })
           .then((receipt) => {
             // console.log(receipt)
             this.setState({
@@ -52,19 +47,19 @@ class ReclaimTokens extends Component {
             })
         })
         .catch((err) => {
-          // console.log(err)
+          console.log(err)
           this.setState({
             modalOpen: true,
             failure: `Error occurred: ${err.message}`
           })
         })
-      } else {
-        this.setState({
-          modalOpen: true,
-          failure: `If you want to reclaim tokens from user, you need to fill the form.`
-        })
-      }
-    })
+      })
+    } else {
+      this.setState({
+        modalOpen: true,
+        failure: `If you want to reclaim tokens from user, you need to fill the form.`
+      })
+    }
   }
 
   render() {

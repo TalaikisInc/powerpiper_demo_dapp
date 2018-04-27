@@ -32,6 +32,7 @@ import AddToWhitelist from './admin/AddToWhitelist'
 import GetUser from './admin/GetUser'
 import UserList from './admin/UserList'
 import AddUser from './users/AddUser'
+import PublicUserList from './users/PublicUserList'
 import UpdateUser from './users/UpdateUser'
 import DeleteUser from './users/DeleteUser'
 import Exchange from './Exchange'
@@ -170,7 +171,7 @@ class _App extends Component {
                             <Redirect to='/finish-mint' />
                           </Tab>
                           <Tab title='Users'>
-                            <Redirect to='/users' />
+                            <Redirect to='/users-admin' />
                           </Tab>
                           <Tab title='Get User'>
                             <Redirect to='/get-user' />
@@ -205,6 +206,9 @@ class _App extends Component {
                         <Tab title='My account'>
                           <Redirect to='/account' />
                         </Tab>
+                        <Tab title='Users'>
+                          <Redirect to='/users' />
+                        </Tab>
                       </Tabs>
                     </Box>
                   }
@@ -222,6 +226,7 @@ class _App extends Component {
                       <Route exact path='/edit-profile' component={UpdateUser} />
                       <Route exact path='/delete-profile' component={DeleteUser} />
                       <Route exact path='/exchange' component={Exchange} />
+                      <Route exact path='/users' component={PublicUserList} />
 
                       <Route exact path='/admin' component={Admin} />
                       <Route exact path='/markup' component={PriceMarkup} />
@@ -234,7 +239,7 @@ class _App extends Component {
                       <Route exact path='/whitelist-remove' component={RemoveFromWhitelist} />
                       <Route exact path='/whitelist-add' component={AddToWhitelist} />
                       <Route exact path='/get-user' component={GetUser} />
-                      <Route exact path='/users' component={UserList} />
+                      <Route exact path='/users-admin' component={UserList} />
 
                       <Route exact path="*" component={NoMatch} />
                       </Switch>

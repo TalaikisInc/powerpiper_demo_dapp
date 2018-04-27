@@ -22,7 +22,7 @@ class UserList extends Component {
       modalOpen: null,
       success: '',
       failure: '',
-      userCount: '',
+      userCount: 0,
       users: [],
       toWhitelist: '',
       rmWhitelist: '',
@@ -30,7 +30,6 @@ class UserList extends Component {
     }
 
     this.getUsers = this.getUsers.bind(this)
-    this.getUsersCount = this.getUsersCount.bind(this)
     this.getUsersCount = this.getUsersCount.bind(this)
     this.addWhitelist = this.addWhitelist.bind(this)
     this.rmWhitelist = this.rmWhitelist.bind(this)

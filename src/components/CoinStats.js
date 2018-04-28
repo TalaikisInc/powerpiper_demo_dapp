@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
@@ -12,7 +12,7 @@ import Async from './Async'
 import env from '../env'
 const RecentTransactions = Async(() => import('./events/RecentTransactions'))
 
-class CoinStats extends Component {
+class CoinStats extends PureComponent {
   constructor(props) {
     super(props)
 

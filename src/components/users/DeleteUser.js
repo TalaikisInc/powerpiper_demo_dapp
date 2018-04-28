@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 import Toast from 'grommet/components/Toast'
@@ -9,7 +9,7 @@ import Label  from 'grommet/components/Label'
 import Form  from 'grommet/components/Form'
 import CheckBox  from 'grommet/components/CheckBox'
 
-class DeleteUser extends Component {
+class DeleteUser extends PureComponent {
   constructor(props) {
     super(props)
 

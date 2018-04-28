@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import Web3Utils from 'web3-utils'
 
@@ -12,7 +12,7 @@ import Form  from 'grommet/components/Form'
 
 import env from '../env'
 
-class TransferTokens extends Component {
+class TransferTokens extends PureComponent {
   constructor(props) {
     super(props)
 

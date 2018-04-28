@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import Web3Utils from 'web3-utils'
@@ -15,7 +15,7 @@ import Form  from 'grommet/components/Form'
 
 import env from '../env'
 
-class BuyIcoTokens extends Component {
+class BuyIcoTokens extends PureComponent {
   constructor(props) {
     super(props)
 

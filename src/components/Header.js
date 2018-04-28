@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 
@@ -7,7 +7,7 @@ import Label  from 'grommet/components/Label'
 import Tabs  from 'grommet/components/Tabs'
 import Tab  from 'grommet/components/Tab'
 
-class Header extends Component {
+class Header extends PureComponent {
   constructor(props) {
     super(props)
 

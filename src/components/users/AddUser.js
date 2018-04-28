@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import validator from 'validator'
 
@@ -14,9 +14,11 @@ import Select  from 'grommet/components/Select'
 import { encrypt } from '../../utils/crypto'
 import data from '../../utils/data'
 
-class AddUser extends Component {
+class AddUser extends PureComponent {
   constructor(props) {
     super(props)
+
+    this.mounted = false
 
     this.state = {
       success: '',
@@ -44,6 +46,14 @@ class AddUser extends Component {
     this.getUser = this.getUser.bind(this)
   }
 
+  componentWillMount() {
+		this.mounted = true
+  }
+  
+  componentWillUnmount() {
+		this.mounted = false
+  }
+
   componentDidMount() {
     this.getUser()
   }
@@ -51,31 +61,35 @@ class AddUser extends Component {
   handleChange(event) {
     const value = event.target.value ? event.target.value : event.option.value
     
-    this.setState({
-      [event.target.name]: value
-    })
+    if (this.mounted) {
+      this.setState({
+        [event.target.name]: value
+      })
+    }
   }
 
   getUser() {
     this.props.Token.deployed().then(async (token) => {
       token.existsUser(this.props.account, { from: this.props.account })
         .then((res) => {
-          if (res) {
+          if (res && this.mounted) {
             this.setState({
               registered: true,
               status: 'This account is already registered.'
             })
-          } else {
+          } else if (this.mounted) {
             this.setState({
               registered: false
             })
           }
         })
         .catch((error) => {
-          console.log('Add user', error)
-          this.setState({
-            registered: true
-          })
+          // console.log('Add user', error)
+          if(this.mounted) {
+            this.setState({
+              registered: true
+            })
+          }
         })
       })
 
@@ -87,9 +101,11 @@ class AddUser extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    this.setState({
-      loading: true
-    })
+    if (this.mounted) {
+      this.setState({
+        loading: true
+      })
+    }
 
     this.props.Token.deployed().then(async (token) => {
       if (validator.isEmail(this.state.email) && this.state.firstName != null && this.state.lastName != null) {
@@ -109,12 +125,12 @@ class AddUser extends Component {
         }), process.env.REACT_APP_ENCRYPTION_PASS), this.props.account)
 
         this.props.ipfs.addJSON(_data, async (err, _hash) => {
-          if (err) {
+          if (err && this.mounted) {
             this.setState({
               failure: `Error occurred: ${err.message}`,
               loading: false
             })
-          } else {
+          } else if (this.mounted) {
             const _encryptedHash = await encrypt(_hash, process.env.REACT_APP_HASH_PASS)
             const _gas = await token.newUser.estimateGas(_encryptedHash)
             token.newUser(_encryptedHash, {
@@ -123,21 +139,23 @@ class AddUser extends Component {
               gasPrice: this.props.gasPrice
             })
               .then((receipt) => {
-                this.setState({
-                  modalOpen: true,
-                  success: `Success! Your tx: ${receipt.tx}`,
-                  registered: true,
-                  loading: false
-                })
+                if (this.mounted) {
+                  this.setState({
+                    modalOpen: true,
+                    success: `Success! Your tx: ${receipt.tx}`,
+                    registered: true,
+                    loading: false
+                  })
+                }
               })
               .catch((err) => {
-                if (err.message.indexOf('User denied') !== -1) {
+                if (err.message.indexOf('User denied') !== -1 && this.mounted) {
                   this.setState({
                     modalOpen: true,
                     failure: 'Tx rejected',
                     loading: false
                   })
-                } else {
+                } else if (this.mounted) {
                   this.setState({
                     modalOpen: true,
                     failure: `Error occurred: ${err.message}`,
@@ -148,7 +166,7 @@ class AddUser extends Component {
           }
         })
       } else {
-        if (!this.state.registered) {
+        if (!this.state.registered && this.mounted) {
           this.setState({
             modalOpen: true,
             failure: `Please check the form.`,
@@ -166,13 +184,15 @@ class AddUser extends Component {
       const reader = new FileReader()
       reader.onload = (function(theFile) {
         return function(e) {
-          this.setState({
-            [name]: e.target.result
-          })
+          if (this.mounted) {
+            this.setState({
+              [name]: e.target.result
+            })
+          }
         }.bind(this)
     }.bind(this))(data)
     reader.readAsDataURL(data)
-    } else {
+    } else if (this.mounted) {
       this.setState({
         modalOpen: true,
         failure: `We can accept only image files.`

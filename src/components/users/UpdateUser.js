@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import validator from 'validator'
 
@@ -14,7 +14,7 @@ import Select  from 'grommet/components/Select'
 import { encrypt, decrypt } from '../../utils/crypto'
 import data from '../../utils/data'
 
-class UpdateUser extends Component {
+class UpdateUser extends PureComponent {
   constructor(props) {
     super(props)
 

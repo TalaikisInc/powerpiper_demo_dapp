@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import web3utils from 'web3-utils'
 
@@ -15,7 +15,7 @@ import env from '../../env'
 /*
 @TODO full rating system: 1) count obs, 2) sort, 3) get pos.
 */
-class PublicUserList extends Component {
+class PublicUserList extends PureComponent {
   constructor() {
     super()
     this.state = {

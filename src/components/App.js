@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
@@ -39,7 +39,7 @@ const UpdateUser = Async(() => import('./users/UpdateUser'))
 const AddUser = Async(() => import('./users/AddUser'))
 const NoMatch = Async(() => import('./NoMatch'))
 
-class _App extends Component {
+class _App extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -51,6 +51,10 @@ class _App extends Component {
 
   async componentDidMount() {
     this.props.initWeb3()
+
+    this.setState({
+      initiated: true
+    })
 
     setInterval(() => {
       this.props.fetchAccount(this.props.web3)
@@ -64,10 +68,6 @@ class _App extends Component {
       this.props.fetchGasPrice(this.props.web3)
       this.props.initIPFS(this.props.web3)
 
-      this.setState({
-        initiated: true
-      })
-
       if (nextProps.web3.web3Initiated) {
         this.props.initToken(nextProps.web3)
         this.props.initCrowdsale(nextProps.web3)
@@ -78,21 +78,6 @@ class _App extends Component {
       this.setState({
         initiated: true
       })
-    }
-
-    if (this.props.Crowdsale !== nextProps.Crowdsale) {
-      nextProps.Crowdsale.deployed()
-        .then(() => {
-          this.setState({
-            deployed: true
-          })
-        })
-        .catch((err) => {
-          // console.log('App err', err)
-          this.setState({
-            deployed: false
-          })
-        })
     }
   }
 

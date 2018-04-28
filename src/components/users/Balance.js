@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 import Heading from 'grommet/components/Heading'
@@ -8,7 +8,7 @@ import Box  from 'grommet/components/Box'
 
 import env from '../../env'
 
-class Balance extends Component {
+class Balance extends PureComponent {
   constructor(props) {
     super(props)
 

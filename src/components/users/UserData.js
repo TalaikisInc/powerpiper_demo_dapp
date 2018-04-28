@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import web3utils from 'web3-utils'
@@ -15,9 +15,10 @@ import DelIcon from 'grommet/components/icons/base/Trash'
 
 import { decrypt } from '../../utils/crypto'
 
-class UserData extends Component {
+class UserData extends PureComponent {
   constructor(props) {
     super(props)
+    this.mounted = false
 
     this.state = {
       failure: '',
@@ -38,6 +39,14 @@ class UserData extends Component {
     this.getUserData = this.getUserData.bind(this)
   }
 
+  componentWillMount() {
+		this.mounted = true
+  }
+  
+  componentWillUnmount() {
+		this.mounted = false
+  }
+
   async componentDidMount() {
     this.getUserData()
   }
@@ -49,13 +58,13 @@ class UserData extends Component {
             .then(async (res) => {
               const _decryptedHash = await decrypt(res[1], process.env.REACT_APP_HASH_PASS)
               this.props.ipfs.catJSON(_decryptedHash, async (err, data) => {
-                if(err) {
+                if(err && this.mounted) {
                   // console.log(err)
                   this.setState({
                     modalOpen: true,
                     failure: `Error occurred: ${err.message}`
                   })
-                } else {
+                } else if (this.mounted) {
                   const _obj = JSON.parse(await decrypt(await decrypt(data, this.props.account), process.env.REACT_APP_ENCRYPTION_PASS))
                   this.setState({
                     user: res[1],
@@ -76,16 +85,20 @@ class UserData extends Component {
             })
             .catch((error) => {
               // console.log(error.message)
-              this.setState({
-                modalOpen: true,
-                failure: `Error occurred: ${error.message}`
-              })
+              if (this.mounted) {
+                this.setState({
+                  modalOpen: true,
+                  failure: `Error occurred: ${error.message}`
+                })
+              }
             })
         } else {
-          this.setState({
-            modalOpen: true,
-            failure: 'Wrong account.'
-          })
+          if (this.mounted) {
+            this.setState({
+              modalOpen: true,
+              failure: 'Wrong account.'
+            })
+          }
         }
       })
 

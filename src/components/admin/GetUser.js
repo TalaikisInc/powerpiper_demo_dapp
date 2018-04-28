@@ -47,7 +47,7 @@ class GetUser extends Component {
     this.getUsersCount = this.getUsersCount.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getUsersCount()
   }
   

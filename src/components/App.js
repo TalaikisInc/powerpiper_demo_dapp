@@ -1,44 +1,43 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { Redirect } from 'react-router'
+import { BrowserRouter, Route } from 'react-router-dom'
 
 import '../../node_modules/grommet-css'
 import App from 'grommet/components/App'
 import Box from 'grommet/components/Box'
-import Label  from 'grommet/components/Label'
-import Tabs  from 'grommet/components/Tabs'
-import Tab  from 'grommet/components/Tab'
 import ReactGA from 'react-ga'
 
 import * as actions from '../actions'
-import Footer from './Footer'
-import Status from './Status'
-import Home from './Home'
-import Help from './Help'
-import BuyIcoTokens from './BuyIcoTokens'
-import CoinStats from './CoinStats'
-import TransferTokens from './TransferTokens'
-import Admin from './admin/Admin'
-import PriceMarkup from './admin/PriceMarkup'
-import Fee from './admin/Fee'
-import TransferOwnership from './admin/TransferOwnership'
-import ReclaimTokens from './admin/ReclaimTokens'
-import FinishMinting from './admin/FinishMinting'
-import Mint from './admin/Mint'
-import Approve from './admin/Approve'
-import RemoveFromWhitelist from './admin/RemoveFromWhitelist'
-import AddToWhitelist from './admin/AddToWhitelist'
-import GetUser from './admin/GetUser'
-import UserList from './admin/UserList'
-import AddUser from './users/AddUser'
-import PublicUserList from './users/PublicUserList'
-import UpdateUser from './users/UpdateUser'
-import DeleteUser from './users/DeleteUser'
-import Exchange from './Exchange'
-import NoMatch from './NoMatch'
+import Async from './Async'
 import env from '../env'
 ReactGA.initialize(env.GA)
+const supportsHistory = 'pushState' in window.history
+const Help = Async(() => import('./Help'))
+const Exchange = Async(() => import('./Exchange'))
+const Home = Async(() => import('./Home'))
+const Header = Async(() => import('./Header'))
+const Footer = Async(() => import('./Footer'))
+const CoinStats = Async(() => import('./CoinStats'))
+const TransferTokens = Async(() => import('./TransferTokens'))
+const BuyIcoTokens = Async(() => import('./BuyIcoTokens'))
+const Status = Async(() => import('./Status'))
+const PriceMarkup = Async(() => import('./admin/PriceMarkup'))
+const TransferOwnership = Async(() => import('./admin/TransferOwnership'))
+const FinishMinting = Async(() => import('./admin/FinishMinting'))
+const Mint = Async(() => import('./admin/Mint'))
+const RemoveFromWhitelist = Async(() => import('./admin/RemoveFromWhitelist'))
+const ReclaimTokens = Async(() => import('./admin/ReclaimTokens'))
+const AddToWhitelist = Async(() => import('./admin/AddToWhitelist'))
+const Admin = Async(() => import('./admin/Admin'))
+const Approve = Async(() => import('./admin/Approve'))
+const GetUser = Async(() => import('./admin/GetUser'))
+const Fee = Async(() => import('./admin/Fee'))
+const UserList = Async(() => import('./admin/UserList'))
+const DeleteUser = Async(() => import('./users/DeleteUser'))
+const PublicUserList = Async(() => import('./users/PublicUserList'))
+const UpdateUser = Async(() => import('./users/UpdateUser'))
+const AddUser = Async(() => import('./users/AddUser'))
+const NoMatch = Async(() => import('./NoMatch'))
 
 class _App extends Component {
   constructor(props) {
@@ -50,9 +49,8 @@ class _App extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.initWeb3()
-    this.validateAdmin()
 
     setInterval(() => {
       this.props.fetchAccount(this.props.web3)
@@ -98,26 +96,6 @@ class _App extends Component {
     }
   }
 
-  validateAdmin() {
-    if(this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty') {
-      this.props.Crowdsale.deployed().then(async (crowdsale) => {
-        crowdsale.validate({ from: this.props.account }).then((res) => {
-          this.setState({
-            isOwner: res
-          })
-        })
-      })
-    } else {
-      this.setState({
-        isOwner: false
-      })
-    }
-
-    setTimeout(() => {
-      this.validateAdmin()
-    }, 2000)
-  }
-
   pageviewTracking() {
     ReactGA.pageview(window.location.hash)
   }
@@ -126,7 +104,7 @@ class _App extends Component {
     return (
       <App>
         <div>
-          <BrowserRouter onUpdate={this.pageviewTracking}>
+          <BrowserRouter onUpdate={this.pageviewTracking} forceRefresh={!supportsHistory}>
             <div>
               <Box align='center' responsive={true} pad='large'>
                 <Status
@@ -134,117 +112,35 @@ class _App extends Component {
                   metamask={this.props.web3}
                   initiated={this.state.initiated}
                   deployed={this.state.deployed} {...this.props} />
-                <Box align='center' responsive={true} pad='medium'>
-                  { this.state.isOwner
-                    ? <Box>
-                      <Label align='center'>Crowdsale:</Label>
-                        <Tabs responsive={true} justify='center'>
-                          <Tab title='Home'>
-                            <Redirect to='/admin' />
-                          </Tab>
-                          <Tab title='Ownership'>
-                            <Redirect to='/transfer-ownership' />
-                          </Tab>
-                          <Tab title='Reclaim'>
-                            <Redirect to='/reclaim-tokens' />
-                          </Tab>
-                          <Tab title='Approval'>
-                            <Redirect to='/approve' />
-                          </Tab>
-                          <Tab title='Wh. add'>
-                            <Redirect to='/whitelist-add' />
-                          </Tab>
-                          <Tab title='Wh. remove'>
-                            <Redirect to='/whitelist-remove' />
-                          </Tab>
-                        </Tabs>
-                        <Label align='center'>Token:</Label>
-                        <Tabs responsive={true} justify='center'>
-                          <Tab title='Markup'>
-                            <Redirect to='/markup' />
-                          </Tab>
-                          <Tab title='Fee'>
-                            <Redirect to='/fee' />
-                          </Tab>
-                          <Tab title='Mint'>
-                            <Redirect to='/mint' />
-                          </Tab>
-                          <Tab title='Finish mint'>
-                            <Redirect to='/finish-mint' />
-                          </Tab>
-                          <Tab title='Users'>
-                            <Redirect to='/users-admin' />
-                          </Tab>
-                          <Tab title='Get User'>
-                            <Redirect to='/get-user' />
-                          </Tab>
-                        </Tabs>
-                        { /*
-                        <Redeems />
-                        <Certificates />
-                        <TokenAvailability />
-                        */ }
-                    </Box>
-                    : <Box>
-                      <Tabs responsive={true} justify='center'>
-                        <Tab title='Home'>
-                          <Redirect to='/help' />
-                        </Tab>
-                        <Tab title='Market Info'>
-                          <Redirect to='/market-info' />
-                        </Tab>
-                        <Tab title='Register'>
-                          <Redirect to='/register' />
-                        </Tab>
-                        <Tab title='Buy tokens'>
-                          <Redirect to='/ico' />
-                          </Tab>
-                        <Tab title='Exchange'>
-                        <Redirect to='/exchange' />
-                        </Tab>
-                        <Tab title='Send'>
-                          <Redirect to='/transfer' />
-                        </Tab>
-                        <Tab title='My account'>
-                          <Redirect to='/account' />
-                        </Tab>
-                        <Tab title='Users'>
-                          <Redirect to='/users' />
-                        </Tab>
-                      </Tabs>
-                    </Box>
-                  }
-                </Box>
-                <Route exact path='/help' component={Help} />
 
                 { this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
                   ? <div>
-                      <Switch>
-                      <Route exact path='/account' component={Home} />
-                      <Route exact path='/ico' component={BuyIcoTokens} />
-                      <Route exact path='/market-info' component={CoinStats} />
-                      <Route exact path='/transfer' component={TransferTokens} />
-                      <Route exact path='/register' component={AddUser} />
-                      <Route exact path='/edit-profile' component={UpdateUser} />
-                      <Route exact path='/delete-profile' component={DeleteUser} />
-                      <Route exact path='/exchange' component={Exchange} />
-                      <Route exact path='/users' component={PublicUserList} />
+                      <Header />
+                      <Route exact strict sensitive path='/help' component={Help} />
+                      <Route exact strict sensitive path='/account' component={Home} />
+                      <Route exact strict sensitive path='/ico' component={BuyIcoTokens} />
+                      <Route exact strict sensitive path='/market-info' component={CoinStats} />
+                      <Route exact strict sensitive path='/transfer' component={TransferTokens} />
+                      <Route exact strict sensitive path='/register' component={AddUser} />
+                      <Route exact strict sensitive path='/edit-profile' component={UpdateUser} />
+                      <Route exact strict sensitive path='/delete-profile' component={DeleteUser} />
+                      <Route exact strict sensitive path='/exchange' component={Exchange} />
+                      <Route exact strict sensitive path='/users' component={PublicUserList} />
 
-                      <Route exact path='/admin' component={Admin} />
-                      <Route exact path='/markup' component={PriceMarkup} />
-                      <Route exact path='/fee' component={Fee} />
-                      <Route exact path='/transfer-ownership' component={TransferOwnership} />
-                      <Route exact path='/reclaim-tokens' component={ReclaimTokens} />
-                      <Route exact path='/approve' component={Approve} />
-                      <Route exact path='/finish-mint' component={FinishMinting} />
-                      <Route exact path='/mint' component={Mint} />
-                      <Route exact path='/whitelist-remove' component={RemoveFromWhitelist} />
-                      <Route exact path='/whitelist-add' component={AddToWhitelist} />
-                      <Route exact path='/get-user' component={GetUser} />
-                      <Route exact path='/users-admin' component={UserList} />
+                      <Route exact strict sensitive path='/admin' component={Admin} />
+                      <Route exact strict sensitive path='/markup' component={PriceMarkup} />
+                      <Route exact strict sensitive path='/fee' component={Fee} />
+                      <Route exact strict sensitive path='/transfer-ownership' component={TransferOwnership} />
+                      <Route exact strict sensitive path='/reclaim-tokens' component={ReclaimTokens} />
+                      <Route exact strict sensitive path='/approve' component={Approve} />
+                      <Route exact strict sensitive path='/finish-mint' component={FinishMinting} />
+                      <Route exact strict sensitive path='/mint' component={Mint} />
+                      <Route exact strict sensitive path='/whitelist-remove' component={RemoveFromWhitelist} />
+                      <Route exact strict sensitive path='/whitelist-add' component={AddToWhitelist} />
+                      <Route exact strict sensitive path='/get-user' component={GetUser} />
+                      <Route exact strict sensitive path='/users-admin' component={UserList} />
 
-                      <Route exact path="*" component={NoMatch} />
-                      </Switch>
+                      <Route component={NoMatch} />
                     </div>
                   : null
                 }

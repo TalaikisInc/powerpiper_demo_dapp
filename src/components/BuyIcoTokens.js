@@ -33,7 +33,7 @@ class BuyIcoTokens extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     axios.all([
       axios.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD')
     ])

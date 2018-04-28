@@ -28,9 +28,6 @@ class Approve extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentDidMount() {
-  }
-
   handleChange(event) {
     const { target } = event
     const { name } = target

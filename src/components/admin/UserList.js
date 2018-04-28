@@ -36,7 +36,7 @@ class UserList extends Component {
     this.getWhitelistStatus = this.getWhitelistStatus.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getUsersCount()
     this.getUsers()
   }

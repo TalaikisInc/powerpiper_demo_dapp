@@ -46,7 +46,7 @@ class UpdateUser extends Component {
     this.getUserExists = this.getUserExists.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getUserExists()
     this.getUser()
   }

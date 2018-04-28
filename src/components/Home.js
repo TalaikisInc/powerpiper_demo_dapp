@@ -2,9 +2,10 @@
 import { connect } from 'react-redux'
 
 import * as actions from '../actions'
-import Balance from './Balance'
-import Address from './Address'
-import UserData from './users/UserData'
+import Async from './Async'
+const Balance = Async(() => import('./users/Balance'))
+const Address = Async(() => import('./users/Address'))
+const UserData = Async(() => import('./users/UserData'))
 
 const Home = () => (
   <div>

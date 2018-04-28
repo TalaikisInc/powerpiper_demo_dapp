@@ -20,7 +20,7 @@ class CertificatesAdmin extends Component {
     this.deleteCertificate = this.deleteCertificate.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.fetchCertificates();
     this.interval = setInterval(() => this.fetchCertificates(), 10000)
   }

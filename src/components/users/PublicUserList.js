@@ -32,7 +32,7 @@ class PublicUserList extends Component {
     this.getBalance = this.getBalance.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getUsersCount()
     this.getUsers()
   }

@@ -38,7 +38,7 @@ class UserData extends Component {
     this.getUserData = this.getUserData.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getUserData()
   }
 

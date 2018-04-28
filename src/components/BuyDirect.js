@@ -25,7 +25,7 @@ class BuyDirect extends Component {
     this.getSilverFinalPrice = this.getSilverFinalPrice.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getFee()
 
     axios.all([

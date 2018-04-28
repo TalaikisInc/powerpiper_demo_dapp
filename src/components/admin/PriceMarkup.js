@@ -27,7 +27,7 @@ class PriceMarkupAdmin extends Component {
     this.getMarkup = this.getMarkup.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getMarkup()
   }
 

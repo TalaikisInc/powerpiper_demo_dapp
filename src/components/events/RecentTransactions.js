@@ -25,7 +25,7 @@ class RecentTransactions extends Component {
     this.fetchTransactions = this.fetchTransactions.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.fetchTransactions()
   }
 

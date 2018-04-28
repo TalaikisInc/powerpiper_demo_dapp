@@ -6,7 +6,7 @@ import List from 'grommet/components/List'
 import ListItem  from 'grommet/components/ListItem'
 import Box  from 'grommet/components/Box'
 
-import env from '../env'
+import env from '../../env'
 
 class Balance extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class Balance extends Component {
     this.getEthBalance = this.getEthBalance.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getBalance()
     this.getEthBalance()
   }

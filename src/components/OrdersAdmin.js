@@ -17,7 +17,7 @@ class OrdersAdmin extends PureComponent {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.fetchOrders()
     this.interval = setInterval(() => this.fetchOrders(), 10000)
   }

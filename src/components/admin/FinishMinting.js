@@ -23,7 +23,7 @@ class FinishMint extends Component {
     this.getMintStatus = this.getMintStatus.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getMintStatus()
   }
 

@@ -14,7 +14,7 @@ class Certificates extends PureComponent {
     this.showMore = this.showMore.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.fetchCertificates(1)
   }
 

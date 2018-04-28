@@ -16,7 +16,7 @@ class RedeemsAdmin extends Component {
     this.fetchRedemptions = this.fetchRedemptions.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.fetchRedemptions();
     this.interval = setInterval(() => this.fetchRedemptions(), 10000)
   }

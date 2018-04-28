@@ -27,7 +27,7 @@ class SetFee extends Component {
     this.getFee = this.getFee.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getFee()
   }
 

@@ -15,7 +15,7 @@ class ExchangeCoinStats extends Component {
     this.getCoinStats = this.getCoinStats.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getCoinStats()
   }
 

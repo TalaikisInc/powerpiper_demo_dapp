@@ -8,8 +8,9 @@ import Label from 'grommet/components/Label'
 import Box from 'grommet/components/Box'
 import ListItem  from 'grommet/components/ListItem'
 
+import Async from './Async'
 import env from '../env'
-import RecentTransactions from './events/RecentTransactions'
+const RecentTransactions = Async(() => import('./events/RecentTransactions'))
 
 class CoinStats extends Component {
   constructor(props) {
@@ -52,7 +53,7 @@ class CoinStats extends Component {
     this.getOwner = this.getOwner.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getSymbol()
     this.getName()
     this.getDecimals()

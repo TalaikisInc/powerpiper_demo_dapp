@@ -27,7 +27,7 @@ class DeleteUser extends Component {
     this.getUserExists = this.getUserExists.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getUserExists()
   }
 

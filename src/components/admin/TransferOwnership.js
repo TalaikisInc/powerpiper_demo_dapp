@@ -42,7 +42,8 @@ class TransferOwnership extends Component {
 
     this.props.Crowdsale.deployed().then(async (crowdsale) => {
       if (this.state.to != null) {
-        crowdsale.transferOwnership(this.state.to, { from: this.props.account, gas: 300000 })
+        const _gas = await crowdsale.transferOwnership.estimateGas(this.state.to)
+        crowdsale.transferOwnership(this.state.to, { from: this.props.account, gas: _gas, gasPrice: this.props.gasPrice })
           .then((receipt) => {
             // console.log(receipt)
             this.setState({
@@ -103,7 +104,8 @@ function mapStateToProps(state) {
   return {
     Crowdsale: state.Crowdsale,
     account: state.account,
-    web3: state.web3
+    web3: state.web3,
+    gasPrice: state.gasPrice
   }
 }
 

@@ -52,9 +52,11 @@ class Approve extends Component {
     this.props.Crowdsale.deployed().then(async (crowdsale) => {
       const _value = this.state.amountTokens * 10 ** env.DECIMALS
       if(_value > 0 && web3utils.isAddress(this.state.sender)) {
+        const _gas = await crowdsale.approve.estimateGas(this.state.sender, _value)
         crowdsale.approve(this.state.sender, _value, {
           from: this.props.account,
-          gas: 300000
+          gas: _gas,
+          gasPrice: this.props.gasPrice
         })
           .then((receipt) => {
             // console.log('receipt', receipt)
@@ -129,7 +131,8 @@ function mapStateToProps(state) {
   return {
     Crowdsale: state.Crowdsale,
     account: state.account,
-    web3: state.web3
+    web3: state.web3,
+    gasPrice: state.gasPrice
   }
 }
 

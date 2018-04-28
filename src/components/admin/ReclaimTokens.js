@@ -38,7 +38,12 @@ class ReclaimTokens extends Component {
 
     if (web3utils.isAddress(this.state.from)) {
       this.props.Crowdsale.deployed().then(async (crowdsale) => {
-        crowdsale.reclaimToken(this.state.from, { from: this.props.account, gas: 300000 })
+        const _gas = await crowdsale.reclaimToken.estimateGas(this.state.from)
+        crowdsale.reclaimToken(this.state.from, {
+            from: this.props.account,
+            gas: _gas,
+            gasPrice: this.props.gasPrice
+          })
           .then((receipt) => {
             // console.log(receipt)
             this.setState({
@@ -99,7 +104,8 @@ function mapStateToProps(state) {
   return {
     Crowdsale: state.Crowdsale,
     account: state.account,
-    web3: state.web3
+    web3: state.web3,
+    gasPrice: state.gasPrice
   }
 }
 

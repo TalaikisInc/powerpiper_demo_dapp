@@ -63,10 +63,12 @@ class AddToWhitelist extends Component {
     event.preventDefault()
 
     this.props.Crowdsale.deployed().then(async (token) => {
-      if(web3utils.isAddress(this.state.toWhitelist)) {
+      if (web3utils.isAddress(this.state.toWhitelist)) {
+        const _gas = await token.addToWhitelist.estimateGas(this.state.toWhitelist)
         token.addToWhitelist(this.state.toWhitelist, {
           from: this.props.account,
-          gas: 300000
+          gas: _gas,
+          gasPrice: this.props.gasPrice
         })
         .then((receipt) => {
           // console.log('Success: ', receipt)
@@ -132,7 +134,8 @@ function mapStateToProps(state) {
   return {
     web3: state.web3,
     Crowdsale: state.Crowdsale,
-    account: state.account
+    account: state.account,
+    gasPrice: state.gasPrice
   }
 }
 

@@ -59,10 +59,12 @@ class SetFee extends Component {
     event.preventDefault()
 
     this.props.Token.deployed().then(async (token) => {
-      if(this.state.percentage > 0) {
+      if (this.state.percentage > 0) {
+        const _gas = await token.setNewFee.estimateGas(this.state.percentage * 10 ** env.DECIMALS)
         token.setNewFee(this.state.percentage * 10 ** env.DECIMALS, {
           from: this.props.account,
-          gas: 300000
+          gas: _gas,
+          gasPrice: this.props.gasPrice
         })
         .then((receipt) => {
           // console.log('Success: ', receipt)
@@ -125,7 +127,8 @@ function mapStateToProps(state) {
   return {
     web3: state.web3,
     Token: state.Token,
-    account: state.account
+    account: state.account,
+    gasPrice: state.gasPrice
   }
 }
 

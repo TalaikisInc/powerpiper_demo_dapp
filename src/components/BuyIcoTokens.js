@@ -60,18 +60,27 @@ class BuyIcoTokens extends Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    this.setState({
-      success: '',
-      failure: ''
-    })
-
-    this.props.Crowdsale.deployed().then((crowdsale) => {
+    this.props.Crowdsale.deployed().then(async (crowdsale) => {
       if (this.state.amountEth > env.MINIMUM_CONTRIBUTION && Web3Utils.isAddress(this.props.account)) {
+        const _gas = await this.props.web3.web3.eth.estimateGas({
+          from: this.props.account,
+          to: crowdsale.address,
+          value: this.props.web3.web3.toWei(this.state.amountEth, 'ether')
+        }, (err, receipt) => {
+          if (err) {
+            this.setState({
+              modalOpen: true,
+              failure: `Error occurred: ${err.message}`
+            })
+          }
+        })
+
         this.props.web3.web3.eth.sendTransaction({
           from: this.props.account,
           to: crowdsale.address,
           value:  this.props.web3.web3.toWei(this.state.amountEth, 'ether'),
-          gas: 300000,
+          gas: _gas,
+          gasPrice: this.props.gasPrice,
           data: '0x00'
         }, (err, receipt) => {
           if (!err) {
@@ -80,10 +89,17 @@ class BuyIcoTokens extends Component {
               success: `Success! Your tx: ${receipt}`
             })
           } else {
-            this.setState({
-              modalOpen: true,
-              failure: `Error occurred: ${err.message}`
-            })
+            if (err.message.indexOf('User denied') !== -1) {
+              this.setState({
+                modalOpen: true,
+                failure: 'Tx cancelled.'
+              })
+            } else {
+              this.setState({
+                modalOpen: true,
+                failure: `Error occurred: ${err.message}`
+              })
+            }
           }
         })
       } else {
@@ -141,10 +157,10 @@ class BuyIcoTokens extends Component {
 
 function mapStateToProps(state) {
   return {
-    // Token: state.Token,
     Crowdsale: state.Crowdsale,
     account: state.account,
-    web3: state.web3
+    web3: state.web3,
+    gasPrice: state.gasPrice
   }
 }
 

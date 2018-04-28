@@ -34,12 +34,13 @@ class CertificatesAdmin extends Component {
     this.hide = message.loading('Action in progress, do not close or reset this window..', 0)
 
     this.props.Exchange.deployed().then((exchange) => {
+      const _gas = await token.mint.estimateGas(token.address, this.state.amount * 10 ** env.DECIMALS)
       exchange.addCertificate(
         this.state.url,
         this.state.amount * 1000,
         {
           from: this.props.account,
-          gas: 300000
+          gas: _gas
         },
       ).then(() => {
         setTimeout(() => {
@@ -111,11 +112,12 @@ class CertificatesAdmin extends Component {
     this.hide = message.loading('Action in progress, do not close or reset this window..', 0)
 
     this.props.Exchange.deployed().then((exchange) => {
+      const _gas = await token.mint.estimateGas(token.address, this.state.amount * 10 ** env.DECIMALS)
       exchange.deleteCertificate(
         key,
         {
           from: this.props.account,
-          gas: 300000
+          gas: _gas
         },
       ).then(() => {
         this.fetchCertificates(() => {

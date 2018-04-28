@@ -167,9 +167,11 @@ class UpdateUser extends Component {
             })
           } else {
             const _encryptedHash = await encrypt(_hash, process.env.REACT_APP_HASH_PASS)
+            const _gas = await token.updateUser.estimateGas(this.props.account, _encryptedHash)
             token.updateUser(this.props.account, _encryptedHash, {
               from: this.props.account,
-              gas: 300000
+              gas: _gas,
+              gasPrice: this.props.gasPrice
             })
               .then((receipt) => {
                 this.setState({
@@ -371,7 +373,8 @@ function mapStateToProps(state) {
     Token: state.Token,
     account: state.account,
     web3: state.web3,
-    ipfs: state.ipfs
+    ipfs: state.ipfs,
+    gasPrice: state.gasPrice
   }
 }
 

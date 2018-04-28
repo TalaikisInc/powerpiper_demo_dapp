@@ -59,10 +59,12 @@ class PriceMarkupAdmin extends Component {
     event.preventDefault()
 
     this.props.Token.deployed().then(async (token) => {
-      if(this.state.priceMarkup > 0) {
+      if (this.state.priceMarkup > 0) {
+        const _gas = await token.setPriceMarkup.estimateGas(this.state.priceMarkup * 10 ** env.DECIMALS)
         token.setPriceMarkup(this.state.priceMarkup * 10 ** env.DECIMALS, {
           from: this.props.account,
-          gas: 300000
+          gas: _gas,
+          gasPrice: this.props.gasPrice
         })
         .then((receipt) => {
           // console.log('Success: ', receipt)

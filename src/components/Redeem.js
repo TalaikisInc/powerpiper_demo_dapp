@@ -39,11 +39,12 @@ class Redeem extends Component {
     this.hide = message.loading('Action in progress..', 0)
 
     this.props.Exchange.deployed().then((exchange) => {
+      const _gas = await token.updateUser.estimateGas(this.props.account, _encryptedHash)
       exchange.redeem(
         this.state.amount * 1000,
         `${this.state.name} | ${this.state.street} | ${this.state.city} | ${this.state.state} | ${this.state.zip} | ${this.state.country}`, {
           from: this.props.account,
-          gas: 300000
+          gas: _gas
         },
       ).then((receipt) => {
         // eslint-disable-next-line

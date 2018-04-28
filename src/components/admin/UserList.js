@@ -107,10 +107,12 @@ class UserList extends Component {
 
   addWhitelist() {
     this.props.Crowdsale.deployed().then(async (token) => {
-      if(web3utils.isAddress(this.state.toWhitelist)) {
+      if (web3utils.isAddress(this.state.toWhitelist)) {
+        const _gas = await token.addToWhitelist.estimateGas(this.state.toWhitelist)
         token.addToWhitelist(this.state.toWhitelist, {
           from: this.props.account,
-          gas: 300000
+          gas: _gas,
+          gasPrice: this.props.gasPrice
         })
          .then((receipt) => {
           // console.log('Success: ', receipt)
@@ -137,10 +139,12 @@ class UserList extends Component {
 
   rmWhitelist() {
     this.props.Crowdsale.deployed().then(async (token) => {
-      if(web3utils.isAddress(this.state.rmWhitelist)) {
+      if (web3utils.isAddress(this.state.rmWhitelist)) {
+        const _gas = await token.removeFromWhitelist.estimateGas(this.state.rmWhitelist)
         token.removeFromWhitelist(this.state.rmWhitelist, {
           from: this.props.account,
-          gas: 300000
+          gas: _gas,
+          gasPrice: this.props.gasPrice
         })
         .then((receipt) => {
           // console.log('Success: ', receipt)
@@ -265,7 +269,8 @@ function mapStateToProps(state) {
     ipfs: state.ipfs,
     Token: state.Token,
     Crowdsale: state.Crowdsale,
-    account: state.account
+    account: state.account,
+    gasPrice: state.gasPrice
   }
 }
 

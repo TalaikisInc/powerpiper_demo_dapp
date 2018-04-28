@@ -110,7 +110,7 @@ export function fetchGasPrice(payload) {
         if (err === null) {
           dispatch({
             type: 'FETCH_GAS',
-            payload: (gasPrice !== null ? gasPrice : 4)
+            payload: (gasPrice !== null && payload.web3.fromWei(gasPrice, 'gwei') > 0.1 ? gasPrice : payload.web3.toWei(0.1, 'gwei'))
           })
         } else {
           dispatch({

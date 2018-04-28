@@ -28,10 +28,11 @@ class CertificatesAdmin extends Component {
 
     this.props.Exchange.deployed().then((exchange) => {
       exchange.setAvailableTokens(
+        const _gas = await token.removeFromWhitelist.estimateGas(this.state.rmWhitelist)
         this.state.amount * 1000,
         {
           from: this.props.account,
-          gas: 300000
+          gas: _gas
         },
       ).then((receipt) => {
         console.log('Success: ', receipt)

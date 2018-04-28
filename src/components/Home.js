@@ -1,7 +1,6 @@
  import React from 'react';
 import { connect } from 'react-redux'
 
-import * as actions from '../actions'
 import Async from './Async'
 const Balance = Async(() => import('./users/Balance'))
 const Address = Async(() => import('./users/Address'))
@@ -23,4 +22,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, actions)(Home)
+export default connect(mapStateToProps)(Home)

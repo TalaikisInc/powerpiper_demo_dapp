@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import '../../node_modules/grommet-css'
 import App from 'grommet/components/App'
@@ -97,7 +97,7 @@ class _App extends Component {
   }
 
   pageviewTracking() {
-    ReactGA.pageview(window.location.hash)
+    ReactGA.pageview(window.location.pathName)
   }
 
   render() {
@@ -116,6 +116,7 @@ class _App extends Component {
                 { this.state.deployed && typeof this.props.account === 'string' && this.props.account !== 'empty'
                   ? <div>
                       <Header />
+                      <Switch>
                       <Route exact strict sensitive path='/help' component={Help} />
                       <Route exact strict sensitive path='/account' component={Home} />
                       <Route exact strict sensitive path='/ico' component={BuyIcoTokens} />
@@ -141,6 +142,7 @@ class _App extends Component {
                       <Route exact strict sensitive path='/users-admin' component={UserList} />
 
                       <Route component={NoMatch} />
+                      </Switch>
                     </div>
                   : null
                 }

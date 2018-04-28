@@ -1,7 +1,6 @@
 /*import React from 'react'
 import { connect } from 'react-redux'
 
-import * as actions from '../actions'
 import BuyDirect from './BuyDirect'
 import Redeem from './Redeem'
 import RecentTransactions from './RecentTransactions'
@@ -23,5 +22,5 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, actions)(BuyRedeem)
+export default connect(mapStateToProps)(BuyRedeem)
 */

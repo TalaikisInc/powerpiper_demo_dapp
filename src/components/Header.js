@@ -12,7 +12,8 @@ class Header extends Component {
     super(props)
 
     this.state = {
-      isOwner: false
+      isOwner: false,
+      redirect: true
     }
 
     this.validateAdmin = this.validateAdmin.bind(this)
@@ -36,51 +37,63 @@ class Header extends Component {
     }, 2000)
   }
 
+  redirect(path) {
+    if (this.state.redirect) {
+      this.setState({
+        redirect: false
+      })
+
+      return <Redirect push to={path} />
+    } else {
+      return ''
+    }
+  }
+
   render() {
     return (
         <Box align='center' responsive={true} pad='medium'>
         { this.state.isOwner
           ? <Box>
-            <Label align='center'>Crowdsale:</Label>
-              <Tabs responsive={true} justify='center'>
+              <Label align='center'>Crowdsale:</Label>
+              <Tabs responsive={true} justify='center' onActive={() => { this.setState({ redirect: true }) }}>
                 <Tab title='Home'>
-                  <Redirect to='/admin' />
+                  { this.redirect('/admin') }
                 </Tab>
                 <Tab title='Ownership'>
-                  <Redirect to='/transfer-ownership' />
+                  { this.redirect('/transfer-ownership') }
                 </Tab>
                 <Tab title='Reclaim'>
-                  <Redirect to='/reclaim-tokens' />
+                  { this.redirect('/reclaim-tokens') }
                 </Tab>
                 <Tab title='Approval'>
-                  <Redirect to='/approve' />
+                  { this.redirect('/approve') }
                 </Tab>
                 <Tab title='Wh. add'>
-                  <Redirect to='/whitelist-add' />
+                  { this.redirect('/whitelist-add') }
                 </Tab>
                 <Tab title='Wh. remove'>
-                  <Redirect to='/whitelist-remove' />
+                  { this.redirect('/whitelist-remove') }
                 </Tab>
               </Tabs>
               <Label align='center'>Token:</Label>
-              <Tabs responsive={true} justify='center'>
+              <Tabs responsive={true} justify='center' onActive={() => { this.setState({ redirect: true }) }}>
                 <Tab title='Markup'>
-                  <Redirect to='/markup' />
+                  { this.redirect('/markup') }
                 </Tab>
                 <Tab title='Fee'>
-                  <Redirect to='/fee' />
+                  { this.redirect('/fee') }
                 </Tab>
                 <Tab title='Mint'>
-                  <Redirect to='/mint' />
+                  { this.redirect('/mint') }
                 </Tab>
                 <Tab title='Finish mint'>
-                  <Redirect to='/finish-mint' />
+                  { this.redirect('/finish-mint') }
                 </Tab>
                 <Tab title='Users'>
-                  <Redirect to='/users-admin' />
+                  { this.redirect('/users-admin') }
                 </Tab>
                 <Tab title='Get User'>
-                  <Redirect to='/get-user' />
+                  { this.redirect('/get-user') }
                 </Tab>
               </Tabs>
               { /*
@@ -88,32 +101,32 @@ class Header extends Component {
               <Certificates />
               <TokenAvailability />
               */ }
-          </Box>
+            </Box>
           : <Box>
-            <Tabs responsive={true} justify='center'>
+            <Tabs responsive={true} justify='center' onActive={() => { this.setState({ redirect: true }) }}>
               <Tab title='Home'>
-                <Redirect push to='/help' />
+                { this.redirect('/help') }
               </Tab>
               <Tab title='Market Info'>
-                <Redirect push to='/market-info' />
+                { this.redirect('/market-info') }
               </Tab>
               <Tab title='Register'>
-                <Redirect to='/register' />
+                { this.redirect('/register') }
               </Tab>
               <Tab title='Buy tokens'>
-                <Redirect to='/ico' />
+                { this.redirect('/ico') }
                 </Tab>
               <Tab title='Exchange'>
-              <Redirect to='/exchange' />
+                { this.redirect('/exchange') }
               </Tab>
               <Tab title='Send'>
-                <Redirect to='/transfer' />
+                { this.redirect('/transfer') }
               </Tab>
               <Tab title='My account'>
-                <Redirect to='/account' />
+                { this.redirect('/account') }
               </Tab>
               <Tab title='Users'>
-                <Redirect to='/users' />
+                { this.redirect('/users') }
               </Tab>
             </Tabs>
           </Box>
